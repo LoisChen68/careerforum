@@ -2,7 +2,8 @@ import Button from '../../UIComponents/Button/Button'
 import style from './Header.module.scss'
 
 interface p {
-  handleLoginModel: (e: React.MouseEvent) => void
+  onLoginClick: (e: React.MouseEvent) => void
+  onSignUpClick: (e: React.MouseEvent) => void
 }
 
 export default function Header(props: p) {
@@ -17,13 +18,13 @@ export default function Header(props: p) {
             type="button"
             innerText="登入"
             style="button-login"
-            onClick={props.handleLoginModel}
+            onClick={props.onLoginClick}
           />
           <Button
             type="button"
             innerText="註冊"
             style="button-sign-up"
-            onClick={props.handleLoginModel}
+            onClick={props.onSignUpClick}
           />
         </div>
       </div>

@@ -25,10 +25,14 @@
   }
 }
 
-.button-login-submit {
+.button-submit {
   @extend %button;
   width: 100%;
   background-color: #0c7b93;
+
+  &:hover {
+    background-color: #13a9ca;
+  }
 }
 
 .button-close {

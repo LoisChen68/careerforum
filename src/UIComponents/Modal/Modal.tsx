@@ -9,8 +9,9 @@ interface p {
 export default function Login(props: p) {
   return (
     <>
-      <div className={style['backdrop']} onClick={props.onConfirm}></div>
-      <div className={style['modal']}>
+      <div className={style['backdrop']} onClick={props.onConfirm}>
+      </div>
+      <div className={style['modal-outer']}>
         <div className={style['modal-container']}>
           <header className={style['header']}>
             <h2>{props.title}</h2>
