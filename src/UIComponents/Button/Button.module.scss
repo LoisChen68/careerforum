@@ -1,0 +1,26 @@
+%button {
+  padding: 5px;
+  border: 0px;
+  border-radius: 10%;
+  background-color: #ffffff00;
+  color: #FFF;
+  font-size: 16px;
+  font-family: inherit
+}
+
+.button-login {
+  @extend %button;
+
+  &:hover {
+    background-color: #5584AC
+  }
+}
+
+.button-sign-up {
+  @extend %button;
+  background-color: #0C7B93;
+
+  &:hover {
+    background-color: #13a9ca;
+  }
+}

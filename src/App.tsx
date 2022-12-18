@@ -1,11 +1,12 @@
-import './App.css'
+import {Route, Routes} from 'react-router-dom'
+import './App.scss'
+import Layout from './Pages/Login.tsx/Layout/Layout'
 
-function App() {
+export default function App() {
   return (
-    <div className="App">
-      <p>Hollow World</p>
-    </div>
+    <Routes>
+      <Route path='/' element={<Layout />}>
+      </Route>
+    </Routes>
   )
 }
-
-export default App

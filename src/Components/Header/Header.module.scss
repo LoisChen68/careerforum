@@ -1,0 +1,28 @@
+header {
+  position: fixed;
+  display: flex;
+  align-items: center;
+  background-color: #22577E;
+  width: 100%;
+  height: 56px;
+  z-index: 999;
+}
+
+.header-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  width: 90%;
+  margin: 0 auto;
+}
+
+.header-title {
+  color: #FFF;
+}
+
+.header-button {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem
+}
