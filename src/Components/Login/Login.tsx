@@ -1,7 +1,6 @@
-import Button from "../../UIComponents/Button/Button";
-import Input from "../../UIComponents/Input/Input";
-import Modal from "../../UIComponents/Modal/Modal";
-
+import Button from '../../UIComponents/Button/Button'
+import Input from '../../UIComponents/Input/Input'
+import Modal from '../../UIComponents/Modal/Modal'
 
 interface p {
   onConfirm: (e: React.MouseEvent) => void
@@ -11,18 +10,15 @@ interface p {
 }
 
 export default function Login(props: p) {
-
   return (
-    <Modal
-      title="登入"
-      onConfirm={props.onConfirm}
-    >
+    <Modal title="登入" onConfirm={props.onConfirm}>
       <>
         <Button
-          type='submit'
-          style='button-close'
+          type="submit"
+          style="button-close"
           onClick={props.onConfirm}
-          innerText='X' />
+          innerText="X"
+        />
         <Input
           htmlFor="email"
           label="Email"
@@ -38,11 +34,14 @@ export default function Login(props: p) {
           onChange={props.onPasswordChange}
         />
         <Button
-          type='submit'
-          style='button-login-submit'
+          type="submit"
+          style="button-login-submit"
           onClick={props.onLoginSubmit}
-          innerText='登入' />
-        <p>尚未有帳號? <a href="#">註冊</a></p>
+          innerText="登入"
+        />
+        <p>
+          尚未有帳號? <a href="#">註冊</a>
+        </p>
       </>
     </Modal>
   )

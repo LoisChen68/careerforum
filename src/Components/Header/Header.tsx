@@ -6,7 +6,6 @@ interface p {
 }
 
 export default function Header(props: p) {
-
   return (
     <header className={style['header']}>
       <div className={style['header-wrapper']}>
@@ -15,15 +14,15 @@ export default function Header(props: p) {
         </div>
         <div className={style['header-button']}>
           <Button
-            type='button'
-            innerText='登入'
-            style='button-login'
+            type="button"
+            innerText="登入"
+            style="button-login"
             onClick={props.handleLoginModel}
           />
           <Button
-            type='button'
-            innerText='註冊'
-            style='button-sign-up'
+            type="button"
+            innerText="註冊"
+            style="button-sign-up"
             onClick={props.handleLoginModel}
           />
         </div>

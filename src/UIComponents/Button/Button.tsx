@@ -7,8 +7,6 @@ interface p {
   onClick: (e: React.MouseEvent) => void
 }
 
-
-
 export default function Button(props: p) {
   return (
     <button

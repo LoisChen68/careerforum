@@ -7,7 +7,6 @@
   background-color: rgba(255, 255, 255, 0.25);
 }
 
-
 .modal {
   position: absolute;
   border: 1px solid black;
@@ -23,7 +22,6 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-
 }
 
 .header {
@@ -39,5 +37,5 @@
   flex-direction: column;
   align-items: center;
   margin-bottom: 32px;
-  gap: 1rem
+  gap: 1rem;
 }

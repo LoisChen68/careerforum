@@ -1,6 +1,6 @@
-import {useState} from "react";
-import Header from "../../Components/Header/Header";
-import Login from "../../Components/Login/Login";
+import { useState } from 'react'
+import Header from '../../Components/Header/Header'
+import Login from '../../Components/Login/Login'
 
 export default function Layout() {
   const [showLoginModel, setShowLoginModel] = useState(false)
@@ -19,10 +19,8 @@ export default function Layout() {
   }
 
   return (
-    <div >
-      <Header
-        handleLoginModel={() => setShowLoginModel(true)}
-      />
+    <div>
+      <Header handleLoginModel={() => setShowLoginModel(true)} />
       {showLoginModel && (
         <Login
           onConfirm={() => setShowLoginModel(false)}
