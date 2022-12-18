@@ -1,0 +1,25 @@
+.input-container {
+  display: flex;
+  flex-direction: column;
+  width: 300px;
+}
+
+.label {
+  margin-bottom: 0.5rem;
+}
+
+.input {
+  height: 40px;
+  padding: 0 0 0 1rem;
+  background-color: rgba(255, 255, 255, 0);
+  border: 1px solid #4a4a4a;
+  border-radius: 4px;
+  color: #808080;
+  font-family: 'Noto Sans TC';
+  font-size: 12px;
+
+  &:hover,
+  &:focus {
+    border: 1px solid #22577E;
+  }
+}
