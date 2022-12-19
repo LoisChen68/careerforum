@@ -1,13 +1,16 @@
+@use '../../variable' as color;
+@use '../../variable' as style;
+
 .backdrop {
   position: fixed;
+  top: 0;
+  left: 0;
   display: flex;
   justify-content: center;
   align-items: center;
-  top: 0;
-  left: 0;
   width: 100%;
   height: 100vh;
-  background-color: rgba(255, 255, 255, 0.25);
+  background-color: rgba(0, 0, 0, 0.1);
   z-index: 10;
 }
 
@@ -16,10 +19,10 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background-color: #FFF;
-  border: 1px solid black;
-  border-radius: 5px;
   width: 400px;
+  background-color: #FFF;
+  box-shadow: 1px 1px 5px 1px rgba(0, 0, 0, 0.1);
+  border-radius: style.$border-radius-5;
   z-index: 20;
 }
 
@@ -38,9 +41,9 @@
 }
 
 .form {
+  margin-bottom: 32px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-bottom: 32px;
   gap: 1rem;
 }

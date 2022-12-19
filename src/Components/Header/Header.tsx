@@ -11,7 +11,7 @@ export default function Header(props: p) {
     <header className={style['header']}>
       <div className={style['header-wrapper']}>
         <div className={style['header-logo']}>
-          <h1 className={style['header-title']}>Career Forum</h1>
+          <h3 className={style['header-title']}>Career Forum</h3>
         </div>
         <div className={style['header-button']}>
           <Button

@@ -29,7 +29,9 @@ export default function SignUp(props: p) {
           innerText="X"
         />
         <Selector
+          htmlFor="role"
           label="Role"
+          id="role"
           value={options}
         />
         <Input

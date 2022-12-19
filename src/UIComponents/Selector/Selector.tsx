@@ -1,7 +1,9 @@
 import style from './Selector.module.scss'
 
 interface p {
+  htmlFor: string
   label: string
+  id: string
   value: o[]
 }
 
@@ -19,11 +21,11 @@ export default function Selector(props: p) {
 
   return (
     <div className={style['select-container']}>
-      <label htmlFor={props.label} className={style['label']}
+      <label htmlFor={props.htmlFor} className={style['label']}
       >
         {props.label}
       </label>
-      <select id={props.label} className={style['select']}>
+      <select id={props.id} className={style['select']}>
         {option}
       </select>
     </div>

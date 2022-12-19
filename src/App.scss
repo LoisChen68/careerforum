@@ -1,4 +1,6 @@
 /* reset css */
+@use './variable' as color;
+
 body {
   margin: 0;
   padding: 0;
@@ -31,6 +33,16 @@ a,
 a:hover,
 a:focus {
   text-decoration: none;
+
+}
+
+a {
+  color: color.$primary-color;
+}
+
+a:hover,
+a:focus {
+  color: color.$secondary-color;
 }
 
 img {

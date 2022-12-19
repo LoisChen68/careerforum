@@ -3,15 +3,14 @@ import ReactDOM from 'react-dom'
 import Header from '../../Components/Header/Header'
 import Login from '../../Components/Login/Login'
 import SignUp from '../../Components/SignUp/SignUp'
+import style from './Layout.module.scss'
 
 export default function Layout() {
-  const [showLoginModal, setShowLoginModal] = useState(false)
-  const [showSingUpModal, setShowSingUpModal] = useState(false)
+  const [authModal, setAuthModal] = useState('initialization')
   const [email, setEmail] = useState('')
   const [account, setAccount] = useState('')
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
-
 
 
   function handleLoginSubmit(e: React.MouseEvent) {
@@ -39,35 +38,29 @@ export default function Layout() {
   return (
     <div>
       <Header
-        onLoginClick={() => setShowLoginModal(true)}
-        onSignUpClick={() => setShowSingUpModal(true)}
+        onLoginClick={() => setAuthModal('login')}
+        onSignUpClick={() => setAuthModal('singUp')}
       />
       {ReactDOM.createPortal(
         <>
-          {showLoginModal && (
+          {authModal === 'login' && (
             <Login
-              onConfirm={() => setShowLoginModal(false)}
+              onConfirm={() => setAuthModal('initialization')}
               onLoginSubmit={handleLoginSubmit}
               onEmailChange={handleEmailChange}
               onPasswordChange={handlePasswordChange}
-              onSingUpClick={() => {
-                setShowLoginModal(false)
-                setShowSingUpModal(true)
-              }}
+              onSingUpClick={() => {setAuthModal('singUp')}}
             />
           )}
-          {showSingUpModal && (
+          {authModal === 'singUp' && (
             <SignUp
-              onConfirm={() => setShowSingUpModal(false)}
+              onConfirm={() => setAuthModal('initialization')}
               onSingUpSubmit={handleSingUpSubmit}
               onEmailChange={handleEmailChange}
               onAccountChange={handleAccountChange}
               onPasswordChange={handlePasswordChange}
               onConfirmPasswordChange={handleConfirmPasswordChange}
-              onLoginClick={() => {
-                setShowSingUpModal(false)
-                setShowLoginModal(true)
-              }}
+              onLoginClick={() => {setAuthModal('login')}}
             />
           )}
         </>

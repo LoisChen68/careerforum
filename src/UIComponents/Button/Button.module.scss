@@ -1,37 +1,41 @@
+@use '../../variable' as color;
+
 %button {
   padding: 5px;
   border: 0px;
   border-radius: 5px;
-  background-color: #ffffff00;
-  color: #fff;
+  color: color.$primary-color;
+  transition: 0.3s ease-out;
   font-size: 16px;
   font-family: inherit;
 }
 
 .button-login {
   @extend %button;
+  border: 1px solid color.$primary-color ;
 
   &:hover {
-    background-color: #5584ac;
+    color: color.$secondary-color;
+    border: 1px solid color.$secondary-color;
   }
 }
 
 .button-sign-up {
   @extend %button;
-  background-color: #0c7b93;
 
   &:hover {
-    background-color: #13a9ca;
+    color: color.$secondary-color;
   }
 }
 
 .button-submit {
   @extend %button;
   width: 100%;
-  background-color: #0c7b93;
+  background-color: color.$primary-color;
+  color: #FFF;
 
   &:hover {
-    background-color: #13a9ca;
+    background-color: color.$secondary-color;
   }
 }
 
