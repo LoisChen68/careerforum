@@ -2,27 +2,43 @@
 @use '../../variable' as style;
 
 .input-container {
+  position: relative;
   display: flex;
   flex-direction: column;
   width: 300px;
 }
 
-.label {
-  margin-bottom: 0.5rem;
-}
-
 .input {
-  padding: 0 0 0 1rem;
   height: 40px;
-  background-color: rgba(255, 255, 255, 0);
-  border: 1px solid color.$dim-gray;
-  border-radius: style.$border-radius-5;
+  border: 0px;
+  border-bottom: 1px solid color.$dim-gray;
   transition: 0.3s ease-out;
   font-family: inherit;
   font-size: 16px;
 
+
   &:hover,
   &:focus {
-    border: 1px solid color.$secondary-color;
+    border-bottom: 1px solid color.$secondary-color;
   }
+
+  &:focus~.label,
+  &:valid~.label,
+  &:not(:placeholder-shown)~.label {
+    top: -20px;
+    left: 0;
+    color: color.$secondary-color;
+    font-size: 12px;
+  }
+}
+
+.label {
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 10px 0;
+  color: rgba(0, 0, 0, 0.5);
+  font-size: 16px;
+  pointer-events: none;
+  transition: 0.3s;
 }

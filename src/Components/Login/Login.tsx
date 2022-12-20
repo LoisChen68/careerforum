@@ -27,7 +27,8 @@ export default function Login(props: p) {
             label="Email"
             id="email"
             type="email"
-            placeholder="enter email"
+            required={true}
+            placeholder=" "
             onChange={props.onEmailChange}
           />
           <Input
@@ -35,7 +36,8 @@ export default function Login(props: p) {
             label="Password"
             id="password"
             type="password"
-            placeholder="enter password"
+            required={true}
+            placeholder=" "
             onChange={props.onPasswordChange}
           />
           <Button

@@ -14,7 +14,7 @@ export default function Button(props: p) {
       type={props.type}
       onClick={props.onClick}
     >
-      {props.innerText}
+      <p>{props.innerText}</p>
     </button>
   )
 }

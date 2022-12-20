@@ -7,6 +7,7 @@ interface p {
   onConfirm: (e: React.MouseEvent) => void
   onSingUpSubmit: (e: React.MouseEvent) => void
   onLoginClick: (e: React.MouseEvent) => void
+  onRoleChange: React.ChangeEventHandler<HTMLSelectElement>
   onEmailChange: (e: React.ChangeEvent<HTMLInputElement>) => void
   onAccountChange: (e: React.ChangeEvent<HTMLInputElement>) => void
   onPasswordChange: (e: React.ChangeEvent<HTMLInputElement>) => void
@@ -33,13 +34,16 @@ export default function SignUp(props: p) {
           label="Role"
           id="role"
           value={options}
+          required={true}
+          onChange={props.onRoleChange}
         />
         <Input
           htmlFor="email"
           label="Email"
           id="email"
           type="email"
-          placeholder="enter email"
+          placeholder=" "
+          required={true}
           onChange={props.onEmailChange}
         />
         <Input
@@ -47,7 +51,8 @@ export default function SignUp(props: p) {
           label="Account"
           id="account"
           type="text"
-          placeholder="enter account"
+          placeholder=" "
+          required={true}
           onChange={props.onAccountChange}
         />
         <Input
@@ -55,7 +60,8 @@ export default function SignUp(props: p) {
           label="Password"
           id="password"
           type="password"
-          placeholder="enter password"
+          placeholder=" "
+          required={true}
           onChange={props.onPasswordChange}
         />
         <Input
@@ -63,7 +69,8 @@ export default function SignUp(props: p) {
           label="Confirm Password"
           id="confirmPassword"
           type="password"
-          placeholder="enter confirmPassword"
+          placeholder=" "
+          required={true}
           onChange={props.onConfirmPasswordChange}
         />
         <Button
@@ -81,7 +88,8 @@ export default function SignUp(props: p) {
 }
 
 const options = [
-  {value: "TA", name: "助教"},
-  {value: "student", name: "學期三就讀中"},
-  {value: "graduate", name: "畢業"},
+  {value: "", name: "Role", disable: true, selected: true},
+  {value: "TA", name: "助教", disable: false, selected: false},
+  {value: "student", name: "學期三就讀中", disable: false, selected: false},
+  {value: "graduate", name: "畢業", disable: false, selected: false},
 ]

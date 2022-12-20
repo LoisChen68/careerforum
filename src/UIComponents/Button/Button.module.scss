@@ -2,12 +2,14 @@
 
 %button {
   padding: 5px;
+  margin-top: 12px;
   border: 0px;
   border-radius: 5px;
   color: color.$primary-color;
   transition: 0.3s ease-out;
   font-size: 16px;
   font-family: inherit;
+  letter-spacing: 2px;
 }
 
 .button-login {
@@ -30,7 +32,7 @@
 
 .button-submit {
   @extend %button;
-  width: 100%;
+  width: 80%;
   background-color: color.$primary-color;
   color: #FFF;
 

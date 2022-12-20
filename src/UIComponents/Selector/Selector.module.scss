@@ -2,28 +2,51 @@
 @use '../../variable' as style;
 
 .select-container {
-  display: flex;
-  flex-direction: column;
+  position: relative;
+  display: grid;
   width: 300px;
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    right: 8px;
+    transform: translateY(-50%);
+    border-style: solid;
+    border-width: 6px 5px 0 5px;
+    border-color: #2a2a2a transparent transparent transparent;
+    z-index: -1;
+  }
+
 }
 
-.label {
-  margin-bottom: 0.5rem;
-}
 
 .select {
-  padding: 0 0 0 1rem;
   height: 40px;
+  border: 0px;
   background-color: rgba(255, 255, 255, 0);
-  border: 1px solid color.$dim-gray;
-  border-radius: style.$border-radius-5;
+  border-bottom: 1px solid color.$dim-gray;
   transition: 0.3s ease-out;
   font-family: inherit;
   font-size: 16px;
+  -webkit-appearance: none;
 
 
   &:hover,
   &:focus {
-    border: 1px solid color.$secondary-color;
+    border-bottom: 1px solid color.$secondary-color;
   }
+
+  &:focus {
+    box-shadow: 0px 0px 2px 1px rgba(0, 0, 0, 0.1);
+  }
+
+}
+
+select:invalid {
+  color: rgba(0, 0, 0, 0.5);
+}
+
+.option {
+  font-family: inherit;
 }

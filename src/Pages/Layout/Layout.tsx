@@ -1,12 +1,13 @@
-import {useState} from 'react'
+import React, {useState} from 'react'
 import ReactDOM from 'react-dom'
 import Header from '../../Components/Header/Header'
 import Login from '../../Components/Login/Login'
 import SignUp from '../../Components/SignUp/SignUp'
-import style from './Layout.module.scss'
+import authAPI from '../../request/API/auth'
 
 export default function Layout() {
   const [authModal, setAuthModal] = useState('initialization')
+  const [role, setRole] = useState('')
   const [email, setEmail] = useState('')
   const [account, setAccount] = useState('')
   const [password, setPassword] = useState('')
@@ -18,14 +19,33 @@ export default function Layout() {
   }
   function handleSingUpSubmit(e: React.MouseEvent) {
     e.preventDefault()
+
+    authAPI
+      .signUp({
+        role,
+        email,
+        account,
+        password,
+        confirmPassword
+      })
+      .then(res => {
+        const {data} = res
+        console.log(data)
+        console.log(res.data)
+      })
+      .catch(err => console.log(err))
+
+
   }
 
-  function handleAccountChange(e: React.ChangeEvent<HTMLInputElement>) {
-    setAccount(e.target.value)
+  function handleRoleChange(e: React.ChangeEvent<HTMLSelectElement>) {
+    setRole(e.target.value)
   }
-
   function handleEmailChange(e: React.ChangeEvent<HTMLInputElement>) {
     setEmail(e.target.value)
+  }
+  function handleAccountChange(e: React.ChangeEvent<HTMLInputElement>) {
+    setAccount(e.target.value)
   }
   function handlePasswordChange(e: React.ChangeEvent<HTMLInputElement>) {
     setPassword(e.target.value)
@@ -46,20 +66,21 @@ export default function Layout() {
           {authModal === 'login' && (
             <Login
               onConfirm={() => setAuthModal('initialization')}
-              onLoginSubmit={handleLoginSubmit}
               onEmailChange={handleEmailChange}
               onPasswordChange={handlePasswordChange}
+              onLoginSubmit={handleLoginSubmit}
               onSingUpClick={() => {setAuthModal('singUp')}}
             />
           )}
           {authModal === 'singUp' && (
             <SignUp
               onConfirm={() => setAuthModal('initialization')}
-              onSingUpSubmit={handleSingUpSubmit}
+              onRoleChange={handleRoleChange}
               onEmailChange={handleEmailChange}
               onAccountChange={handleAccountChange}
               onPasswordChange={handlePasswordChange}
               onConfirmPasswordChange={handleConfirmPasswordChange}
+              onSingUpSubmit={handleSingUpSubmit}
               onLoginClick={() => {setAuthModal('login')}}
             />
           )}
