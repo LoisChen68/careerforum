@@ -12,6 +12,20 @@ interface p {
   onAccountChange: (e: React.ChangeEvent<HTMLInputElement>) => void
   onPasswordChange: (e: React.ChangeEvent<HTMLInputElement>) => void
   onConfirmPasswordChange: (e: React.ChangeEvent<HTMLInputElement>) => void
+  errorMessage: o
+  email: string
+  account: string
+  password: string
+  confirmPassword: string
+  value: string
+}
+
+interface o {
+  role: string
+  email: string
+  account: string
+  password: string
+  confirmPassword: string
 }
 
 
@@ -34,6 +48,8 @@ export default function SignUp(props: p) {
           label="Role"
           id="role"
           value={options}
+          selectedValue={props.value}
+          errorMessage={props.errorMessage.role}
           required={true}
           onChange={props.onRoleChange}
         />
@@ -43,7 +59,9 @@ export default function SignUp(props: p) {
           id="email"
           type="email"
           placeholder=" "
+          value={props.email}
           required={true}
+          errorMessage={props.errorMessage.email}
           onChange={props.onEmailChange}
         />
         <Input
@@ -52,7 +70,9 @@ export default function SignUp(props: p) {
           id="account"
           type="text"
           placeholder=" "
+          value={props.account}
           required={true}
+          errorMessage={props.errorMessage.account}
           onChange={props.onAccountChange}
         />
         <Input
@@ -61,7 +81,9 @@ export default function SignUp(props: p) {
           id="password"
           type="password"
           placeholder=" "
+          value={props.password}
           required={true}
+          errorMessage={props.errorMessage.password}
           onChange={props.onPasswordChange}
         />
         <Input
@@ -71,6 +93,8 @@ export default function SignUp(props: p) {
           type="password"
           placeholder=" "
           required={true}
+          value={props.confirmPassword}
+          errorMessage={props.errorMessage.confirmPassword}
           onChange={props.onConfirmPasswordChange}
         />
         <Button
@@ -88,8 +112,8 @@ export default function SignUp(props: p) {
 }
 
 const options = [
-  {value: "", name: "Role", disable: true, selected: true},
-  {value: "TA", name: "助教", disable: false, selected: false},
-  {value: "student", name: "學期三就讀中", disable: false, selected: false},
-  {value: "graduate", name: "畢業", disable: false, selected: false},
+  {value: "", name: "Role", disable: true},
+  {value: "TA", name: "助教", disable: false},
+  {value: "student", name: "學期三就讀中", disable: false},
+  {value: "graduate", name: "畢業", disable: false},
 ]

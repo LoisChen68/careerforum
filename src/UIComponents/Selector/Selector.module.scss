@@ -50,3 +50,11 @@ select:invalid {
 .option {
   font-family: inherit;
 }
+
+.error-message {
+  position: absolute;
+  top: 100%;
+  right: 0%;
+  color: red;
+  font-size: 8px;
+}

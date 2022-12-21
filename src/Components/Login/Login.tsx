@@ -8,7 +8,16 @@ interface p {
   onSingUpClick: (e: React.MouseEvent) => void
   onEmailChange: (e: React.ChangeEvent<HTMLInputElement>) => void
   onPasswordChange: (e: React.ChangeEvent<HTMLInputElement>) => void
+  errorMessage: o
+  email: string
+  password: string
 }
+
+interface o {
+  email: string
+  password: string
+}
+
 
 export default function Login(props: p) {
 
@@ -29,6 +38,8 @@ export default function Login(props: p) {
             type="email"
             required={true}
             placeholder=" "
+            value={props.email}
+            errorMessage={props.errorMessage.email}
             onChange={props.onEmailChange}
           />
           <Input
@@ -38,6 +49,8 @@ export default function Login(props: p) {
             type="password"
             required={true}
             placeholder=" "
+            value={props.password}
+            errorMessage={props.errorMessage.password}
             onChange={props.onPasswordChange}
           />
           <Button

@@ -8,19 +8,27 @@ interface p {
   type: string
   required: boolean
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
+  errorMessage: string
+  value: string
 }
+
 
 export default function Input(props: p) {
   return (
     <div className={style['input-container']}>
       <input
-        className={style['input']}
+        className={
+          props.errorMessage
+            ? style['error-input']
+            : style['input']}
         id={props.id}
         type={props.type}
+        value={props.value}
         placeholder={props.placeholder}
         required={props.required}
         onChange={props.onChange}
       />
+      <span className={style['error-message']}>{props.errorMessage}</span>
       <label htmlFor={props.htmlFor} className={style['label']}>
         {props.label}
       </label>

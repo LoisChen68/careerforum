@@ -14,7 +14,7 @@ export default function Button(props: p) {
       type={props.type}
       onClick={props.onClick}
     >
-      <p>{props.innerText}</p>
+      <p className={style['button-text']}>{props.innerText}</p>
     </button>
   )
 }

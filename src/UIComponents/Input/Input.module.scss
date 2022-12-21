@@ -1,21 +1,13 @@
 @use '../../variable' as color;
 @use '../../variable' as style;
 
-.input-container {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  width: 300px;
-}
-
-.input {
+%input {
   height: 40px;
   border: 0px;
   border-bottom: 1px solid color.$dim-gray;
   transition: 0.3s ease-out;
   font-family: inherit;
   font-size: 16px;
-
 
   &:hover,
   &:focus {
@@ -32,6 +24,22 @@
   }
 }
 
+.input-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 300px;
+}
+
+.input {
+  @extend %input;
+}
+
+.error-input {
+  @extend %input;
+  border-bottom: 1px solid red;
+}
+
 .label {
   position: absolute;
   top: 0;
@@ -41,4 +49,12 @@
   font-size: 16px;
   pointer-events: none;
   transition: 0.3s;
+}
+
+.error-message {
+  position: absolute;
+  top: 100%;
+  right: 0%;
+  color: red;
+  font-size: 8px;
 }

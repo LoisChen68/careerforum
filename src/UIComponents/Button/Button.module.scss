@@ -1,8 +1,10 @@
 @use '../../variable' as color;
 
 %button {
-  padding: 5px;
-  margin-top: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 2rem;
   border: 0px;
   border-radius: 5px;
   color: color.$primary-color;
@@ -20,6 +22,7 @@
     color: color.$secondary-color;
     border: 1px solid color.$secondary-color;
   }
+
 }
 
 .button-sign-up {
@@ -32,6 +35,7 @@
 
 .button-submit {
   @extend %button;
+  margin-top: 12px;
   width: 80%;
   background-color: color.$primary-color;
   color: #FFF;
@@ -45,4 +49,8 @@
   position: absolute;
   right: 20px;
   top: 10px;
+}
+
+.button-text {
+  line-height: 2rem;
 }
