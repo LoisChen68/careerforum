@@ -1,4 +1,4 @@
-import {api} from '../index'
+import { api } from '../index'
 
 interface signUpData {
   role: string
@@ -8,9 +8,8 @@ interface signUpData {
   confirmPassword: string
 }
 
-
 export default {
   signUp(data: signUpData) {
     return api.post<signUpData>('/users/register', data)
-  }
+  },
 }

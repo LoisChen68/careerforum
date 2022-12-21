@@ -18,9 +18,7 @@ interface o {
   password: string
 }
 
-
 export default function Login(props: p) {
-
   return (
     <>
       <Modal title="登入" onConfirm={props.onConfirm}>
@@ -60,7 +58,10 @@ export default function Login(props: p) {
             innerText="登入"
           />
           <p>
-            尚未有帳號? <a href="#" onClick={props.onSingUpClick}>註冊</a>
+            尚未有帳號?{' '}
+            <a href="#" onClick={props.onSingUpClick}>
+              註冊
+            </a>
           </p>
         </>
       </Modal>

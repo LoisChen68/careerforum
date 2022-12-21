@@ -12,15 +12,11 @@ interface p {
   value: string
 }
 
-
 export default function Input(props: p) {
   return (
     <div className={style['input-container']}>
       <input
-        className={
-          props.errorMessage
-            ? style['error-input']
-            : style['input']}
+        className={props.errorMessage ? style['error-input'] : style['input']}
         id={props.id}
         type={props.type}
         value={props.value}

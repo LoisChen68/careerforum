@@ -18,17 +18,12 @@ interface o {
   disable: boolean
 }
 
-
 export default function Selector(props: p) {
-  const option = props.value.map((i: o) =>
-    <option
-      key={i.value}
-      value={i.value}
-      disabled={i.disable}
-    >
+  const option = props.value.map((i: o) => (
+    <option key={i.value} value={i.value} disabled={i.disable}>
       {i.name}
     </option>
-  )
+  ))
 
   return (
     <div className={style['select-container']}>
@@ -36,8 +31,9 @@ export default function Selector(props: p) {
         id={props.id}
         className={style['select']}
         required={props.required}
-        defaultValue={"" || props.selectedValue}
-        onChange={props.onChange}>
+        defaultValue={'' || props.selectedValue}
+        onChange={props.onChange}
+      >
         {option}
       </select>
       <span className={style['error-message']}>{props.errorMessage}</span>

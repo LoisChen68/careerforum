@@ -1,19 +1,17 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 import ReactDOM from 'react-dom'
 import Header from '../../Components/Header/Header'
 import Login from '../../Components/Login/Login'
 import SignUp from '../../Components/SignUp/SignUp'
 import authAPI from '../../request/API/auth'
 
-
 const data = {
   role: '',
   email: '',
   account: '',
   password: '',
-  confirmPassword: ''
+  confirmPassword: '',
 }
-
 
 export default function Layout() {
   const [authModal, setAuthModal] = useState('initialization')
@@ -25,7 +23,6 @@ export default function Layout() {
   const [errorMessage, setErrorMessage] = useState(data)
   const [valid, setValid] = useState(false)
 
-
   function handleLoginSubmit(e: React.MouseEvent) {
     e.preventDefault()
   }
@@ -35,78 +32,84 @@ export default function Layout() {
     const emailRule = /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/
 
     if (password !== confirmPassword) {
-      setErrorMessage(prevMessage => ({
+      setErrorMessage((prevMessage) => ({
         ...prevMessage,
         password: '密碼與確認密碼不符',
-        confirmPassword: '密碼與確認密碼不符'
+        confirmPassword: '密碼與確認密碼不符',
       }))
     }
 
     if (!role) {
-      setErrorMessage(prevMessage => ({
+      setErrorMessage((prevMessage) => ({
         ...prevMessage,
-        role: '請選擇身分'
+        role: '請選擇身分',
       }))
     } else {
-      setErrorMessage(prevMessage => ({
+      setErrorMessage((prevMessage) => ({
         ...prevMessage,
-        role: ''
+        role: '',
       }))
     }
 
     if (!email.trim()) {
-      setErrorMessage(prevMessage => ({
+      setErrorMessage((prevMessage) => ({
         ...prevMessage,
-        email: '欄位不得為空'
+        email: '欄位不得為空',
       }))
-    }
-    else {
-      setErrorMessage(prevMessage => ({
+    } else {
+      setErrorMessage((prevMessage) => ({
         ...prevMessage,
-        email: ''
+        email: '',
       }))
     }
 
     if (email && !emailRule.test(email)) {
-      setErrorMessage(prevMessage => ({
+      setErrorMessage((prevMessage) => ({
         ...prevMessage,
-        email: 'Email格式不合法'
+        email: 'Email格式不合法',
       }))
     }
     if (email && emailRule.test(email)) {
-      setErrorMessage(prevMessage => ({
+      setErrorMessage((prevMessage) => ({
         ...prevMessage,
-        email: ''
+        email: '',
       }))
     }
 
     if (!account.trim()) {
-      setErrorMessage(prevMessage => ({
+      setErrorMessage((prevMessage) => ({
         ...prevMessage,
-        account: '欄位不得為空'
+        account: '欄位不得為空',
       }))
     } else {
-      setErrorMessage(prevMessage => ({
+      setErrorMessage((prevMessage) => ({
         ...prevMessage,
-        account: ''
+        account: '',
       }))
     }
 
     if (!password.trim()) {
-      setErrorMessage(prevMessage => ({
+      setErrorMessage((prevMessage) => ({
         ...prevMessage,
-        password: '欄位不得為空'
+        password: '欄位不得為空',
       }))
     }
 
     if (!confirmPassword.trim()) {
-      setErrorMessage(prevMessage => ({
+      setErrorMessage((prevMessage) => ({
         ...prevMessage,
-        confirmPassword: '欄位不得為空'
+        confirmPassword: '欄位不得為空',
       }))
     }
 
-    if (email && emailRule.test(email) && account && password && confirmPassword && password === confirmPassword) {
+    if (
+      email &&
+      emailRule.test(email) &&
+      account &&
+      password &&
+      confirmPassword &&
+      password === confirmPassword
+    ) {
       setValid(true)
       authAPI
         .signUp({
@@ -114,14 +117,14 @@ export default function Layout() {
           email,
           account,
           password,
-          confirmPassword
+          confirmPassword,
         })
-        .then(res => {
-          const {data} = res
+        .then((res) => {
+          const { data } = res
           console.log(data)
           console.log(res.data)
         })
-        .catch(err => console.log(err))
+        .catch((err) => console.log(err))
     }
     if (valid === false) return
   }
@@ -129,74 +132,74 @@ export default function Layout() {
   function handleRoleChange(e: React.ChangeEvent<HTMLSelectElement>) {
     setRole(e.target.value)
     if (e.target.value.trim()) {
-      setErrorMessage(prevMessage => ({
+      setErrorMessage((prevMessage) => ({
         ...prevMessage,
-        role: ''
+        role: '',
       }))
     } else {
-      setErrorMessage(prevMessage => ({
+      setErrorMessage((prevMessage) => ({
         ...prevMessage,
-        role: '欄位不得為空'
+        role: '欄位不得為空',
       }))
     }
   }
   function handleEmailChange(e: React.ChangeEvent<HTMLInputElement>) {
     setEmail(e.target.value)
     if (e.target.value.trim()) {
-      setErrorMessage(prevMessage => ({
+      setErrorMessage((prevMessage) => ({
         ...prevMessage,
-        email: ''
+        email: '',
       }))
     } else {
-      setErrorMessage(prevMessage => ({
+      setErrorMessage((prevMessage) => ({
         ...prevMessage,
-        email: '欄位不得為空'
+        email: '欄位不得為空',
       }))
     }
   }
   function handleAccountChange(e: React.ChangeEvent<HTMLInputElement>) {
     setAccount(e.target.value)
     if (e.target.value.trim()) {
-      setErrorMessage(prevMessage => ({
+      setErrorMessage((prevMessage) => ({
         ...prevMessage,
-        account: ''
+        account: '',
       }))
     } else {
-      setErrorMessage(prevMessage => ({
+      setErrorMessage((prevMessage) => ({
         ...prevMessage,
-        account: '欄位不得為空'
+        account: '欄位不得為空',
       }))
     }
   }
   function handlePasswordChange(e: React.ChangeEvent<HTMLInputElement>) {
     setPassword(e.target.value)
     if (e.target.value !== confirmPassword) {
-      setErrorMessage(prevMessage => ({
+      setErrorMessage((prevMessage) => ({
         ...prevMessage,
         password: '密碼與確認密碼不符',
-        confirmPassword: '密碼與確認密碼不符'
+        confirmPassword: '密碼與確認密碼不符',
       }))
     } else {
-      setErrorMessage(prevMessage => ({
+      setErrorMessage((prevMessage) => ({
         ...prevMessage,
         password: '',
-        confirmPassword: ''
+        confirmPassword: '',
       }))
     }
   }
   function handleConfirmPasswordChange(e: React.ChangeEvent<HTMLInputElement>) {
     setConfirmPassword(e.target.value)
     if (password !== e.target.value) {
-      setErrorMessage(prevMessage => ({
+      setErrorMessage((prevMessage) => ({
         ...prevMessage,
         password: '密碼與確認密碼不符',
-        confirmPassword: '密碼與確認密碼不符'
+        confirmPassword: '密碼與確認密碼不符',
       }))
     } else {
-      setErrorMessage(prevMessage => ({
+      setErrorMessage((prevMessage) => ({
         ...prevMessage,
         password: '',
-        confirmPassword: ''
+        confirmPassword: '',
       }))
     }
   }
@@ -255,11 +258,9 @@ export default function Layout() {
               value={role}
             />
           )}
-        </>
-        , document.getElementById('modal-root') as Element
+        </>,
+        document.getElementById('modal-root') as Element
       )}
     </div>
   )
 }
-
-

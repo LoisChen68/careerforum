@@ -1,6 +1,6 @@
-import Button from "../../UIComponents/Button/Button";
-import Input from "../../UIComponents/Input/Input";
-import Modal from "../../UIComponents/Modal/Modal";
+import Button from '../../UIComponents/Button/Button'
+import Input from '../../UIComponents/Input/Input'
+import Modal from '../../UIComponents/Modal/Modal'
 import Selector from '../../UIComponents/Selector/Selector'
 
 interface p {
@@ -28,14 +28,9 @@ interface o {
   confirmPassword: string
 }
 
-
-
 export default function SignUp(props: p) {
   return (
-    <Modal
-      title="註冊"
-      onConfirm={props.onConfirm}
-    >
+    <Modal title="註冊" onConfirm={props.onConfirm}>
       <>
         <Button
           type="button"
@@ -104,7 +99,10 @@ export default function SignUp(props: p) {
           innerText="註冊"
         />
         <p>
-          已有帳號? <a href="#" onClick={props.onLoginClick}>登入</a>
+          已有帳號?{' '}
+          <a href="#" onClick={props.onLoginClick}>
+            登入
+          </a>
         </p>
       </>
     </Modal>
@@ -112,8 +110,8 @@ export default function SignUp(props: p) {
 }
 
 const options = [
-  {value: "", name: "Role", disable: true},
-  {value: "TA", name: "助教", disable: false},
-  {value: "student", name: "學期三就讀中", disable: false},
-  {value: "graduate", name: "畢業", disable: false},
+  { value: '', name: 'Role', disable: true },
+  { value: 'TA', name: '助教', disable: false },
+  { value: 'student', name: '學期三就讀中', disable: false },
+  { value: 'graduate', name: '畢業', disable: false },
 ]

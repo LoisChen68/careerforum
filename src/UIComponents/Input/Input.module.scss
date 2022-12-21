@@ -14,9 +14,9 @@
     border-bottom: 1px solid color.$secondary-color;
   }
 
-  &:focus~.label,
-  &:valid~.label,
-  &:not(:placeholder-shown)~.label {
+  &:focus ~ .label,
+  &:valid ~ .label,
+  &:not(:placeholder-shown) ~ .label {
     top: -20px;
     left: 0;
     color: color.$secondary-color;

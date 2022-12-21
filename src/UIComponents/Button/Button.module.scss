@@ -16,13 +16,12 @@
 
 .button-login {
   @extend %button;
-  border: 1px solid color.$primary-color ;
+  border: 1px solid color.$primary-color;
 
   &:hover {
     color: color.$secondary-color;
     border: 1px solid color.$secondary-color;
   }
-
 }
 
 .button-sign-up {
@@ -38,7 +37,7 @@
   margin-top: 12px;
   width: 80%;
   background-color: color.$primary-color;
-  color: #FFF;
+  color: #fff;
 
   &:hover {
     background-color: color.$secondary-color;
