@@ -1,11 +1,13 @@
 import React, { useState } from 'react'
-import ReactDOM from 'react-dom'
 import Header from '../../Components/Header/Header'
 import Login from '../../Components/Login/Login'
 import SignUp from '../../Components/SignUp/SignUp'
 import authAPI from '../../request/API/auth'
+import { isSignUpValid, isRoleValue, signUpValueValid } from '../../utils/valid'
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
-const data = {
+const formData = {
   role: '',
   email: '',
   account: '',
@@ -13,15 +15,18 @@ const data = {
   confirmPassword: '',
 }
 
+const loginForm = {
+  email: '',
+  password: '',
+}
+
 export default function Layout() {
   const [authModal, setAuthModal] = useState('initialization')
-  const [role, setRole] = useState('')
-  const [email, setEmail] = useState('')
-  const [account, setAccount] = useState('')
-  const [password, setPassword] = useState('')
-  const [confirmPassword, setConfirmPassword] = useState('')
-  const [errorMessage, setErrorMessage] = useState(data)
-  const [valid, setValid] = useState(false)
+  const [signUpData, setSignUpData] = useState(formData)
+  const [loginData, setLoginData] = useState(loginForm)
+  const [errorMessage, setErrorMessage] = useState(formData)
+  const [submit, setSubmit] = useState(false)
+  const localEmail = localStorage.getItem('email') || ''
 
   function handleLoginSubmit(e: React.MouseEvent) {
     e.preventDefault()
@@ -31,177 +36,112 @@ export default function Layout() {
 
     const emailRule = /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/
 
-    if (password !== confirmPassword) {
-      setErrorMessage((prevMessage) => ({
-        ...prevMessage,
-        password: '密碼與確認密碼不符',
-        confirmPassword: '密碼與確認密碼不符',
-      }))
-    }
-
-    if (!role) {
-      setErrorMessage((prevMessage) => ({
-        ...prevMessage,
-        role: '請選擇身分',
-      }))
-    } else {
-      setErrorMessage((prevMessage) => ({
-        ...prevMessage,
-        role: '',
-      }))
-    }
-
-    if (!email.trim()) {
-      setErrorMessage((prevMessage) => ({
-        ...prevMessage,
-        email: '欄位不得為空',
-      }))
-    } else {
-      setErrorMessage((prevMessage) => ({
-        ...prevMessage,
-        email: '',
-      }))
-    }
-
-    if (email && !emailRule.test(email)) {
-      setErrorMessage((prevMessage) => ({
-        ...prevMessage,
-        email: 'Email格式不合法',
-      }))
-    }
-    if (email && emailRule.test(email)) {
-      setErrorMessage((prevMessage) => ({
-        ...prevMessage,
-        email: '',
-      }))
-    }
-
-    if (!account.trim()) {
-      setErrorMessage((prevMessage) => ({
-        ...prevMessage,
-        account: '欄位不得為空',
-      }))
-    } else {
-      setErrorMessage((prevMessage) => ({
-        ...prevMessage,
-        account: '',
-      }))
-    }
-
-    if (!password.trim()) {
-      setErrorMessage((prevMessage) => ({
-        ...prevMessage,
-        password: '欄位不得為空',
-      }))
-    }
-
-    if (!confirmPassword.trim()) {
-      setErrorMessage((prevMessage) => ({
-        ...prevMessage,
-        confirmPassword: '欄位不得為空',
-      }))
-    }
+    setErrorMessage(isSignUpValid(errorMessage, signUpData, emailRule))
 
     if (
-      email &&
-      emailRule.test(email) &&
-      account &&
-      password &&
-      confirmPassword &&
-      password === confirmPassword
+      signUpData &&
+      emailRule.test(signUpData.email) &&
+      signUpData.password === signUpData.confirmPassword
     ) {
-      setValid(true)
+      setSubmit(true)
       authAPI
         .signUp({
-          role,
-          email,
-          account,
-          password,
-          confirmPassword,
+          ...signUpData,
         })
-        .then((res) => {
-          const { data } = res
-          console.log(data)
-          console.log(res.data)
+        .then(() => {
+          setSubmit(false)
+          toast.success('註冊成功', {
+            position: 'top-right',
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: false,
+            draggable: true,
+            progress: undefined,
+            theme: 'light',
+          })
+          setAuthModal('login')
+          localStorage.setItem('email', signUpData.email)
+          setSignUpData(formData)
         })
-        .catch((err) => console.log(err))
+        .catch((err) => {
+          if (err.response.data.field_errors.email === 'used') {
+            toast.error('信箱已被註冊', {
+              position: 'top-right',
+              autoClose: 3000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: false,
+              draggable: true,
+              progress: undefined,
+              theme: 'light',
+            })
+            setSubmit(false)
+          }
+          if (
+            err.response.status !== 200 &&
+            err.response.data.field_errors.email !== 'used'
+          ) {
+            toast.error('請重新再試', {
+              position: 'top-right',
+              autoClose: 3000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: false,
+              draggable: true,
+              progress: undefined,
+              theme: 'light',
+            }),
+              setSubmit(false)
+          }
+        })
     }
-    if (valid === false) return
   }
 
+  // 選擇身分
   function handleRoleChange(e: React.ChangeEvent<HTMLSelectElement>) {
-    setRole(e.target.value)
-    if (e.target.value.trim()) {
-      setErrorMessage((prevMessage) => ({
-        ...prevMessage,
-        role: '',
-      }))
-    } else {
-      setErrorMessage((prevMessage) => ({
-        ...prevMessage,
-        role: '欄位不得為空',
-      }))
-    }
+    setSignUpData({
+      ...signUpData,
+      role: e.target.value,
+    })
+    setErrorMessage(isRoleValue(errorMessage, e.target.value))
   }
-  function handleEmailChange(e: React.ChangeEvent<HTMLInputElement>) {
-    setEmail(e.target.value)
-    if (e.target.value.trim()) {
-      setErrorMessage((prevMessage) => ({
-        ...prevMessage,
-        email: '',
-      }))
-    } else {
-      setErrorMessage((prevMessage) => ({
-        ...prevMessage,
-        email: '欄位不得為空',
-      }))
+
+  // 輸入註冊表單
+  function handleSingUpInputChange(e: React.ChangeEvent<HTMLInputElement>) {
+    if (e.target.name === 'password') {
+      setSignUpData({
+        ...signUpData,
+        password: e.target.value,
+      })
     }
+    if (e.target.name === 'confirmPassword') {
+      setSignUpData({
+        ...signUpData,
+        confirmPassword: e.target.value,
+      })
+    }
+    setSignUpData({
+      ...signUpData,
+      [e.target.name]: e.target.value,
+    })
+    setErrorMessage(
+      signUpValueValid(
+        errorMessage,
+        e.target.name,
+        e.target.value,
+        signUpData.password,
+        signUpData.confirmPassword
+      )
+    )
   }
-  function handleAccountChange(e: React.ChangeEvent<HTMLInputElement>) {
-    setAccount(e.target.value)
-    if (e.target.value.trim()) {
-      setErrorMessage((prevMessage) => ({
-        ...prevMessage,
-        account: '',
-      }))
-    } else {
-      setErrorMessage((prevMessage) => ({
-        ...prevMessage,
-        account: '欄位不得為空',
-      }))
-    }
-  }
-  function handlePasswordChange(e: React.ChangeEvent<HTMLInputElement>) {
-    setPassword(e.target.value)
-    if (e.target.value !== confirmPassword) {
-      setErrorMessage((prevMessage) => ({
-        ...prevMessage,
-        password: '密碼與確認密碼不符',
-        confirmPassword: '密碼與確認密碼不符',
-      }))
-    } else {
-      setErrorMessage((prevMessage) => ({
-        ...prevMessage,
-        password: '',
-        confirmPassword: '',
-      }))
-    }
-  }
-  function handleConfirmPasswordChange(e: React.ChangeEvent<HTMLInputElement>) {
-    setConfirmPassword(e.target.value)
-    if (password !== e.target.value) {
-      setErrorMessage((prevMessage) => ({
-        ...prevMessage,
-        password: '密碼與確認密碼不符',
-        confirmPassword: '密碼與確認密碼不符',
-      }))
-    } else {
-      setErrorMessage((prevMessage) => ({
-        ...prevMessage,
-        password: '',
-        confirmPassword: '',
-      }))
-    }
+
+  // 輸入登入表單
+  function handleLoginInputChange(e: React.ChangeEvent<HTMLInputElement>) {
+    setLoginData({
+      ...loginData,
+      [e.target.name]: e.target.value,
+    })
   }
 
   return (
@@ -210,57 +150,66 @@ export default function Layout() {
         onLoginClick={() => setAuthModal('login')}
         onSignUpClick={() => setAuthModal('singUp')}
       />
-      {ReactDOM.createPortal(
-        <>
-          {authModal === 'login' && (
-            <Login
-              onConfirm={() => {
-                setAuthModal('initialization')
-                setErrorMessage(data)
-              }}
-              onEmailChange={handleEmailChange}
-              onPasswordChange={handlePasswordChange}
-              onLoginSubmit={handleLoginSubmit}
-              onSingUpClick={() => {
-                setAuthModal('singUp')
-                setErrorMessage(data)
-                setPassword('')
-                setConfirmPassword('')
-              }}
-              email={email}
-              password={password}
-              errorMessage={errorMessage}
-            />
-          )}
-          {authModal === 'singUp' && (
-            <SignUp
-              onConfirm={() => {
-                setAuthModal('initialization')
-                setErrorMessage(data)
-              }}
-              onRoleChange={handleRoleChange}
-              onEmailChange={handleEmailChange}
-              onAccountChange={handleAccountChange}
-              onPasswordChange={handlePasswordChange}
-              onConfirmPasswordChange={handleConfirmPasswordChange}
-              onSingUpSubmit={handleSingUpSubmit}
-              onLoginClick={() => {
-                setAuthModal('login')
-                setErrorMessage(data)
-                setPassword('')
-                setConfirmPassword('')
-              }}
-              email={email}
-              account={account}
-              password={password}
-              confirmPassword={confirmPassword}
-              errorMessage={errorMessage}
-              value={role}
-            />
-          )}
-        </>,
-        document.getElementById('modal-root') as Element
+      {authModal === 'login' && (
+        <Login
+          onConfirm={() => {
+            setAuthModal('initialization')
+            setErrorMessage(formData)
+            setSignUpData({
+              ...signUpData,
+              password: '',
+            })
+          }}
+          onInputChange={handleLoginInputChange}
+          onLoginSubmit={handleLoginSubmit}
+          onSingUpClick={() => {
+            setAuthModal('singUp')
+            setErrorMessage(formData)
+            setSignUpData({
+              ...signUpData,
+              password: '',
+              confirmPassword: '',
+            })
+          }}
+          email={localEmail}
+          password={loginData.password}
+          errorMessage={errorMessage}
+          disabled={submit}
+        />
       )}
+      {authModal === 'singUp' && (
+        <SignUp
+          onConfirm={() => {
+            setAuthModal('initialization')
+            setErrorMessage(formData)
+            setSignUpData({
+              ...signUpData,
+              password: '',
+              confirmPassword: '',
+            })
+          }}
+          onRoleChange={handleRoleChange}
+          onSingUpSubmit={handleSingUpSubmit}
+          onInputChange={handleSingUpInputChange}
+          onLoginClick={() => {
+            setAuthModal('login')
+            setErrorMessage(formData)
+            setSignUpData({
+              ...signUpData,
+              password: '',
+              confirmPassword: '',
+            })
+          }}
+          role={signUpData.role}
+          email={signUpData.email}
+          account={signUpData.account}
+          password={signUpData.password}
+          confirmPassword={signUpData.confirmPassword}
+          errorMessage={errorMessage}
+          disabled={submit}
+        />
+      )}
+      <ToastContainer />
     </div>
   )
 }

@@ -1,3 +1,4 @@
+import { createPortal } from 'react-dom'
 import style from './Modal.module.scss'
 
 interface p {
@@ -7,7 +8,7 @@ interface p {
 }
 
 export default function Login(props: p) {
-  return (
+  return createPortal(
     <>
       <div className={style['backdrop']} onClick={props.onConfirm}></div>
       <div className={style['modal-outer']}>
@@ -18,6 +19,7 @@ export default function Login(props: p) {
           <form className={style['form']}>{props.children}</form>
         </div>
       </div>
-    </>
+    </>,
+    document.getElementById('modal-root') as Element
   )
 }

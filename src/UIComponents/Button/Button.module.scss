@@ -12,6 +12,18 @@
   font-size: 16px;
   font-family: inherit;
   letter-spacing: 2px;
+
+  &:disabled {
+    background-color: #1b4664bd;
+
+    .loading,
+    .loading-text {
+      -webkit-filter: drop-shadow(1px 1px 1px rgba(0, 0, 0, 0.7));
+      filter: drop-shadow(1px 1px 1px rgba(0, 0, 0, 0.7));
+    }
+
+    box-shadow: inset 0 0 5px 1px rgba(30, 79, 114, 0.514);
+  }
 }
 
 .button-login {
@@ -36,11 +48,13 @@
   @extend %button;
   margin-top: 12px;
   width: 80%;
-  background-color: color.$primary-color;
+  background-color: #2771a5;
   color: #fff;
 
   &:hover {
-    background-color: color.$secondary-color;
+    background-color: color.$primary-color;
+    transform: translate(1px, 1px);
+    box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.2);
   }
 }
 
@@ -52,4 +66,43 @@
 
 .button-text {
   line-height: 2rem;
+}
+
+.loader {
+  margin-right: 5px;
+}
+
+.loading {
+  position: relative;
+  display: flex;
+}
+
+.loading-text {
+  position: absolute;
+  left: 100%;
+  display: block;
+  overflow: hidden;
+  animation: s 1s infinite;
+}
+
+@keyframes s {
+  0% {
+    width: 0px;
+  }
+
+  25% {
+    width: 5px;
+  }
+
+  50% {
+    width: 10px;
+  }
+
+  75% {
+    width: 15px;
+  }
+
+  100% {
+    width: 20px;
+  }
 }

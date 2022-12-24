@@ -4,6 +4,7 @@ interface p {
   htmlFor: string
   label: string
   id: string
+  name: string
   placeholder?: string
   type: string
   required: boolean
@@ -18,6 +19,7 @@ export default function Input(props: p) {
       <input
         className={props.errorMessage ? style['error-input'] : style['input']}
         id={props.id}
+        name={props.name}
         type={props.type}
         value={props.value}
         placeholder={props.placeholder}

@@ -5,7 +5,8 @@ import Layout from './Pages/Layout/Layout'
 export default function App() {
   return (
     <Routes>
-      <Route path="*" element={<Layout />}></Route>
+      <Route path="/career-forum" element={<Layout />}></Route>
+      <Route path="/*" element={<Layout />}></Route>
     </Routes>
   )
 }

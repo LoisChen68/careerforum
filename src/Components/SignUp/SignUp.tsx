@@ -8,16 +8,14 @@ interface p {
   onSingUpSubmit: (e: React.MouseEvent) => void
   onLoginClick: (e: React.MouseEvent) => void
   onRoleChange: React.ChangeEventHandler<HTMLSelectElement>
-  onEmailChange: (e: React.ChangeEvent<HTMLInputElement>) => void
-  onAccountChange: (e: React.ChangeEvent<HTMLInputElement>) => void
-  onPasswordChange: (e: React.ChangeEvent<HTMLInputElement>) => void
-  onConfirmPasswordChange: (e: React.ChangeEvent<HTMLInputElement>) => void
+  onInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void
   errorMessage: o
   email: string
   account: string
   password: string
   confirmPassword: string
-  value: string
+  role: string
+  disabled: boolean
 }
 
 interface o {
@@ -37,13 +35,14 @@ export default function SignUp(props: p) {
           style="button-close"
           onClick={props.onConfirm}
           innerText="X"
+          disabled={false}
         />
         <Selector
           htmlFor="role"
           label="Role"
           id="role"
           value={options}
-          selectedValue={props.value}
+          selectedValue={props.role}
           errorMessage={props.errorMessage.role}
           required={true}
           onChange={props.onRoleChange}
@@ -52,51 +51,56 @@ export default function SignUp(props: p) {
           htmlFor="email"
           label="Email"
           id="email"
+          name="email"
           type="email"
           placeholder=" "
           value={props.email}
           required={true}
           errorMessage={props.errorMessage.email}
-          onChange={props.onEmailChange}
+          onChange={props.onInputChange}
         />
         <Input
           htmlFor="account"
           label="Account"
           id="account"
+          name="account"
           type="text"
           placeholder=" "
           value={props.account}
           required={true}
           errorMessage={props.errorMessage.account}
-          onChange={props.onAccountChange}
+          onChange={props.onInputChange}
         />
         <Input
           htmlFor="password"
           label="Password"
           id="password"
+          name="password"
           type="password"
           placeholder=" "
           value={props.password}
           required={true}
           errorMessage={props.errorMessage.password}
-          onChange={props.onPasswordChange}
+          onChange={props.onInputChange}
         />
         <Input
           htmlFor="confirmPassword"
           label="Confirm Password"
           id="confirmPassword"
+          name="confirmPassword"
           type="password"
           placeholder=" "
           required={true}
           value={props.confirmPassword}
           errorMessage={props.errorMessage.confirmPassword}
-          onChange={props.onConfirmPasswordChange}
+          onChange={props.onInputChange}
         />
         <Button
           type="submit"
           style="button-submit"
           onClick={props.onSingUpSubmit}
           innerText="註冊"
+          disabled={props.disabled}
         />
         <p>
           已有帳號?{' '}

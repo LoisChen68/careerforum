@@ -6,11 +6,11 @@ interface p {
   onConfirm: (e: React.MouseEvent) => void
   onLoginSubmit: (e: React.MouseEvent) => void
   onSingUpClick: (e: React.MouseEvent) => void
-  onEmailChange: (e: React.ChangeEvent<HTMLInputElement>) => void
-  onPasswordChange: (e: React.ChangeEvent<HTMLInputElement>) => void
+  onInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void
   errorMessage: o
   email: string
   password: string
+  disabled: boolean
 }
 
 interface o {
@@ -28,34 +28,38 @@ export default function Login(props: p) {
             style="button-close"
             onClick={props.onConfirm}
             innerText="X"
+            disabled={false}
           />
           <Input
             htmlFor="email"
             label="Email"
             id="email"
+            name="email"
             type="email"
             required={true}
             placeholder=" "
             value={props.email}
             errorMessage={props.errorMessage.email}
-            onChange={props.onEmailChange}
+            onChange={props.onInputChange}
           />
           <Input
             htmlFor="password"
             label="Password"
             id="password"
+            name="password"
             type="password"
             required={true}
             placeholder=" "
             value={props.password}
             errorMessage={props.errorMessage.password}
-            onChange={props.onPasswordChange}
+            onChange={props.onInputChange}
           />
           <Button
             type="submit"
             style="button-submit"
             onClick={props.onLoginSubmit}
             innerText="登入"
+            disabled={props.disabled}
           />
           <p>
             尚未有帳號?{' '}
