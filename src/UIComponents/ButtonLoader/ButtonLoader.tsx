@@ -1,6 +1,7 @@
-import './Loader.scss'
+import './ButtonLoader.scss'
 
-export default function Loader() {
+//送出等待返回結果 Loader
+export default function ButtonLoader() {
   return (
     <div className="sk-fading-circle">
       <div className="sk-circle1 sk-circle"></div>

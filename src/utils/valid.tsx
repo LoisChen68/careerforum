@@ -6,6 +6,11 @@ interface s {
   confirmPassword: string
 }
 
+interface l {
+  email: string
+  password: string
+}
+
 //TODO: 驗證送出的註冊表單 onSignUpSubmitValid
 export function isSignUpValid(props: s, data: s, emailRule: RegExp) {
   // 驗證是否輸入身分
@@ -76,7 +81,35 @@ export function isSignUpValid(props: s, data: s, emailRule: RegExp) {
   return props
 }
 
-//TODO: 驗證註冊表單 onSingUpInputChangeValid
+//TODO: 驗證登入表單 onLoginSubmitValid
+export function isLoginValid(props: s, data: l, emailRule: RegExp) {
+  // 驗證是否輸入Email
+  if (!data.email.trim()) {
+    props = { ...props, email: '欄位不得為空' }
+  }
+
+  // 驗證Email格式是否正確
+  if (data.email.trim() && !emailRule.test(data.email)) {
+    props = { ...props, email: 'Email格式不合法' }
+  }
+  if (data.email.trim() && emailRule.test(data.email)) {
+    props = { ...props, email: '' }
+  }
+
+  //驗證是否輸入密碼
+  if (!data.password.trim()) {
+    props = { ...props, password: '欄位不得為空' }
+  }
+
+  //驗證密碼不得有空白鍵
+  if (data.password.includes(' ')) {
+    props = { ...props, password: '不能有空白' }
+  }
+
+  return props
+}
+
+//TODO: 驗證註冊表單輸入 onSingUpInputChangeValid
 export function signUpValueValid(
   props: s,
   inputName: string,
@@ -141,6 +174,19 @@ export function signUpValueValid(
     }
   }
 
+  return props
+}
+
+//TODO: 驗證登入表單輸入 onLoginInputChangeValid
+export function loginValueValid(props: s, inputName: string, value: string) {
+  if (!value.trim()) {
+    props = {
+      ...props,
+      [inputName]: '欄位不得為空',
+    }
+  } else {
+    props = { ...props, [inputName]: '' }
+  }
   return props
 }
 

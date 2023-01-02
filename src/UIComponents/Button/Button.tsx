@@ -1,4 +1,4 @@
-import Loader from '../Loader/Loader'
+import ButtonLoader from '../ButtonLoader/ButtonLoader'
 import style from './Button.module.scss'
 
 interface p {
@@ -20,10 +20,10 @@ export default function Button(props: p) {
       {props.disabled ? (
         <>
           <div className={style['loader']}>
-            <Loader />
+            <ButtonLoader />
           </div>
-          <p className={style['loading']}>
-            Loading<span className={style['loading-text']}>...</span>
+          <p className={style['loading-text']}>
+            Loading<span className={style['loading-dot']}>...</span>
           </p>
         </>
       ) : (

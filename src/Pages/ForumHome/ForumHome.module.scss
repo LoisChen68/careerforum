@@ -1,0 +1,14 @@
+.wrapper {
+  position: absolute;
+  margin-top: 50px;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  outline: 1px solid #22775b;
+}
+
+.container {
+  position: relative;
+  width: 90%;
+  outline: 1px solid salmon;
+}

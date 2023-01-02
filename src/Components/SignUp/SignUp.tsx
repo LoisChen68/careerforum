@@ -2,6 +2,7 @@ import Button from '../../UIComponents/Button/Button'
 import Input from '../../UIComponents/Input/Input'
 import Modal from '../../UIComponents/Modal/Modal'
 import Selector from '../../UIComponents/Selector/Selector'
+import style from './SignUp.module.scss'
 
 interface p {
   onConfirm: (e: React.MouseEvent) => void
@@ -30,13 +31,6 @@ export default function SignUp(props: p) {
   return (
     <Modal title="註冊" onConfirm={props.onConfirm}>
       <>
-        <Button
-          type="button"
-          style="button-close"
-          onClick={props.onConfirm}
-          innerText="X"
-          disabled={false}
-        />
         <Selector
           htmlFor="role"
           label="Role"
@@ -102,8 +96,8 @@ export default function SignUp(props: p) {
           innerText="註冊"
           disabled={props.disabled}
         />
-        <p>
-          已有帳號?{' '}
+        <p className={style['footer']}>
+          已有帳號？
           <a href="#" onClick={props.onLoginClick}>
             登入
           </a>

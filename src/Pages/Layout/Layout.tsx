@@ -1,9 +1,16 @@
 import React, { useState } from 'react'
+import { Outlet, useNavigate } from 'react-router-dom'
 import Header from '../../Components/Header/Header'
 import Login from '../../Components/Login/Login'
 import SignUp from '../../Components/SignUp/SignUp'
 import authAPI from '../../request/API/auth'
-import { isSignUpValid, isRoleValue, signUpValueValid } from '../../utils/valid'
+import {
+  isSignUpValid,
+  isRoleValue,
+  signUpValueValid,
+  isLoginValid,
+  loginValueValid,
+} from '../../utils/valid'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
@@ -15,31 +22,118 @@ const formData = {
   confirmPassword: '',
 }
 
+const localEmail = localStorage.getItem('email') || ''
+const emailRule = /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/
+
 const loginForm = {
-  email: '',
+  email: localEmail,
   password: '',
 }
 
 export default function Layout() {
-  const [authModal, setAuthModal] = useState('initialization')
+  const [authModal, setAuthModal] = useState('initialAuthModal')
   const [signUpData, setSignUpData] = useState(formData)
   const [loginData, setLoginData] = useState(loginForm)
   const [errorMessage, setErrorMessage] = useState(formData)
   const [submit, setSubmit] = useState(false)
-  const localEmail = localStorage.getItem('email') || ''
+  const [authPass, setAuthPass] = useState(false)
+  const navigate = useNavigate()
 
+  //送出登入表單
   function handleLoginSubmit(e: React.MouseEvent) {
     e.preventDefault()
+
+    setErrorMessage(isLoginValid(errorMessage, loginData, emailRule))
+
+    if (
+      loginData.email &&
+      loginData.password &&
+      emailRule.test(loginData.email)
+    ) {
+      setSubmit(true)
+      authAPI
+        .login({
+          ...loginData,
+        })
+        .then((res) => {
+          const token = res.data.token || ''
+          setSubmit(false)
+          toast.success('登入成功', {
+            position: 'top-right',
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: false,
+            draggable: true,
+            progress: undefined,
+            theme: 'light',
+          })
+          localStorage.setItem('token', token)
+          setAuthPass(true)
+          setAuthModal('initialAuthModal')
+          setLoginData({
+            ...loginData,
+            password: '',
+          })
+          navigate('/career-forum/Home')
+        })
+        .catch((err) => {
+          if (err.response.data.title === 'Incorrect email or password') {
+            toast.error('Email或密碼錯誤', {
+              position: 'top-right',
+              autoClose: 3000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: false,
+              draggable: true,
+              progress: undefined,
+              theme: 'light',
+            })
+          }
+          if (err.response.data.title === 'Unapproved user') {
+            toast.error('尚未通過審核', {
+              position: 'top-right',
+              autoClose: 3000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: false,
+              draggable: true,
+              progress: undefined,
+              theme: 'light',
+            })
+          }
+          if (
+            err.response.status !== 200 &&
+            err.response.data.title !== 'Incorrect email or password' &&
+            err.response.data.title !== 'Unapproved user'
+          ) {
+            toast.error('請重新再試', {
+              position: 'top-right',
+              autoClose: 3000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: false,
+              draggable: true,
+              progress: undefined,
+              theme: 'light',
+            })
+          }
+          setSubmit(false)
+        })
+    }
   }
+
+  //送出註冊表單
   function handleSingUpSubmit(e: React.MouseEvent) {
     e.preventDefault()
-
-    const emailRule = /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/
 
     setErrorMessage(isSignUpValid(errorMessage, signUpData, emailRule))
 
     if (
-      signUpData &&
+      signUpData.email &&
+      signUpData.account &&
+      signUpData.password &&
+      signUpData.confirmPassword &&
       emailRule.test(signUpData.email) &&
       signUpData.password === signUpData.confirmPassword
     ) {
@@ -62,6 +156,10 @@ export default function Layout() {
           })
           setAuthModal('login')
           localStorage.setItem('email', signUpData.email)
+          setLoginData({
+            ...loginData,
+            email: signUpData.email,
+          })
           setSignUpData(formData)
         })
         .catch((err) => {
@@ -76,7 +174,6 @@ export default function Layout() {
               progress: undefined,
               theme: 'light',
             })
-            setSubmit(false)
           }
           if (
             err.response.status !== 200 &&
@@ -91,11 +188,22 @@ export default function Layout() {
               draggable: true,
               progress: undefined,
               theme: 'light',
-            }),
-              setSubmit(false)
+            })
           }
+          setSubmit(false)
         })
     }
+  }
+
+  // 輸入登入表單
+  function handleLoginInputChange(e: React.ChangeEvent<HTMLInputElement>) {
+    setErrorMessage(
+      loginValueValid(errorMessage, e.target.name, e.target.value)
+    )
+    setLoginData({
+      ...loginData,
+      [e.target.name]: e.target.value,
+    })
   }
 
   // 選擇身分
@@ -136,24 +244,22 @@ export default function Layout() {
     )
   }
 
-  // 輸入登入表單
-  function handleLoginInputChange(e: React.ChangeEvent<HTMLInputElement>) {
-    setLoginData({
-      ...loginData,
-      [e.target.name]: e.target.value,
-    })
-  }
-
   return (
     <div>
       <Header
         onLoginClick={() => setAuthModal('login')}
         onSignUpClick={() => setAuthModal('singUp')}
+        onLogoutClick={() => {
+          localStorage.removeItem('token')
+          setAuthPass(false)
+          navigate('/')
+        }}
+        authPass={authPass}
       />
       {authModal === 'login' && (
         <Login
           onConfirm={() => {
-            setAuthModal('initialization')
+            setAuthModal('initialAuthModal')
             setErrorMessage(formData)
             setSignUpData({
               ...signUpData,
@@ -171,7 +277,7 @@ export default function Layout() {
               confirmPassword: '',
             })
           }}
-          email={localEmail}
+          email={loginData.email}
           password={loginData.password}
           errorMessage={errorMessage}
           disabled={submit}
@@ -180,7 +286,7 @@ export default function Layout() {
       {authModal === 'singUp' && (
         <SignUp
           onConfirm={() => {
-            setAuthModal('initialization')
+            setAuthModal('initialAuthModal')
             setErrorMessage(formData)
             setSignUpData({
               ...signUpData,
@@ -210,6 +316,7 @@ export default function Layout() {
         />
       )}
       <ToastContainer />
+      <Outlet />
     </div>
   )
 }

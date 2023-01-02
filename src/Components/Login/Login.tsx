@@ -1,6 +1,7 @@
 import Button from '../../UIComponents/Button/Button'
 import Input from '../../UIComponents/Input/Input'
 import Modal from '../../UIComponents/Modal/Modal'
+import style from './Login.module.scss'
 
 interface p {
   onConfirm: (e: React.MouseEvent) => void
@@ -23,13 +24,6 @@ export default function Login(props: p) {
     <>
       <Modal title="登入" onConfirm={props.onConfirm}>
         <>
-          <Button
-            type="button"
-            style="button-close"
-            onClick={props.onConfirm}
-            innerText="X"
-            disabled={false}
-          />
           <Input
             htmlFor="email"
             label="Email"
@@ -61,8 +55,8 @@ export default function Login(props: p) {
             innerText="登入"
             disabled={props.disabled}
           />
-          <p>
-            尚未有帳號?{' '}
+          <p className={style['footer']}>
+            尚未有帳號？
             <a href="#" onClick={props.onSingUpClick}>
               註冊
             </a>

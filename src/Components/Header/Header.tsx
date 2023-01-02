@@ -5,6 +5,8 @@ import style from './Header.module.scss'
 interface p {
   onLoginClick: (e: React.MouseEvent) => void
   onSignUpClick: (e: React.MouseEvent) => void
+  onLogoutClick: (e: React.MouseEvent) => void
+  authPass: boolean
 }
 
 export default function Header(props: p) {
@@ -17,20 +19,33 @@ export default function Header(props: p) {
           </Link>
         </div>
         <div className={style['header-button']}>
-          <Button
-            type="button"
-            innerText="登入"
-            style="button-login"
-            onClick={props.onLoginClick}
-            disabled={false}
-          />
-          <Button
-            type="button"
-            innerText="註冊"
-            style="button-sign-up"
-            onClick={props.onSignUpClick}
-            disabled={false}
-          />
+          {!props.authPass && (
+            <>
+              <Button
+                type="button"
+                innerText="登入"
+                style="button-login"
+                onClick={props.onLoginClick}
+                disabled={false}
+              />
+              <Button
+                type="button"
+                innerText="註冊"
+                style="button-sign-up"
+                onClick={props.onSignUpClick}
+                disabled={false}
+              />
+            </>
+          )}
+          {props.authPass && (
+            <Button
+              type="button"
+              innerText="登出"
+              style="button-login"
+              onClick={props.onLogoutClick}
+              disabled={false}
+            />
+          )}
         </div>
       </div>
     </header>

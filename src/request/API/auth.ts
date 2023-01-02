@@ -8,8 +8,17 @@ interface signUpData {
   confirmPassword: string
 }
 
+interface loginData {
+  email: string
+  password: string
+  token?: string
+}
+
 export default {
   signUp(data: signUpData) {
     return api.post<signUpData>('/users/register', data)
+  },
+  login(data: loginData) {
+    return api.post<loginData>('/users/login', data)
   },
 }

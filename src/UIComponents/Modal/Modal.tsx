@@ -1,4 +1,6 @@
 import { createPortal } from 'react-dom'
+import Backdrop from '../Backdrop/Backdrop'
+import Button from '../Button/Button'
 import style from './Modal.module.scss'
 
 interface p {
@@ -10,9 +12,16 @@ interface p {
 export default function Login(props: p) {
   return createPortal(
     <>
-      <div className={style['backdrop']} onClick={props.onConfirm}></div>
       <div className={style['modal-outer']}>
-        <div className={style['modal-container']}>
+        <Backdrop onConfirm={props.onConfirm} />
+        <div className={`${style['modal-container']} ${style['scrollbar']}`}>
+          <Button
+            type="button"
+            style="button-close"
+            onClick={props.onConfirm}
+            innerText="X"
+            disabled={false}
+          />
           <header className={style['header']}>
             <h2>{props.title}</h2>
           </header>
