@@ -9,7 +9,7 @@ interface p {
   children: React.ReactElement
 }
 
-export default function Login(props: p) {
+export default function Modal(props: p) {
   return createPortal(
     <>
       <div className={style['modal-outer']}>

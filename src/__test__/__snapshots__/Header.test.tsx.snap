@@ -1,0 +1,184 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Should be show singUp Modal on press of Header signUp button 1`] = `
+<div
+  id="modal-root"
+>
+  <div
+    class="modal-outer"
+  >
+    <div
+      class="backdrop"
+    />
+    <div
+      class="modal-container scrollbar"
+    >
+      <button
+        class="button-close"
+        type="button"
+      >
+        <p
+          class="button-text"
+        >
+          X
+        </p>
+      </button>
+      <header
+        class="header"
+      >
+        <h2>
+          註冊
+        </h2>
+      </header>
+      <form
+        class="form"
+      >
+        <div
+          class="input-container"
+        >
+          <input
+            class="input"
+            id="email"
+            name="email"
+            placeholder=" "
+            required=""
+            type="email"
+            value="email"
+          />
+          <span
+            class="error-message"
+          />
+          <label
+            class="label"
+            for="email"
+          >
+            Email
+          </label>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Should be show singUp Modal with onClick Header signUp button 1`] = `
+<div
+  id="modal-root"
+>
+  <div
+    class="modal-outer"
+  >
+    <div
+      class="backdrop"
+    />
+    <div
+      class="modal-container scrollbar"
+    >
+      <button
+        class="button-close"
+        type="button"
+      >
+        <p
+          class="button-text"
+        >
+          X
+        </p>
+      </button>
+      <header
+        class="header"
+      >
+        <h2>
+          註冊
+        </h2>
+      </header>
+      <form
+        class="form"
+      >
+        <div
+          class="input-container"
+        >
+          <input
+            class="input"
+            id="email"
+            name="email"
+            placeholder=" "
+            required=""
+            type="email"
+            value="email"
+          />
+          <span
+            class="error-message"
+          />
+          <label
+            class="label"
+            for="email"
+          >
+            Email
+          </label>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`show singUp Modal with onClick Header signUp button 1`] = `
+<div
+  id="modal-root"
+>
+  <div
+    class="modal-outer"
+  >
+    <div
+      class="backdrop"
+    />
+    <div
+      class="modal-container scrollbar"
+    >
+      <button
+        class="button-close"
+        type="button"
+      >
+        <p
+          class="button-text"
+        >
+          X
+        </p>
+      </button>
+      <header
+        class="header"
+      >
+        <h2>
+          註冊
+        </h2>
+      </header>
+      <form
+        class="form"
+      >
+        <div
+          class="input-container"
+        >
+          <input
+            class="input"
+            id="email"
+            name="email"
+            placeholder=" "
+            required=""
+            type="email"
+            value="email"
+          />
+          <span
+            class="error-message"
+          />
+          <label
+            class="label"
+            for="email"
+          >
+            Email
+          </label>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+`;
