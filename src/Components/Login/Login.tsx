@@ -52,7 +52,7 @@ export default function Login(props: loginProps) {
             type="submit"
             style="button-submit"
             onClick={props.onLoginSubmit}
-            innerText="登入"
+            innerText="送出"
             disabled={props.disabled}
           />
           <p className={style['footer']}>
