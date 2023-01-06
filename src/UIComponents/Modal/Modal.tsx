@@ -3,13 +3,13 @@ import Backdrop from '../Backdrop/Backdrop'
 import Button from '../Button/Button'
 import style from './Modal.module.scss'
 
-interface p {
+interface modalProps {
   title: string
   onConfirm: (e: React.MouseEvent) => void
   children: React.ReactElement
 }
 
-export default function Modal(props: p) {
+export default function Modal(props: modalProps) {
   return createPortal(
     <>
       <div className={style['modal-outer']}>

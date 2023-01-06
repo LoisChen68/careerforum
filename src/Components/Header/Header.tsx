@@ -2,14 +2,14 @@ import { Link } from 'react-router-dom'
 import Button from '../../UIComponents/Button/Button'
 import style from './Header.module.scss'
 
-interface p {
+interface headerProps {
   onLoginClick: (e: React.MouseEvent) => void
   onSignUpClick: (e: React.MouseEvent) => void
   onLogoutClick: (e: React.MouseEvent) => void
   authPass: boolean
 }
 
-export default function Header(props: p) {
+export default function Header(props: headerProps) {
   return (
     <header className={style['header']}>
       <div className={style['header-wrapper']}>

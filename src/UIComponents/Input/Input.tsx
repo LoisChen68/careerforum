@@ -1,6 +1,6 @@
 import style from './Input.module.scss'
 
-interface p {
+interface inputProps {
   htmlFor: string
   label: string
   id: string
@@ -13,7 +13,7 @@ interface p {
   value: string
 }
 
-export default function Input(props: p) {
+export default function Input(props: inputProps) {
   return (
     <div className={style['input-container']}>
       <input
