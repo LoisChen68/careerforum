@@ -1,0 +1,13 @@
+@mixin font-setting($size, $weight, $color) {
+  font-size: $size;
+  font-weight: $weight;
+  color: $color;
+}
+
+@mixin avatar-style($width-and-height) {
+  width: $width-and-height;
+  height: $width-and-height;
+  border-radius: 50%;
+  overflow: hidden;
+  // TODO:之後家陰影
+}
