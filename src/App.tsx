@@ -7,7 +7,7 @@ export default function App() {
   return (
     <Routes>
       <Route path="/career-forum" element={<Layout />}>
-        <Route path="Home" element={<ForumHome />} />
+        <Route path="home" element={<ForumHome />} />
       </Route>
       <Route path="/*" element={<Layout />}></Route>
     </Routes>

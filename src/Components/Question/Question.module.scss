@@ -1,0 +1,53 @@
+@use '../../variable' as color;
+@use '../../mixin' as func;
+
+.question-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+}
+
+.question-title {
+  @include func.font-setting(1rem, 700, color.$primary-font);
+}
+
+.user {
+  display: flex;
+  gap: 5px;
+}
+
+.user-avatar {
+  @include func.avatar-style(46px);
+  outline: green 2px solid; //方便開發，之後要拿掉
+  img {
+    display: block;
+    width: 100%;
+  }
+}
+
+.user-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.user-name,
+.user-post-date {
+  @include func.font-setting(0.75rem, 400, color.$primary-font)
+}
+
+.content {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+}
+
+.hash-tags {
+  display: none;
+}
+
+.answer-count {
+  @include func.font-setting(0.75rem, 400, color.$gray-font)
+}
