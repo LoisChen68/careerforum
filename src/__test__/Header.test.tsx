@@ -79,7 +79,7 @@ test('Should be show singUp Modal on press of Header signUp button', () => {
         onLoginClick={handleClick}
         onSignUpClick={handleClick}
         onLogoutClick={handleClick}
-        authPass={false}
+        authPass={true}
       />
     </BrowserRouter>
   )
