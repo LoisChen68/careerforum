@@ -105,7 +105,6 @@ test('Should display the "密碼與確認密碼不相符" when the password does
   const passwordInputElement = screen.getByLabelText('Password')
   const confirmPasswordElement = screen.getByLabelText(/Confirm Password/i)
 
-
   // 模擬使用者輸入密碼與確認密碼不相符
   fireEvent.change(passwordInputElement, { target: { value: '123' } })
   fireEvent.change(confirmPasswordElement, { target: { value: '321' } })
@@ -144,7 +143,6 @@ test('Should display the login modal when clicking the login link.', () => {
   //定義 Login 表單中登入的標題並且預期應顯示在頁面上
   const loginModalTitleElement = screen.getByRole('heading', { name: /登入/i })
   expect(loginModalTitleElement).toBeInTheDocument()
-
 })
 
 test('Should display "Loading..." and button is disabled when signUp submit.', () => {
@@ -212,5 +210,4 @@ test('Should not display the signUp modal when clicking the close button', () =>
 
   // 預期註冊表單中的註冊 title 不應該存在
   expect(signUpModalTitleElement).not.toBeInTheDocument()
-
 })

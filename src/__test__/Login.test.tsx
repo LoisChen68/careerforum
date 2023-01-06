@@ -28,8 +28,7 @@ test('should be show "input" and "button" when login modal be mounted', () => {
 
   const emailInputElement = screen.getByLabelText(/Email/i)
   const passwordInputElement = screen.getByLabelText(/Password/i)
-  const loginElement = screen.getByText(/送出/i, { selector: 'p' }
-  )
+  const loginElement = screen.getByText(/送出/i, { selector: 'p' })
   const signUpElement = screen.getByText(/註冊/i)
 
   expect(emailInputElement).toBeInTheDocument()
@@ -53,7 +52,7 @@ test('after click "登入" should show error message "欄位不得為空" when i
   const headerLogin = getByText(/登入/i)
   fireEvent.click(headerLogin)
   const modalLogin = getByRole('button', {
-    name: /送出/i
+    name: /送出/i,
   })
   fireEvent.click(modalLogin)
   expect(modalLogin).toBeInTheDocument
@@ -88,7 +87,7 @@ test('after click "登入" should not show error message "欄位不得為空" wh
 
   // 點擊送出表單後，不該有 "欄位不得為空" 錯誤訊息
   const modalLogin = getByRole('button', {
-    name: /送出/i
+    name: /送出/i,
   })
   fireEvent.click(modalLogin)
   expect(modalLogin).toBeInTheDocument
