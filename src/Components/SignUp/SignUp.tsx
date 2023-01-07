@@ -4,7 +4,7 @@ import Modal from '../../UIComponents/Modal/Modal'
 import Selector from '../../UIComponents/Selector/Selector'
 import style from './SignUp.module.scss'
 
-interface p {
+interface signUpProps {
   onConfirm: (e: React.MouseEvent) => void
   onSingUpSubmit: (e: React.MouseEvent) => void
   onLoginClick: (e: React.MouseEvent) => void
@@ -27,7 +27,7 @@ interface o {
   confirmPassword: string
 }
 
-export default function SignUp(props: p) {
+export default function SignUp(props: signUpProps) {
   return (
     <Modal title="註冊" onConfirm={props.onConfirm}>
       <>

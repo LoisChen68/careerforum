@@ -1,7 +1,7 @@
 import ButtonLoader from '../ButtonLoader/ButtonLoader'
 import style from './Button.module.scss'
 
-interface p {
+interface buttonProps {
   innerText: string
   style: string
   type: 'submit' | 'reset' | 'button' | undefined
@@ -9,7 +9,7 @@ interface p {
   disabled: boolean
 }
 
-export default function Button(props: p) {
+export default function Button(props: buttonProps) {
   return (
     <button
       className={style[props.style]}

@@ -1,25 +1,25 @@
 import React from 'react'
 import style from './Selector.module.scss'
 
-interface p {
+interface selectorProps {
   htmlFor: string
   label: string
   id: string
-  value: o[]
+  value: value[]
   required: boolean
   onChange: React.ChangeEventHandler<HTMLSelectElement>
   errorMessage: string
   selectedValue: string
 }
 
-interface o {
+interface value {
   value: string
   name: string
   disable: boolean
 }
 
-export default function Selector(props: p) {
-  const option = props.value.map((i: o) => (
+export default function Selector(props: selectorProps) {
+  const option = props.value.map((i: value) => (
     <option key={i.value} value={i.value} disabled={i.disable}>
       {i.name}
     </option>
