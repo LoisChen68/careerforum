@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
+import Button from '../Button/Button'
 import style from './TextArea.module.scss'
 
 interface textAreaProps {
@@ -14,18 +15,32 @@ export function TextArea(props: textAreaProps) {
 
   function handleChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
     const value = e.target.value
-
     setValue(value)
   }
 
+  function onSubmitClick(e: React.MouseEvent) {
+    e.preventDefault()
+  }
+
   return (
-    <textarea
-      className={`${style['textarea']} ${style['scrollbar']}`}
-      onChange={handleChange}
-      placeholder={props.placeholder}
-      ref={textAreaRef}
-      value={value}
-    />
+    <>
+      <textarea
+        className={`${style['textarea']} ${style['scrollbar']}`}
+        onChange={handleChange}
+        placeholder={props.placeholder}
+        ref={textAreaRef}
+        value={value}
+      />
+      {value && (
+        <Button
+          type="button"
+          innerText="送出"
+          style="button-answer-submit"
+          onClick={onSubmitClick}
+          disabled={false}
+        />
+      )}
+    </>
   )
 }
 

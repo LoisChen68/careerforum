@@ -7,7 +7,6 @@ import Question from '../../Components/Question/Question'
 import { Answer } from '../../Components/Answer/Answer'
 import { TextArea } from '../../UIComponents/TextArea/TextArea'
 import { UserAvatar } from '../../UIComponents/UserAvatar/UserAvatar'
-import Button from '../../UIComponents/Button/Button'
 
 export default function ForumHome() {
   const [loading, setLoading] = useState(true)
@@ -28,10 +27,6 @@ export default function ForumHome() {
     }, 3000)
   }, [])
 
-  function onSubmitClick(e: React.MouseEvent) {
-    e.preventDefault()
-  }
-
   return (
     <>
       {loading && (
@@ -41,17 +36,13 @@ export default function ForumHome() {
         </>
       )}
       <div className={style['discussion-thread']}>
-        <DiscussionThread onSubmitClick={onSubmitClick} />
+        <DiscussionThread />
       </div>
     </>
   )
 }
 
-interface p {
-  onSubmitClick: (e: React.MouseEvent) => void
-}
-
-function DiscussionThread(props: p) {
+function DiscussionThread() {
   return (
     <>
       {questionsData.questions.map((question) => (
@@ -76,13 +67,6 @@ function DiscussionThread(props: p) {
             <form className={style['answer-form']}>
               <UserAvatar userAvatar={currentUser.avatar} />
               <TextArea placeholder={'輸入你的回答...'} scrollHeight={100} />
-              <Button
-                type="button"
-                innerText="送出"
-                style="button-answer-submit"
-                onClick={props.onSubmitClick}
-                disabled={false}
-              />
             </form>
           </div>
         </div>
