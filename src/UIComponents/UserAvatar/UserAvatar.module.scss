@@ -1,0 +1,12 @@
+@use '../../variable' as color;
+@use '../../mixin' as func;
+
+.user-avatar {
+  @include func.avatar-style(46px);
+  border: 1.5px solid color.$primary-color;
+
+  img {
+    display: block;
+    width: 100%;
+  }
+}
