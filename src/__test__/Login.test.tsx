@@ -65,11 +65,11 @@ test('Should display the "欄位不得為空" when the input field is empty and 
   fireEvent.click(loginSubmitElement[1])
 
   const errorMessages = screen.queryAllByText(/欄位不得為空/i)
-  // 預期五欄位為空時應顯示五個 "欄位不得為空" 錯誤訊息
+  // 預期兩欄位為空時應顯示兩個 "欄位不得為空" 錯誤訊息
   expect(errorMessages).toHaveLength(2)
 })
 
-test('Should display the signUp modal when clicking the login link.', () => {
+test('Should display the signUp modal when clicking the Singup link.', () => {
   // 定義 Modal 容器元素
   const container = document.createElement('div')
   container.id = 'modal-root'
