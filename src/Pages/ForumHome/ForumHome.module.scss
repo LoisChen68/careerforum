@@ -94,8 +94,16 @@
     position: static;
     display: flex;
     justify-content: center;
+    height: 70px;
     border-radius: style.$border-radius-5;
     z-index: 1;
+
+    .toAsk {
+      display: block;
+      padding: 5px 15px;
+      background-color: rgba(231, 231, 231, 0.766);
+      border-radius: 16px;
+    }
   }
 }
 
