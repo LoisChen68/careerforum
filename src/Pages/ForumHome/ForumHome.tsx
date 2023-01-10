@@ -49,7 +49,7 @@ export default function ForumHome() {
         <div className={style['main-thread']}>
           <section className={style['ask-question']}>
             <div className={style['ask-question-container']}>
-              <UserAvatar userAvatar={currentUser.avatar} />
+              <UserAvatar userAvatar={currentUser.avatar} avatarStyle={'body-user-avatar'} />
               <p className={style['toAsk']} onClick={onAskShow}>想問點什麼嗎？</p>
             </div>
           </section>
@@ -61,7 +61,7 @@ export default function ForumHome() {
         <Modal title={'想問點什麼嗎？'} onConfirm={onAskClose} modalStyle="ask-modal-container" closeButtonStyle={'button-close-ask'} >
           <>
             <div className={style['ask-modal-avatar']}>
-              <UserAvatar userAvatar={currentUser.avatar} />
+              <UserAvatar userAvatar={currentUser.avatar} avatarStyle={'body-user-avatar'} />
               <div className={style['user']}>
                 <p className={style['name']}>{currentUser.account}</p>
                 <p className={style['role']}>{currentUser.role}</p>
@@ -85,9 +85,11 @@ function DiscussionThread() {
             <Question
               title={question.title}
               userAccount={question.user.account}
+              userId={question.user.id}
               userAvatar={question.user.avatar}
               questionDate={question.createdAt}
               question={question.content}
+              questionId={question.id}
               hashTags={[{ id: 1, name: '求職' }]}
               answerCount={question.answerCount}
             />
@@ -99,7 +101,10 @@ function DiscussionThread() {
               answer={question.answer.content}
             />
             <form className={style['answer-form']}>
-              <UserAvatar userAvatar={currentUser.avatar} />
+              <UserAvatar
+                userAvatar={currentUser.avatar}
+                avatarStyle={'body-user-avatar'}
+              />
               <TextAreaAnswer placeholder={'輸入你的回答...'} scrollHeight={100} />
             </form>
           </div>

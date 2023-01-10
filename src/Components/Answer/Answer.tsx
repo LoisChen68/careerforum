@@ -11,7 +11,10 @@ interface answerProps {
 export default function Answer(props: answerProps) {
   return (
     <div className={style['answer-container']}>
-      <UserAvatar userAvatar={props.userAvatar} />
+      <UserAvatar
+        userAvatar={props.userAvatar}
+        avatarStyle={'body-user-avatar'}
+      />
       <div className={style['answer']}>
         <div className={style['user']}>
           <p>{props.userAccount}</p>

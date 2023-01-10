@@ -75,7 +75,7 @@ export default function Layout() {
             ...loginData,
             password: '',
           })
-          navigate('/career-forum/Home')
+          navigate('/careerforum/home')
         })
         .catch((err) => {
           if (err.response.data.title === 'Incorrect email or password') {

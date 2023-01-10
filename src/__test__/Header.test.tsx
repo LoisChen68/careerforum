@@ -37,9 +37,11 @@ test('Should display the "登出" button when authPass is true.', () => {
       />
     </BrowserRouter>
   )
+  const headerUserAvatar = screen.getByRole('img', {
+    name: /使用者頭像/i
+  })
 
-  const logoutElement = screen.getByText(/登出/i)
-  expect(logoutElement).toBeInTheDocument
+  expect(headerUserAvatar).toBeInTheDocument
 })
 
 test('Should not display the "註冊" button when authPass is true.', () => {

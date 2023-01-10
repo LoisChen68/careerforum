@@ -20,8 +20,22 @@
   width: 90%;
 }
 
+.header-nav {
+  display: flex;
+  align-items: flex-end;
+  gap: 20px;
+}
+
 .header-title {
   color: color.$primary-color;
+}
+
+.nav-item {
+  color: color.$primary-color;
+
+  &:hover {
+    color: color.$secondary-color;
+  }
 }
 
 .header-button {
