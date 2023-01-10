@@ -1,4 +1,4 @@
-import { UserAvatar } from '../../UIComponents/UserAvatar/UserAvatar'
+import UserAvatar from '../../UIComponents/UserAvatar/UserAvatar'
 import style from './Answer.module.scss'
 
 interface answerProps {
@@ -8,7 +8,7 @@ interface answerProps {
   answer: string
 }
 
-export function Answer(props: answerProps) {
+export default function Answer(props: answerProps) {
   return (
     <div className={style['answer-container']}>
       <UserAvatar userAvatar={props.userAvatar} />

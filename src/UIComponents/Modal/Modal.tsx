@@ -6,6 +6,8 @@ import style from './Modal.module.scss'
 interface modalProps {
   title: string
   onConfirm: (e: React.MouseEvent) => void
+  modalStyle: string
+  closeButtonStyle: string
   children: React.ReactElement
 }
 
@@ -14,10 +16,10 @@ export default function Modal(props: modalProps) {
     <>
       <div className={style['modal-outer']}>
         <Backdrop onConfirm={props.onConfirm} />
-        <div className={`${style['modal-container']} ${style['scrollbar']}`}>
+        <div className={`${style[props.modalStyle]} ${style['scrollbar']}`}>
           <Button
             type="button"
-            style="button-close"
+            style={props.closeButtonStyle}
             onClick={props.onConfirm}
             innerText="X"
             disabled={false}

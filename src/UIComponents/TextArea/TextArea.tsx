@@ -4,14 +4,17 @@ import style from './TextArea.module.scss'
 
 interface textAreaProps {
   placeholder: string
-  scrollHeight: number
+  scrollHeight?: number
 }
 
-export function TextArea(props: textAreaProps) {
+// for 回答問題 textArea
+export function TextAreaAnswer(props: textAreaProps) {
   const [value, setValue] = useState('')
   const textAreaRef = useRef<HTMLTextAreaElement>(null)
 
-  autoSizeTextArea(textAreaRef.current, value, props.scrollHeight)
+  if (props.scrollHeight) {
+    autoSizeTextArea(textAreaRef.current, value, props.scrollHeight)
+  }
 
   function handleChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
     const value = e.target.value
@@ -25,7 +28,7 @@ export function TextArea(props: textAreaProps) {
   return (
     <>
       <textarea
-        className={`${style['textarea']} ${style['scrollbar']}`}
+        className={`${style['textareaAnswer']} ${style['scrollbar']}`}
         onChange={handleChange}
         placeholder={props.placeholder}
         ref={textAreaRef}
@@ -40,6 +43,37 @@ export function TextArea(props: textAreaProps) {
           disabled={false}
         />
       )}
+    </>
+  )
+}
+
+export function TextAreaAsk(props: textAreaProps) {
+  const [value, setValue] = useState('')
+
+  function handleChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
+    const value = e.target.value
+    setValue(value)
+  }
+
+  function onSubmitClick(e: React.MouseEvent) {
+    e.preventDefault()
+  }
+
+  return (
+    <>
+      <textarea
+        className={`${style['textareaAsk']} ${style['scrollbar']}`}
+        onChange={handleChange}
+        placeholder={props.placeholder}
+        value={value}
+      />
+      <Button
+        type="button"
+        innerText="送出"
+        style={value ? "button-ask-submit" : "button-ask-submit-disable"}
+        onClick={onSubmitClick}
+        disabled={false}
+      />
     </>
   )
 }
@@ -70,3 +104,5 @@ function autoSizeTextArea(
     }
   }, [textAreaRef, value])
 }
+
+
