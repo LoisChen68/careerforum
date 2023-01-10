@@ -4,6 +4,9 @@ import { useEffect, useState } from 'react'
 import Backdrop from '../../UIComponents/Backdrop/Backdrop'
 import { LayoutLoader } from '../../UIComponents/LayoutLoader/LayoutLoader'
 import Question from '../../Components/Question/Question'
+import { Answer } from '../../Components/Answer/Answer'
+import { TextArea } from '../../UIComponents/TextArea/TextArea'
+import { UserAvatar } from '../../UIComponents/UserAvatar/UserAvatar'
 
 export default function ForumHome() {
   const [loading, setLoading] = useState(true)
@@ -32,17 +35,128 @@ export default function ForumHome() {
           <LayoutLoader />
         </>
       )}
-      <div className={style['wrapper']}>
-        <div className={style['container']}>
-          <p>Forum Home Page</p>
-          <p>Forum Home Page</p>
-          <p>Forum Home Page</p>
-          <p>Forum Home Page</p>
-          <p>Forum Home Page</p>
-          {/* TODO:為了看得到畫面，暫時放在這 */}
-          <Question userAccount={'gino'} userAvatar={''} questionDate={'2023/1/13'} question={'Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis est esse quisquam temporibus sunt facilis, repellat adipisci possimus illum quos consequatur repudiandae earum aliquam sed dolor provident excepturi repellendus molestiae.'} hashTags={[{ id: 1, name: '求職' }]} answerCount={1} />
-        </div>
-      </div>
+  <div className={style['discussion-thread']}>
+    <DiscussionThread />
+  </div>
     </>
   )
+}
+
+function DiscussionThread() {
+  return (
+    <>
+      {questionsData.questions.map((question) => (
+        <div className={style['wrapper']} key={question.id}>
+          <div className={style['container']}>
+            <Question
+              title={question.title}
+              userAccount={question.user.account}
+              userAvatar={question.user.avatar}
+              questionDate={question.createdAt}
+              question={question.content}
+              hashTags={[{ id: 1, name: '求職' }]}
+              answerCount={question.answerCount}
+            />
+            <hr className={style['hr']} />
+            <Answer
+              userAccount={question.answer.user.account}
+              userAvatar={question.answer.user.avatar}
+              answerDate={question.answer.createdAt}
+              answer={question.answer.content}
+            />
+            <form className={style['answer-form']}>
+              <UserAvatar userAvatar={currentUser.avatar} />
+              <TextArea placeholder={'輸入你的回答...'} scrollHeight={100} />
+            </form>
+          </div>
+        </div>
+      ))}
+    </>
+  )
+}
+// TODO: Dummy Data
+const currentUser = {
+  id: '1', // user PK:id
+  role: 'TA',
+  name: '', // 可填可不填
+  account: 'user1',
+  email: 'user1@careerForum.com',
+  avatar: 'https://cdn-icons-png.flaticon.com/512/1864/1864514.png',
+  cover: 'http://...',
+  createdAt: '2023/01/07',
+  updatedAt: '2023/01/07',
+}
+
+const questionsData = {
+  count: 1, // 資料總筆數
+  page: 1, // 預設回傳第一頁
+  limit: 10, // 預設回傳 10 筆資料
+  questions: [
+    {
+      id: 1, // questions PK:id
+      title: '如何找到好工作?',
+      content: '內文',
+      answerCount: 1,
+      userId: 1, // user FK:id
+      createdAt: '2023/01/07',
+      updatedAt: '2023/01/07',
+      user: {
+        //問題擁有者
+        id: 1,
+        role: '學期三',
+        account: 'user1',
+        avatar: 'https://cdn-icons-png.flaticon.com/512/4364/4364519.png',
+      },
+      answer: {
+        // 預設回傳最新，limit:1
+        id: '1', // answer PK:id
+        content:
+          '找好工作的秘訣就是投履歷找好工作的秘訣就是投履歷找好工作的秘訣就是投履歷找好工作的秘訣就是投履歷找好工作的秘訣就是投履歷找好工作的秘訣就是投履歷',
+        userId: 2, // FK:user_id
+        questionId: 1, // FK:question_id
+        createdAt: '2023/01/07',
+        updatedAt: '2023/01/07',
+        user: {
+          //回答擁有者
+          id: 2, // user PK:id
+          role: '助教',
+          account: 'user2',
+          avatar: 'https://cdn-icons-png.flaticon.com/512/9207/9207109.png',
+        },
+      },
+    },
+    {
+      id: 2, // questions PK:id
+      title: '如何找到好工作?',
+      content: '內文',
+      answerCount: 1,
+      userId: 1, // user FK:id
+      createdAt: '2023/01/07',
+      updatedAt: '2023/01/07',
+      user: {
+        //問題擁有者
+        id: 1,
+        role: '學期三',
+        account: 'user1',
+        avatar: 'https://cdn-icons-png.flaticon.com/512/4364/4364519.png',
+      },
+      answer: {
+        // 預設回傳最新，limit:1
+        id: 2, // answer PK:id
+        content: '找好工作的秘訣就是投履歷',
+        userId: 2, // FK:user_id
+        questionId: 2, // FK:question_id
+        createdAt: '2023/01/07',
+        updatedAt: '2023/01/07',
+        user: {
+          //回答擁有者
+          id: 2, // user PK:id
+          role: '助教',
+          account: 'user2',
+          avatar: 'https://cdn-icons-png.flaticon.com/512/9207/9207109.png',
+        },
+      },
+    },
+    //...
+  ],
 }

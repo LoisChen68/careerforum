@@ -1,14 +1,35 @@
-.wrapper {
-  position: absolute;
-  margin-top: 50px;
-  display: flex;
-  justify-content: center;
+@use '../../variable' as color;
+
+.discussion-thread {
+  position: relative;
+  top: 150px;
+  display: grid;
+  grid-template-columns: repeat(15, 1fr);
+  row-gap: 14px;
   width: 100%;
-  outline: 1px solid #22775b;
+}
+
+.wrapper {
+  padding: 10px 0;
+  display: flex;
+  grid-column: 1/16;
+  justify-content: center;
+  min-height: 250px;
+  background-color: #fff;
 }
 
 .container {
   position: relative;
   width: 90%;
-  outline: 1px solid salmon;
+}
+
+.hr {
+  border: 1px color.$primary-color solid;
+}
+
+.answer-form {
+  margin-top: 13px;
+  display: flex;
+  gap: 5px;
+  align-items: flex-end;
 }

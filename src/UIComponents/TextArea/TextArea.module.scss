@@ -1,0 +1,35 @@
+@use '../../variable' as color;
+@use '../../mixin' as func;
+
+.textarea {
+  padding-top: 12px;
+  height: 100%;
+  flex: 1;
+  align-self: center;
+  border-color: #d9d9d9;
+  border-radius: 5px;
+  @include func.font-setting(0.75rem, 400, color.$primary-font);
+  font-family: inherit;
+
+  &:focus {
+    outline: none;
+    border-color: color.$secondary-color;
+  }
+
+  &::placeholder {
+    color: color.$gray-font;
+  }
+}
+
+.scrollbar {
+  padding-left: 6px;
+
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border-radius: 3px;
+    background-color: rgba(0, 0, 0, 0.1);
+  }
+}
