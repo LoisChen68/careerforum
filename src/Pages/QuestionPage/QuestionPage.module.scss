@@ -1,0 +1,50 @@
+@use '../../variable' as color;
+
+.discussion-thread {
+  position: relative;
+  top: 50px;
+  display: grid;
+  height: 100vh;
+  grid-template-columns: repeat(15, 1fr);
+  row-gap: 14px;
+  width: 100%;
+}
+
+.wrapper {
+  padding: 10px 0;
+  display: flex;
+  grid-column: 1/16;
+  justify-content: center;
+  background-color: #fff;
+}
+
+.container {
+  position: relative;
+  width: 90%;
+}
+
+.hr {
+  border: 1px color.$primary-color solid;
+}
+
+.answer-container {
+  margin-bottom: 20px;
+}
+
+.answer-form {
+  position: fixed;
+  padding: 20px 0;
+  bottom: 0px;
+  width: 90%;
+  display: flex;
+  background-color: #fff;
+  gap: 5px;
+  align-items: flex-end;
+}
+
+.answer-hr {
+  position: fixed;
+  bottom: 78px;
+  width: 100%;
+  color: color.$dim-gray;
+}
