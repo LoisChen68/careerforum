@@ -43,3 +43,9 @@
   justify-content: space-between;
   gap: 1rem;
 }
+
+@media screen and (min-width: 990px) {
+  .header-wrapper {
+    width: 80%;
+  }
+}

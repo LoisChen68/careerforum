@@ -5,10 +5,12 @@ import Backdrop from '../../UIComponents/Backdrop/Backdrop'
 import { LayoutLoader } from '../../UIComponents/LayoutLoader/LayoutLoader'
 import Question from '../../Components/Question/Question'
 import Answer from '../../Components/Answer/Answer'
-import { TextArea } from '../../UIComponents/TextArea/TextArea'
+import { TextAreaAnswer, TextAreaAsk } from '../../UIComponents/TextArea/TextArea'
 import UserAvatar from '../../UIComponents/UserAvatar/UserAvatar'
+import Modal from '../../UIComponents/Modal/Modal'
 
 export default function ForumHome() {
+  const [authModal, setAuthModal] = useState('initialAuthModal')
   const [loading, setLoading] = useState(true)
   const token = localStorage.getItem('token') || ''
   const navigate = useNavigate()
@@ -27,6 +29,14 @@ export default function ForumHome() {
     }, 3000)
   }, [])
 
+  const onAskShow = () => {
+    setAuthModal('ask')
+  }
+
+  const onAskClose = () => {
+    setAuthModal('initialAuthModal')
+  }
+
   return (
     <>
       {loading && (
@@ -36,8 +46,32 @@ export default function ForumHome() {
         </>
       )}
       <div className={style['discussion-thread']}>
-        <DiscussionThread />
+        <div className={style['main-thread']}>
+          <section className={style['ask-question']}>
+            <div className={style['ask-question-container']}>
+              <UserAvatar userAvatar={currentUser.avatar} avatarStyle={'body-user-avatar'} />
+              <p className={style['toAsk']} onClick={onAskShow}>想問點什麼嗎？</p>
+            </div>
+          </section>
+          <DiscussionThread />
+        </div>
       </div>
+
+      {authModal === 'ask' &&
+        <Modal title={'想問點什麼嗎？'} onConfirm={onAskClose} modalStyle="ask-modal-container" closeButtonStyle={'button-close-ask'} >
+          <>
+            <div className={style['ask-modal-avatar']}>
+              <UserAvatar userAvatar={currentUser.avatar} avatarStyle={'body-user-avatar'} />
+              <div className={style['user']}>
+                <p className={style['name']}>{currentUser.account}</p>
+                <p className={style['role']}>{currentUser.role}</p>
+                <p></p>
+              </div>
+            </div>
+            <TextAreaAsk placeholder={'請輸入你的問題...'} />
+          </>
+        </Modal>
+      }
     </>
   )
 }
@@ -71,7 +105,7 @@ function DiscussionThread() {
                 userAvatar={currentUser.avatar}
                 avatarStyle={'body-user-avatar'}
               />
-              <TextArea placeholder={'輸入你的回答...'} scrollHeight={100} />
+              <TextAreaAnswer placeholder={'輸入你的回答...'} scrollHeight={100} />
             </form>
           </div>
         </div>
