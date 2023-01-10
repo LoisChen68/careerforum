@@ -93,7 +93,7 @@ function DiscussionThread() {
               hashTags={[{ id: 1, name: '求職' }]}
               answerCount={question.answerCount}
             />
-            <hr className={style['hr']} />
+            <div className={style['hr']} />
             <Answer
               userAccount={question.answer.user.account}
               userAvatar={question.answer.user.avatar}

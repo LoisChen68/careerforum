@@ -31,7 +31,9 @@
 }
 
 .hr {
-  border: 1px color.$primary-color solid;
+  margin: 13px 0;
+  height: 1px;
+  background-color: color.$primary-color;
 }
 
 .answer-form {
