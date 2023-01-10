@@ -35,9 +35,9 @@ export default function ForumHome() {
           <LayoutLoader />
         </>
       )}
-      <div className={style['discussion-thread']}>
-        <DiscussionThread />
-      </div>
+  <div className={style['discussion-thread']}>
+    <DiscussionThread />
+  </div>
     </>
   )
 }
