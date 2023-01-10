@@ -1,11 +1,14 @@
-import { UserAvatar } from '../../UIComponents/UserAvatar/UserAvatar'
+import { Link } from 'react-router-dom'
+import UserAvatar from '../../UIComponents/UserAvatar/UserAvatar'
 import style from './Question.module.scss'
 
 interface questionProps {
   userAccount: string
+  userId: number
   userAvatar: string
   questionDate: string
   question: string
+  questionId: number
   hashTags: value[]
   answerCount: number
   title: string
@@ -23,17 +26,28 @@ export default function Question(props: questionProps) {
 
   return (
     <div className={style['question-container']}>
-      <h3 className={style['question-title']}>{props.title}</h3>
+      <Link to={`/careerforum/${props.questionId}`}>
+        <h3 className={style['question-title']}>{props.title}</h3>
+      </Link>
       <div className={style['user']}>
-        <UserAvatar userAvatar={props.userAvatar} />
+        <Link to={`/careerforum/${props.userId}`}>
+          <UserAvatar
+            userAvatar={props.userAvatar}
+            avatarStyle={'body-user-avatar'}
+          />
+        </Link>
         <div className={style['user-text']}>
-          <p className={style['user-name']}>{props.userAccount}</p>
+          <Link to={`/careerforum/${props.userId}`}>
+            <p className={style['user-name']}>{props.userAccount}</p>
+          </Link>
           <p className={style['user-post-date']}>{props.questionDate}</p>
         </div>
       </div>
       <div className={style['content']}>{props.question}</div>
       <div className={style['hash-tags']}>{hashTag}</div>
-      <p className={style['answer-count']}>{`${props.answerCount} 則回答`}</p>
-    </div >
+      <Link to={`/careerforum/${props.questionId}`}>
+        <p className={style['answer-count']}>{`${props.answerCount} 則回答`}</p>
+      </Link>
+    </div>
   )
 }

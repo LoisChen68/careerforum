@@ -4,9 +4,9 @@ import { useEffect, useState } from 'react'
 import Backdrop from '../../UIComponents/Backdrop/Backdrop'
 import { LayoutLoader } from '../../UIComponents/LayoutLoader/LayoutLoader'
 import Question from '../../Components/Question/Question'
-import { Answer } from '../../Components/Answer/Answer'
+import Answer from '../../Components/Answer/Answer'
 import { TextArea } from '../../UIComponents/TextArea/TextArea'
-import { UserAvatar } from '../../UIComponents/UserAvatar/UserAvatar'
+import UserAvatar from '../../UIComponents/UserAvatar/UserAvatar'
 
 export default function ForumHome() {
   const [loading, setLoading] = useState(true)
@@ -35,9 +35,9 @@ export default function ForumHome() {
           <LayoutLoader />
         </>
       )}
-  <div className={style['discussion-thread']}>
-    <DiscussionThread />
-  </div>
+      <div className={style['discussion-thread']}>
+        <DiscussionThread />
+      </div>
     </>
   )
 }
@@ -51,9 +51,11 @@ function DiscussionThread() {
             <Question
               title={question.title}
               userAccount={question.user.account}
+              userId={question.user.id}
               userAvatar={question.user.avatar}
               questionDate={question.createdAt}
               question={question.content}
+              questionId={question.id}
               hashTags={[{ id: 1, name: '求職' }]}
               answerCount={question.answerCount}
             />
@@ -65,7 +67,10 @@ function DiscussionThread() {
               answer={question.answer.content}
             />
             <form className={style['answer-form']}>
-              <UserAvatar userAvatar={currentUser.avatar} />
+              <UserAvatar
+                userAvatar={currentUser.avatar}
+                avatarStyle={'body-user-avatar'}
+              />
               <TextArea placeholder={'輸入你的回答...'} scrollHeight={100} />
             </form>
           </div>
