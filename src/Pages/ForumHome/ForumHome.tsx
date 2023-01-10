@@ -39,12 +39,6 @@ export default function ForumHome() {
 
   return (
     <>
-      <section className={style['ask-question']}>
-        <div className={style['ask-question-container']}>
-          <UserAvatar userAvatar={currentUser.avatar} />
-          <p className={style['toAsk']} onClick={onAskShow}>想問點什麼嗎？</p>
-        </div>
-      </section>
       {loading && (
         <>
           <Backdrop />
@@ -52,7 +46,15 @@ export default function ForumHome() {
         </>
       )}
       <div className={style['discussion-thread']}>
-        <DiscussionThread />
+        <div className={style['main-thread']}>
+          <section className={style['ask-question']}>
+            <div className={style['ask-question-container']}>
+              <UserAvatar userAvatar={currentUser.avatar} />
+              <p className={style['toAsk']} onClick={onAskShow}>想問點什麼嗎？</p>
+            </div>
+          </section>
+          <DiscussionThread />
+        </div>
       </div>
 
       {authModal === 'ask' &&
