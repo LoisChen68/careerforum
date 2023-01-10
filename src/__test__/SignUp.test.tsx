@@ -205,7 +205,7 @@ test('Should not display the signUp modal when clicking the close button', () =>
   const signUpModalTitleElement = screen.getByRole('heading', { name: /註冊/i })
 
   // 定義 close 按鈕元素及模擬使用者點擊關閉註冊表單
-  const closeButtonElement = screen.getByText(/X/i)
+  const closeButtonElement = screen.getByRole('close');
   fireEvent.click(closeButtonElement)
 
   // 預期註冊表單中的註冊 title 不應該存在

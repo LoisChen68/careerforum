@@ -149,7 +149,7 @@ test('Should not display the signUp modal when clicking the close button', () =>
   const loginModalTilteElement = screen.getByRole('heading', { name: /登入/i })
 
   // 定義 close 按鈕元素及模擬使用者點擊關閉註冊表單
-  const closeButtonElement = screen.getByText(/X/i)
+  const closeButtonElement = screen.getByRole('close');
   fireEvent.click(closeButtonElement)
 
   expect(loginModalTilteElement).not.toBeInTheDocument()

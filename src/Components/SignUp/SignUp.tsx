@@ -94,9 +94,10 @@ export default function SignUp(props: signUpProps) {
             type="submit"
             style="button-submit"
             onClick={props.onSingUpSubmit}
-            innerText="註冊"
             disabled={props.disabled}
-          />
+          >
+            <p>註冊</p>
+          </Button>
         </div>
         <p className={style['footer']}>
           已有帳號？

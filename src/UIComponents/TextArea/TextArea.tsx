@@ -37,11 +37,12 @@ export function TextAreaAnswer(props: textAreaProps) {
       {value && (
         <Button
           type="button"
-          innerText="送出"
           style="button-answer-submit"
           onClick={onSubmitClick}
           disabled={false}
-        />
+        >
+          <p>送出</p>
+        </Button>
       )}
     </>
   )
@@ -69,11 +70,12 @@ export function TextAreaAsk(props: textAreaProps) {
       />
       <Button
         type="button"
-        innerText="送出"
         style={value ? "button-ask-submit" : "button-ask-submit-disable"}
         onClick={onSubmitClick}
         disabled={false}
-      />
+      >
+        <p>送出</p>
+      </Button>
     </>
   )
 }

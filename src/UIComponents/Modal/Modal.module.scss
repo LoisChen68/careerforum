@@ -87,6 +87,16 @@
   }
 }
 
+.icon {
+  display: block;
+  height: 20px;
+  svg {
+    width: 20px;
+    height: 20px;
+    color: #22577e;
+  }
+}
+
 @media screen and (min-width: 570px) {
   .ask-modal-container { 
     padding: 16px;
@@ -97,5 +107,11 @@
     .header {
       background-color: inherit;
     }
+  }
+}
+
+@media screen and (min-width: 990px) {
+  .ask-modal-container {
+    width: 60vw;
   }
 }

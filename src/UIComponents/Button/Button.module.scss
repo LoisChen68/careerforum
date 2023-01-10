@@ -60,18 +60,14 @@
 
 .button-close-auth {
   position: absolute;
-  top: 1%;
-  right: 3%;
+  top: 10px;
+  right: 5px;
 }
 
 .button-close-ask {
   position: absolute;
-  top: 10px;
-  right: 3%;
-}
-
-.button-text {
-  line-height: 2rem;
+  top: 18px;
+  right: 30px;
 }
 
 .loader {
@@ -130,6 +126,7 @@
 .button-ask-submit {
   @extend %button;
   width: 50%;
+  height: 40px;
   background-color: #2771a5;
   color: #fff;
 
@@ -142,8 +139,16 @@
   &-disable {
     @extend %button;
     width: 50%;
+    height: 40px;
     background-color: #1b4664bd;
     color: #fff;
     pointer-events: none;
   }
+}
+
+@media screen and (min-width: 570px) {
+  .button-close-ask {
+  top: 10px;
+  right: 10px;
+}
 }

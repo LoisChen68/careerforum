@@ -29,18 +29,20 @@ export default function Header(props: headerProps) {
             <>
               <Button
                 type="button"
-                innerText="登入"
                 style="button-login"
                 onClick={props.onLoginClick}
                 disabled={false}
-              />
+              >
+                <p>登入</p>
+              </Button>
               <Button
                 type="button"
-                innerText="註冊"
                 style="button-sign-up"
                 onClick={props.onSignUpClick}
                 disabled={false}
-              />
+              >
+                <p>註冊</p>
+              </Button>
             </>
           )}
           {props.authPass && (
