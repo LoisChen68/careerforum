@@ -1,8 +1,10 @@
 @use '../../variable' as color;
 @use '../../mixin' as func;
 
-.textarea {
+// style for answer's textArea
+.textareaAnswer {
   padding-top: 12px;
+  padding-left: 6px;
   height: 100%;
   flex: 1;
   align-self: center;
@@ -21,9 +23,27 @@
   }
 }
 
-.scrollbar {
-  padding-left: 6px;
+// style for ask's textArea
+.textareaAsk {
+  padding: 12px 12px;
+  height: 100%;
+  width: 100%;
+  border: unset;
+  // box-shadow: inset 0px 5px 13px -12px color.$primary-color;
+  font-family: inherit;
 
+  &:focus {
+    outline: none;
+    border-color: color.$secondary-color;
+  }
+
+  &::placeholder {
+    color: color.$gray-font;
+  }
+}
+
+
+.scrollbar {
   &::-webkit-scrollbar {
     width: 6px;
   }

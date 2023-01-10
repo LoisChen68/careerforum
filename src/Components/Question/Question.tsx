@@ -1,4 +1,4 @@
-import { UserAvatar } from '../../UIComponents/UserAvatar/UserAvatar'
+import UserAvatar from '../../UIComponents/UserAvatar/UserAvatar'
 import style from './Question.module.scss'
 
 interface questionProps {
