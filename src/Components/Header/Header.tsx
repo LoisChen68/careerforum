@@ -55,6 +55,7 @@ export default function Header(props: headerProps) {
   )
 }
 
+// TODO: Dummy Data
 const currentUser = {
   id: '1', // user PK:id
   role: 'TA',

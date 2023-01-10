@@ -1,6 +1,6 @@
 import Answer from '../../Components/Answer/Answer'
 import Question from '../../Components/Question/Question'
-import { TextArea } from '../../UIComponents/TextArea/TextArea'
+import { TextAreaAnswer } from '../../UIComponents/TextArea/TextArea'
 import UserAvatar from '../../UIComponents/UserAvatar/UserAvatar'
 import style from './QuestionPage.module.scss'
 
@@ -39,7 +39,7 @@ export default function QuestionPage() {
               userAvatar={currentUser.avatar}
               avatarStyle={'body-user-avatar'}
             />
-            <TextArea placeholder={'輸入你的回答...'} scrollHeight={100} />
+            <TextAreaAnswer placeholder={'輸入你的回答...'} scrollHeight={100} />
           </form>
         </div>
       </div>
