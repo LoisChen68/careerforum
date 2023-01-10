@@ -34,6 +34,6 @@ export default function Question(props: questionProps) {
       <div className={style['content']}>{props.question}</div>
       <div className={style['hash-tags']}>{hashTag}</div>
       <p className={style['answer-count']}>{`${props.answerCount} 則回答`}</p>
-    </div>
+    </div >
   )
 }
