@@ -1,8 +1,9 @@
 import { useState } from 'react'
+import { Outlet } from 'react-router-dom'
 import { FiChevronsRight, FiChevronsLeft } from 'react-icons/fi'
-import style from './Admin.module.scss'
+import style from './AdminLayout.module.scss'
 
-export default function Admin() {
+export default function AdminLayout() {
   const [menuIsShow, setMenuIsShow] = useState('hidden')
 
   const handleToggleMenu = () => {
@@ -38,6 +39,9 @@ export default function Admin() {
           </ul>
         )}
       </div>
+      <section className={style['main-section']}>
+        <Outlet />
+      </section>
     </div>
   )
 }

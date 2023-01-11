@@ -1,4 +1,5 @@
 @use '../../variable' as color;
+@use '../../variable' as style;
 @use '../../mixin' as func;
 
 .toggle-menu-checkbox {
@@ -21,6 +22,7 @@
   width: 90vw;
   background-color: color.$primary-color;
   box-shadow: 3px 0px 5px 1px rgba(124, 124, 124, 0.567);
+  z-index: 1;
 }
 
 .menu-lists {
@@ -68,6 +70,11 @@
   }
 }
 
+.main-section {
+  width: 100vw;
+  height: 100vh;
+}
+
 @keyframes showSmooth {
   0% {
     opacity: 0;
@@ -86,5 +93,27 @@
   }
   100% {
     transform: translateY(0px);
+  }
+}
+
+@media screen and (min-width: 570px) {
+  .toggle-menu-checkbox:checked ~ .menu {
+    width: 150px;
+    background-color: #22587eef;
+  }
+
+  .main-section {
+    height: inherit;
+  }
+}
+
+@media screen and (min-width: 990px) {
+  .main-section {
+    position: relative;
+    top: 80px;
+    margin: 0 auto;
+    margin-bottom: 100px;
+    width: 80vw;
+    border-radius: style.$border-radius-5;
   }
 }
