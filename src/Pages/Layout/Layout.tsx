@@ -318,7 +318,7 @@ export default function Layout() {
       )}
       <ToastContainer />
       <Outlet />
-      {!authPass && <MobileFooter />}
+      {authPass && <MobileFooter />}
     </div>
   )
 }

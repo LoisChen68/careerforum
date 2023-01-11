@@ -1,3 +1,5 @@
+import { useEffect } from 'react'
+import { useHistory } from '../../utils/cookies'
 import Answer from '../../Components/Answer/Answer'
 import Question from '../../Components/Question/Question'
 import { TextAreaAnswer } from '../../UIComponents/TextArea/TextArea'
@@ -5,6 +7,18 @@ import UserAvatar from '../../UIComponents/UserAvatar/UserAvatar'
 import style from './QuestionPage.module.scss'
 
 export default function QuestionPage() {
+  // TODO:測試資料放進 cookie
+  const { addToHistory } = useHistory()
+
+  useEffect(() => {
+    addToHistory(
+      question.id,
+      question.title,
+      question.user.avatar,
+      question.content
+    )
+  }, [])
+
   return (
     <div className={style['discussion-thread']}>
       <div className={style['wrapper']}>
