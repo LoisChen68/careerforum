@@ -19,9 +19,11 @@ export default function Header(props: headerProps) {
             <h3 className={style['header-title']}>Career Forum</h3>
           </Link>
           <div className={style['nav-link']}>
-            <Link to="/careerforum/home">
-              <nav className={style['nav-item']}>問答版</nav>
-            </Link>
+            {props.authPass &&
+              <Link to="/careerforum/home">
+                <nav>問答版</nav>
+              </Link>
+            }
           </div>
         </div>
         <div className={style['header-button']}>
@@ -46,10 +48,28 @@ export default function Header(props: headerProps) {
             </>
           )}
           {props.authPass && (
-            <UserAvatar
-              userAvatar={currentUser.avatar}
-              avatarStyle={'header-user-avatar'}
-            />
+            <div className={style['avatar-container']}>
+              <label htmlFor="avatar">
+                <UserAvatar
+                  userAvatar={currentUser.avatar}
+                  avatarStyle={'header-user-avatar'}
+                />
+              </label>
+              <input id="avatar" type="checkbox" className={style['menu-toggle']} />
+              <div className={style['avatar-menu']}>
+                <ul className={style['avatar-list']}>
+                  <li className={style['avatar-item']}>
+                    <Link to={`/careerforum/users/${1}`}>個人資料</Link>
+                  </li>
+                  <li className={style['avatar-item']}>
+                    <Link to={`/careerforum/users/setting/${1}`}>帳號設定</Link>
+                  </li>
+                  <li onClick={props.onLogoutClick}>
+                    <Link to='/'>登出</Link >
+                  </li>
+                </ul>
+              </div>
+            </div>
           )}
         </div>
       </div>
