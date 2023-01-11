@@ -54,7 +54,7 @@
 }
 
 .list-content {
-  @include func.font-setting(0.75rem, 400, color.$primary-font);
+  @include func.font-setting(0.75rem, 400, color.$gray-font);
   width: 100%;
   display: block;
   overflow: hidden;
