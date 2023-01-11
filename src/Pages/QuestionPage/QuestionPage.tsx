@@ -20,7 +20,7 @@ export default function QuestionPage() {
             hashTags={[{ id: 1, name: '求職' }]}
             answerCount={question.answerCount}
           />
-          <hr className={style['hr']} />
+          <div className={style['hr']} />
           {answers.map((answer) => (
             <>
               <div className={style['answer-container']}>
@@ -35,15 +35,18 @@ export default function QuestionPage() {
             </>
           ))}
           <form className={style['answer-form']}>
+            <div className={style['answer-hr']} />
             <UserAvatar
               userAvatar={currentUser.avatar}
               avatarStyle={'body-user-avatar'}
             />
-            <TextAreaAnswer placeholder={'輸入你的回答...'} scrollHeight={100} />
+            <TextAreaAnswer
+              placeholder={'輸入你的回答...'}
+              scrollHeight={100}
+            />
           </form>
         </div>
       </div>
-      <hr className={style['answer-hr']} />
     </div>
   )
 }

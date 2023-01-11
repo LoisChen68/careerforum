@@ -2,6 +2,7 @@ import { createPortal } from 'react-dom'
 import Backdrop from '../Backdrop/Backdrop'
 import Button from '../Button/Button'
 import style from './Modal.module.scss'
+import { HiOutlineX } from 'react-icons/hi'
 
 interface modalProps {
   title: string
@@ -21,9 +22,12 @@ export default function Modal(props: modalProps) {
             type="button"
             style={props.closeButtonStyle}
             onClick={props.onConfirm}
-            innerText="X"
             disabled={false}
-          />
+          >
+            <p className={style['icon']} role="close">
+              <HiOutlineX />
+            </p>
+          </Button>
           <header className={style['header']}>
             <h2>{props.title}</h2>
           </header>

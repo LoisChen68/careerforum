@@ -8,6 +8,7 @@
   grid-template-columns: repeat(15, 1fr);
   row-gap: 14px;
   width: 100%;
+  z-index: 2;
 }
 
 .wrapper {
@@ -19,12 +20,15 @@
 }
 
 .container {
+  padding-bottom: 140px;
   position: relative;
   width: 90%;
 }
 
 .hr {
-  border: 1px color.$primary-color solid;
+  margin: 13px 0;
+  height: 1px;
+  background-color: color.$primary-color;
 }
 
 .answer-container {
@@ -43,8 +47,10 @@
 }
 
 .answer-hr {
-  position: fixed;
-  bottom: 78px;
-  width: 100%;
-  color: color.$dim-gray;
+  position: absolute;
+  top: 0;
+  left: -5%;
+  width: 100vw;
+  height: 1px;
+  background-color: color.$dim-gray;
 }

@@ -60,18 +60,14 @@
 
 .button-close-auth {
   position: absolute;
-  top: 1%;
-  right: 3%;
+  top: 10px;
+  right: 5px;
 }
 
 .button-close-ask {
   position: absolute;
-  top: 10px;
-  right: 3%;
-}
-
-.button-text {
-  line-height: 2rem;
+  top: 18px;
+  right: 30px;
 }
 
 .loader {
@@ -95,19 +91,19 @@
   0% {
     width: 0px;
   }
-  
+
   25% {
     width: 5px;
   }
-  
+
   50% {
     width: 10px;
   }
-  
+
   75% {
     width: 15px;
   }
-  
+
   100% {
     width: 20px;
   }
@@ -116,11 +112,11 @@
 .button-answer-submit {
   @include func.font-setting(0.75rem, 400, color.$primary-color);
   transition: 0.3s ease-out;
-  
+
   &:hover {
     color: color.$secondary-color;
   }
-  
+
   p {
     margin-bottom: 3px;
     line-height: 16px;
@@ -130,6 +126,7 @@
 .button-ask-submit {
   @extend %button;
   width: 50%;
+  height: 40px;
   background-color: #2771a5;
   color: #fff;
 
@@ -142,8 +139,16 @@
   &-disable {
     @extend %button;
     width: 50%;
+    height: 40px;
     background-color: #1b4664bd;
     color: #fff;
     pointer-events: none;
+  }
+}
+
+@media screen and (min-width: 570px) {
+  .button-close-ask {
+    top: 10px;
+    right: 10px;
   }
 }

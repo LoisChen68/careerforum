@@ -4,6 +4,7 @@ import Header from '../../Components/Header/Header'
 import Login from '../../Components/Login/Login'
 import SignUp from '../../Components/SignUp/SignUp'
 import authAPI from '../../request/API/auth'
+import MobileFooter from '../../Components/MobileFooter/MobileFooter'
 import {
   isSignUpValid,
   isRoleValue,
@@ -317,6 +318,7 @@ export default function Layout() {
       )}
       <ToastContainer />
       <Outlet />
+      {!authPass && <MobileFooter />}
     </div>
   )
 }

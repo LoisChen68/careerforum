@@ -29,7 +29,12 @@ interface o {
 
 export default function SignUp(props: signUpProps) {
   return (
-    <Modal title="註冊" onConfirm={props.onConfirm} modalStyle="modal-container" closeButtonStyle={'button-close-auth'} >
+    <Modal
+      title="註冊"
+      onConfirm={props.onConfirm}
+      modalStyle="modal-container"
+      closeButtonStyle={'button-close-auth'}
+    >
       <>
         <Selector
           htmlFor="role"
@@ -94,9 +99,10 @@ export default function SignUp(props: signUpProps) {
             type="submit"
             style="button-submit"
             onClick={props.onSingUpSubmit}
-            innerText="註冊"
             disabled={props.disabled}
-          />
+          >
+            <p>註冊</p>
+          </Button>
         </div>
         <p className={style['footer']}>
           已有帳號？

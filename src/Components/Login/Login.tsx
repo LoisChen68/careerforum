@@ -22,7 +22,12 @@ interface o {
 export default function Login(props: loginProps) {
   return (
     <>
-      <Modal title="登入" onConfirm={props.onConfirm} modalStyle="modal-container" closeButtonStyle={'button-close-auth'} >
+      <Modal
+        title="登入"
+        onConfirm={props.onConfirm}
+        modalStyle="modal-container"
+        closeButtonStyle={'button-close-auth'}
+      >
         <>
           <Input
             htmlFor="email"
@@ -53,9 +58,10 @@ export default function Login(props: loginProps) {
               type="submit"
               style="button-submit"
               onClick={props.onLoginSubmit}
-              innerText="登入"
               disabled={props.disabled}
-            />
+            >
+              <p>登入</p>
+            </Button>
           </div>
           <p className={style['footer']}>
             尚未有帳號？
