@@ -29,7 +29,12 @@ interface o {
 
 export default function SignUp(props: signUpProps) {
   return (
-    <Modal title="註冊" onConfirm={props.onConfirm} modalStyle="modal-container" closeButtonStyle={'button-close-auth'} >
+    <Modal
+      title="註冊"
+      onConfirm={props.onConfirm}
+      modalStyle="modal-container"
+      closeButtonStyle={'button-close-auth'}
+    >
       <>
         <Selector
           htmlFor="role"

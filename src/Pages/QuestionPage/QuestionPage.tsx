@@ -40,7 +40,10 @@ export default function QuestionPage() {
               userAvatar={currentUser.avatar}
               avatarStyle={'body-user-avatar'}
             />
-            <TextAreaAnswer placeholder={'輸入你的回答...'} scrollHeight={100} />
+            <TextAreaAnswer
+              placeholder={'輸入你的回答...'}
+              scrollHeight={100}
+            />
           </form>
         </div>
       </div>

@@ -70,7 +70,7 @@ export function TextAreaAsk(props: textAreaProps) {
       />
       <Button
         type="button"
-        style={value ? "button-ask-submit" : "button-ask-submit-disable"}
+        style={value ? 'button-ask-submit' : 'button-ask-submit-disable'}
         onClick={onSubmitClick}
         disabled={false}
       >
@@ -106,5 +106,3 @@ function autoSizeTextArea(
     }
   }, [textAreaRef, value])
 }
-
-

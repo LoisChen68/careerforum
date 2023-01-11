@@ -22,7 +22,12 @@ interface o {
 export default function Login(props: loginProps) {
   return (
     <>
-      <Modal title="登入" onConfirm={props.onConfirm} modalStyle="modal-container" closeButtonStyle={'button-close-auth'} >
+      <Modal
+        title="登入"
+        onConfirm={props.onConfirm}
+        modalStyle="modal-container"
+        closeButtonStyle={'button-close-auth'}
+      >
         <>
           <Input
             htmlFor="email"

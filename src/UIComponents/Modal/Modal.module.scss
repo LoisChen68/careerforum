@@ -25,7 +25,6 @@
   overflow-y: scroll;
 }
 
-
 .scrollbar {
   &::-webkit-scrollbar {
     width: 6px;
@@ -39,7 +38,7 @@
 
 .header {
   padding: 1.5rem;
-  
+
   & h2 {
     letter-spacing: 5px;
     margin: 0;
@@ -98,7 +97,7 @@
 }
 
 @media screen and (min-width: 570px) {
-  .ask-modal-container { 
+  .ask-modal-container {
     padding: 16px;
     width: 80vw;
     height: 70vh;
