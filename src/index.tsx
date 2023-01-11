@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client'
 import './index.scss'
 import App from './App'
 import { BrowserRouter } from 'react-router-dom'
+import { CookiesProvider } from 'react-cookie'
 import * as serviceWorkerRegistration from './serviceWorkerRegistration'
 import reportWebVitals from './reportWebVitals'
 
@@ -10,7 +11,9 @@ const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 root.render(
   <React.StrictMode>
     <BrowserRouter>
-      <App />
+      <CookiesProvider>
+        <App />
+      </CookiesProvider>
     </BrowserRouter>
   </React.StrictMode>
 )

@@ -11,6 +11,7 @@ import {
 } from '../../UIComponents/TextArea/TextArea'
 import UserAvatar from '../../UIComponents/UserAvatar/UserAvatar'
 import Modal from '../../UIComponents/Modal/Modal'
+import Record from '../../Components/Record/Record'
 
 export default function ForumHome() {
   const [authModal, setAuthModal] = useState('initialAuthModal')
@@ -62,6 +63,9 @@ export default function ForumHome() {
             </div>
           </section>
           <DiscussionThread />
+        </div>
+        <div className={style['record']}>
+          <Record />
         </div>
       </div>
 
