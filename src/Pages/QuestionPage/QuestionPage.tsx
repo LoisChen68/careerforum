@@ -11,7 +11,12 @@ export default function QuestionPage() {
   const { addToHistory } = useHistory()
 
   useEffect(() => {
-    addToHistory(question.id, question.title, question.user.avatar, question.content)
+    addToHistory(
+      question.id,
+      question.title,
+      question.user.avatar,
+      question.content
+    )
   }, [])
 
   return (
