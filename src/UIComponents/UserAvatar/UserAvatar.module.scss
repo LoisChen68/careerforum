@@ -9,6 +9,7 @@
 .header-user-avatar {
   @include func.avatar-style(40px);
   border: 1.5px solid color.$primary-color;
+  cursor: pointer;
 }
 
 img {

@@ -19,6 +19,15 @@ textarea {
   padding: 0;
 }
 
+a {
+  color: color.$primary-color;
+  transition: 0.3s ease-out;
+
+  &:hover {
+    color: color.$secondary-color;
+  }
+}
+
 h1,
 h2,
 h3,
