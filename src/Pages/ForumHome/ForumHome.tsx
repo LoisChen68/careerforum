@@ -135,23 +135,23 @@ function DiscussionThread() {
   useEffect(() => {
     questionsAPI
       .getQuestions(page, 3)
-      .then(res => {
+      .then((res) => {
         setQuestions(res.data.questions)
         setPage(2)
       })
-      .catch(err => console.error(err))
+      .catch((err) => console.error(err))
   }, [])
 
   // lazy loading for questions
   const changePage = () => {
     questionsAPI
       .getQuestions(page, 3)
-      .then(res => {
+      .then((res) => {
         if (res.data.questions.length === 0) setHasMore(false)
         setQuestions(qusetions.concat(res.data.questions))
-        setPage(page => page + 1)
+        setPage((page) => page + 1)
       })
-      .catch(err => console.error(err))
+      .catch((err) => console.error(err))
   }
 
   return (
