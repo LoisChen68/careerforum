@@ -3,7 +3,7 @@ import { Outlet, useNavigate } from 'react-router-dom'
 import Header from '../../Components/Header/Header'
 import Login from '../../Components/Login/Login'
 import SignUp from '../../Components/SignUp/SignUp'
-import authAPI from '../../request/API/auth'
+import authAPI from '../../request/API/authAPI'
 import MobileFooter from '../../Components/MobileFooter/MobileFooter'
 import {
   isSignUpValid,

@@ -1,6 +1,7 @@
 import style from './ForumHome.module.scss'
 import { useNavigate } from 'react-router-dom'
 import { useEffect, useState } from 'react'
+import InfiniteScroll from 'react-infinite-scroll-component'
 import Backdrop from '../../UIComponents/Backdrop/Backdrop'
 import { LayoutLoader } from '../../UIComponents/LayoutLoader/LayoutLoader'
 import Question from '../../Components/Question/Question'
@@ -12,6 +13,7 @@ import {
 import UserAvatar from '../../UIComponents/UserAvatar/UserAvatar'
 import Modal from '../../UIComponents/Modal/Modal'
 import Record from '../../Components/Record/Record'
+import questionsAPI from '../../request/API/questionsAPI'
 
 export default function ForumHome() {
   const [authModal, setAuthModal] = useState('initialAuthModal')
@@ -96,43 +98,107 @@ export default function ForumHome() {
   )
 }
 
+interface question {
+  id: number
+  title: string
+  content: string
+  createdAt: string
+  updatedAt: string
+  userId: number
+  answersCount: number
+  User: user
+  Answers: answer[]
+}
+
+interface user {
+  id: number
+  role: string
+  account: string
+  avatar: string
+}
+
+interface answer {
+  id: number
+  content: string
+  createdAt: string
+  updatedAt: string
+  questionId: number
+  userId: number
+  User: user
+}
+
 function DiscussionThread() {
+  const [page, setPage] = useState(1)
+  const [hasMore, setHasMore] = useState(true)
+  const [qusetions, setQuestions] = useState([])
+
+  useEffect(() => {
+    questionsAPI
+      .getQuestions(page, 3)
+      .then(res => {
+        setQuestions(res.data.questions)
+        setPage(2)
+      })
+      .catch(err => console.error(err))
+  }, [])
+
+  // lazy loading for questions
+  const changePage = () => {
+    questionsAPI
+      .getQuestions(page, 3)
+      .then(res => {
+        if (res.data.questions.length === 0) setHasMore(false)
+        setQuestions(qusetions.concat(res.data.questions))
+        setPage(page => page + 1)
+      })
+      .catch(err => console.error(err))
+  }
+
   return (
     <>
-      {questionsData.questions.map((question) => (
-        <div className={style['wrapper']} key={question.id}>
-          <div className={style['container']}>
-            <Question
-              title={question.title}
-              userAccount={question.user.account}
-              userId={question.user.id}
-              userAvatar={question.user.avatar}
-              questionDate={question.createdAt}
-              question={question.content}
-              questionId={question.id}
-              hashTags={[{ id: 1, name: '求職' }]}
-              answerCount={question.answerCount}
-            />
-            <div className={style['hr']} />
-            <Answer
-              userAccount={question.answer.user.account}
-              userAvatar={question.answer.user.avatar}
-              answerDate={question.answer.createdAt}
-              answer={question.answer.content}
-            />
-            <form className={style['answer-form']}>
-              <UserAvatar
-                userAvatar={currentUser.avatar}
-                avatarStyle={'body-user-avatar'}
-              />
-              <TextAreaAnswer
-                placeholder={'輸入你的回答...'}
-                scrollHeight={100}
-              />
-            </form>
-          </div>
-        </div>
-      ))}
+      {qusetions.length !== 0 && (
+        <InfiniteScroll
+          dataLength={qusetions.length}
+          next={changePage}
+          hasMore={hasMore}
+          loader={<p>loading</p>}
+        >
+          {qusetions.map((question: question) => (
+            <div className={style['wrapper']} key={question.id}>
+              <div className={style['container']}>
+                <Question
+                  title={question.title}
+                  userAccount={question.User.account}
+                  userId={question.User.id}
+                  userAvatar={question.User.avatar}
+                  questionDate={question.createdAt}
+                  question={question.content}
+                  questionId={question.id}
+                  hashTags={[{ id: 1, name: '求職' }]}
+                  answerCount={question.answersCount}
+                />
+                <div className={style['hr']} />
+                <Answer
+                  userAccount={question.Answers[0]?.User.account}
+                  userAvatar={question.Answers[0]?.User.avatar}
+                  answerDate={question.Answers[0]?.createdAt}
+                  answer={question.Answers[0]?.content}
+                />
+                <form className={style['answer-form']}>
+                  <UserAvatar
+                    userAvatar={currentUser.avatar}
+                    avatarStyle={'body-user-avatar'}
+                  />
+                  <TextAreaAnswer
+                    placeholder={'輸入你的回答...'}
+                    scrollHeight={100}
+                  />
+                </form>
+              </div>
+            </div>
+          ))}
+        </InfiniteScroll>
+      )}
     </>
   )
 }
@@ -149,76 +215,76 @@ const currentUser = {
   updatedAt: '2023/01/07',
 }
 
-const questionsData = {
-  count: 1, // 資料總筆數
-  page: 1, // 預設回傳第一頁
-  limit: 10, // 預設回傳 10 筆資料
-  questions: [
-    {
-      id: 1, // questions PK:id
-      title: '如何找到好工作?',
-      content: '內文',
-      answerCount: 1,
-      userId: 1, // user FK:id
-      createdAt: '2023/01/07',
-      updatedAt: '2023/01/07',
-      user: {
-        //問題擁有者
-        id: 1,
-        role: '學期三',
-        account: 'user1',
-        avatar: 'https://cdn-icons-png.flaticon.com/512/4364/4364519.png',
-      },
-      answer: {
-        // 預設回傳最新，limit:1
-        id: '1', // answer PK:id
-        content:
-          '找好工作的秘訣就是投履歷找好工作的秘訣就是投履歷找好工作的秘訣就是投履歷找好工作的秘訣就是投履歷找好工作的秘訣就是投履歷找好工作的秘訣就是投履歷',
-        userId: 2, // FK:user_id
-        questionId: 1, // FK:question_id
-        createdAt: '2023/01/07',
-        updatedAt: '2023/01/07',
-        user: {
-          //回答擁有者
-          id: 2, // user PK:id
-          role: '助教',
-          account: 'user2',
-          avatar: 'https://cdn-icons-png.flaticon.com/512/9207/9207109.png',
-        },
-      },
-    },
-    {
-      id: 2, // questions PK:id
-      title: '如何找到好工作?',
-      content: '內文',
-      answerCount: 1,
-      userId: 1, // user FK:id
-      createdAt: '2023/01/07',
-      updatedAt: '2023/01/07',
-      user: {
-        //問題擁有者
-        id: 1,
-        role: '學期三',
-        account: 'user1',
-        avatar: 'https://cdn-icons-png.flaticon.com/512/4364/4364519.png',
-      },
-      answer: {
-        // 預設回傳最新，limit:1
-        id: 2, // answer PK:id
-        content: '找好工作的秘訣就是投履歷',
-        userId: 2, // FK:user_id
-        questionId: 2, // FK:question_id
-        createdAt: '2023/01/07',
-        updatedAt: '2023/01/07',
-        user: {
-          //回答擁有者
-          id: 2, // user PK:id
-          role: '助教',
-          account: 'user2',
-          avatar: 'https://cdn-icons-png.flaticon.com/512/9207/9207109.png',
-        },
-      },
-    },
-    //...
-  ],
-}
+// const questionsData = {
+//   count: 1, // 資料總筆數
+//   page: 1, // 預設回傳第一頁
+//   limit: 10, // 預設回傳 10 筆資料
+//   questions: [
+//     {
+//       id: 1, // questions PK:id
+//       title: '如何找到好工作?',
+//       content: '內文',
+//       answerCount: 1,
+//       userId: 1, // user FK:id
+//       createdAt: '2023/01/07',
+//       updatedAt: '2023/01/07',
+//       user: {
+//         //問題擁有者
+//         id: 1,
+//         role: '學期三',
+//         account: 'user1',
+//         avatar: 'https://cdn-icons-png.flaticon.com/512/4364/4364519.png',
+//       },
+//       answer: {
+//         // 預設回傳最新，limit:1
+//         id: '1', // answer PK:id
+//         content:
+//           '找好工作的秘訣就是投履歷找好工作的秘訣就是投履歷找好工作的秘訣就是投履歷找好工作的秘訣就是投履歷找好工作的秘訣就是投履歷找好工作的秘訣就是投履歷',
+//         userId: 2, // FK:user_id
+//         questionId: 1, // FK:question_id
+//         createdAt: '2023/01/07',
+//         updatedAt: '2023/01/07',
+//         user: {
+//           //回答擁有者
+//           id: 2, // user PK:id
+//           role: '助教',
+//           account: 'user2',
+//           avatar: 'https://cdn-icons-png.flaticon.com/512/9207/9207109.png',
+//         },
+//       },
+//     },
+//     {
+//       id: 2, // questions PK:id
+//       title: '如何找到好工作?',
+//       content: '內文',
+//       answerCount: 1,
+//       userId: 1, // user FK:id
+//       createdAt: '2023/01/07',
+//       updatedAt: '2023/01/07',
+//       user: {
+//         //問題擁有者
+//         id: 1,
+//         role: '學期三',
+//         account: 'user1',
+//         avatar: 'https://cdn-icons-png.flaticon.com/512/4364/4364519.png',
+//       },
+//       answer: {
+//         // 預設回傳最新，limit:1
+//         id: 2, // answer PK:id
+//         content: '找好工作的秘訣就是投履歷',
+//         userId: 2, // FK:user_id
+//         questionId: 2, // FK:question_id
+//         createdAt: '2023/01/07',
+//         updatedAt: '2023/01/07',
+//         user: {
+//           //回答擁有者
+//           id: 2, // user PK:id
+//           role: '助教',
+//           account: 'user2',
+//           avatar: 'https://cdn-icons-png.flaticon.com/512/9207/9207109.png',
+//         },
+//       },
+//     },
+//     //...
+//   ],
+// }
