@@ -8,9 +8,12 @@ interface headerProps {
   onSignUpClick: (e: React.MouseEvent) => void
   onLogoutClick: (e: React.MouseEvent) => void
   authPass: boolean
+  avatar: string
 }
 
 export default function Header(props: headerProps) {
+
+
   return (
     <header className={style['header']}>
       <div className={style['header-wrapper']}>
@@ -51,7 +54,7 @@ export default function Header(props: headerProps) {
             <div className={style['avatar-container']}>
               <label htmlFor="avatar">
                 <UserAvatar
-                  userAvatar={currentUser.avatar}
+                  userAvatar={props.avatar}
                   avatarStyle={'header-user-avatar'}
                 />
               </label>
@@ -75,17 +78,4 @@ export default function Header(props: headerProps) {
       </div>
     </header>
   )
-}
-
-// TODO: Dummy Data
-const currentUser = {
-  id: '1', // user PK:id
-  role: 'TA',
-  name: '', // 可填可不填
-  account: 'user1',
-  email: 'user1@careerForum.com',
-  avatar: 'https://cdn-icons-png.flaticon.com/512/1864/1864514.png',
-  cover: 'http://...',
-  createdAt: '2023/01/07',
-  updatedAt: '2023/01/07',
 }

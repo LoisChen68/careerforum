@@ -5,18 +5,21 @@ import AdminLayout from './Pages/Layout/AdminLayout'
 import ForumHome from './Pages/ForumHome/ForumHome'
 import QuestionPage from './Pages/QuestionPage/QuestionPage'
 import AdminUser from './Pages/Admin/AdminUser'
+import UserContextProvider from './Contexts/UserContext'
 
 export default function App() {
   return (
-    <Routes>
-      <Route path="/careerforum" element={<Layout />}>
-        <Route path="home" element={<ForumHome />} />
-        <Route path=":id" element={<QuestionPage />} />
-        <Route path="admin" element={<AdminLayout />}>
-          <Route path="users" element={<AdminUser />} />
+    <UserContextProvider >
+      <Routes>
+        <Route path="/careerforum" element={<Layout />}>
+          <Route path="home" element={<ForumHome />} />
+          <Route path=":id" element={<QuestionPage />} />
+          <Route path="admin" element={<AdminLayout />}>
+            <Route path="users" element={<AdminUser />} />
+          </Route>
         </Route>
-      </Route>
-      <Route path="/*" element={<Layout />}></Route>
-    </Routes>
+        <Route path="/*" element={<Layout />}></Route>
+      </Routes>
+    </UserContextProvider>
   )
 }
