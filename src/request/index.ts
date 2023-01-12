@@ -5,5 +5,5 @@ const token = localStorage.getItem('token')
 
 export const api = axios.create({
   baseURL: baseURL,
-  headers: { Authorization: `Bearer ${token}` }
+  headers: { Authorization: `Bearer ${token}` },
 })
