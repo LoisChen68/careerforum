@@ -331,7 +331,14 @@ export default function Layout() {
       )}
       <ToastContainer />
       <Outlet />
-      {getUser?.authPass && <MobileFooter />}
+      {getUser?.authPass &&
+        <MobileFooter
+          onLogoutClick={() => {
+            localStorage.removeItem('token')
+            getUser?.logout(false)
+            navigate('/')
+          }}
+        />}
     </div>
   )
 }
