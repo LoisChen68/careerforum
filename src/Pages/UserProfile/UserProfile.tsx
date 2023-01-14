@@ -18,7 +18,7 @@ const defaultUserData = {
   isSuspended: false,
 }
 
-export function UserProfile() {
+export default function UserProfile() {
   const param = useParams()
   const token = localStorage.getItem('token')
   const [userData, setUserData] = useState(defaultUserData)
