@@ -8,6 +8,7 @@ import AdminUser from './Pages/Admin/AdminUser'
 import UserContextProvider from './Contexts/UserContext'
 import ModalContextProvider from './Contexts/ModalContext'
 import RenderContextProvider from './Contexts/RenderContext'
+import { UserProfile } from './Pages/UserProfile/UserProfile'
 
 export default function App() {
   return (
@@ -18,6 +19,7 @@ export default function App() {
             <Route path="/careerforum" element={<Layout />}>
               <Route path="home" element={<ForumHome />} />
               <Route path=":id" element={<QuestionPage />} />
+              <Route path="users/:id" element={<UserProfile />} />
               <Route path="admin" element={<AdminLayout />}>
                 <Route path="users" element={<AdminUser />} />
               </Route>
