@@ -2,6 +2,7 @@ import React from 'react'
 import { fireEvent, render, screen } from '@testing-library/react'
 import Layout from '../Pages/Layout/Layout'
 import { BrowserRouter } from 'react-router-dom'
+import ModalContextProvider from '../Contexts/ModalContext'
 
 test('Should display Email and Password when the Login modal is mounted.', () => {
   // 定義 Modal 容器元素
@@ -11,7 +12,9 @@ test('Should display Email and Password when the Login modal is mounted.', () =>
 
   render(
     <BrowserRouter>
-      <Layout />
+      <ModalContextProvider>
+        <Layout />
+      </ModalContextProvider>
     </BrowserRouter>,
     { container }
   )
@@ -39,7 +42,9 @@ test('Should display the "欄位不得為空" when the input field is empty and 
 
   render(
     <BrowserRouter>
-      <Layout />
+      <ModalContextProvider>
+        <Layout />
+      </ModalContextProvider>
     </BrowserRouter>,
     { container }
   )
@@ -77,7 +82,9 @@ test('Should display the signUp modal when clicking the Singup link.', () => {
 
   render(
     <BrowserRouter>
-      <Layout />
+      <ModalContextProvider>
+        <Layout />
+      </ModalContextProvider>
     </BrowserRouter>,
     { container }
   )
@@ -103,7 +110,9 @@ test('Should display "Loading..." and button is disabled when login submit.', ()
 
   render(
     <BrowserRouter>
-      <Layout />
+      <ModalContextProvider>
+        <Layout />
+      </ModalContextProvider>
     </BrowserRouter>,
     { container }
   )
@@ -138,7 +147,9 @@ test('Should not display the signUp modal when clicking the close button', () =>
 
   render(
     <BrowserRouter>
-      <Layout />
+      <ModalContextProvider>
+        <Layout />
+      </ModalContextProvider>
     </BrowserRouter>,
     { container }
   )
