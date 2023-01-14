@@ -1,5 +1,4 @@
 import style from './ForumHome.module.scss'
-import { useNavigate } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import Backdrop from '../../UIComponents/Backdrop/Backdrop'
@@ -13,26 +12,20 @@ import {
 import UserAvatar from '../../UIComponents/UserAvatar/UserAvatar'
 import Modal from '../../UIComponents/Modal/Modal'
 import Record from '../../Components/Record/Record'
-import questionsAPI from '../../request/API/questionsAPI'
+import questionsAPI from '../../request/API/questionAPI'
+import { useGetUser } from '../../Contexts/UserContext'
+import { useHistory } from '../../utils/cookies'
+import ButtonLoader from '../../UIComponents/ButtonLoader/ButtonLoader'
 
 export default function ForumHome() {
   const [authModal, setAuthModal] = useState('initialAuthModal')
   const [loading, setLoading] = useState(true)
-  const token = localStorage.getItem('token') || ''
-  const navigate = useNavigate()
+  const getUser = useGetUser()
 
-  //驗證是否攜帶 token，若無導回首頁
+  // 這裡的 loading 是具有 Backdrop 的 LayoutLoader
+  // 頁面渲染完成將 loading 設為 false
   useEffect(() => {
-    setLoading(true)
-    if (token === '') {
-      navigate('/')
-      setLoading(false)
-    }
-    setTimeout(() => {
-      if (token) {
-        setLoading(false)
-      }
-    }, 3000)
+    setLoading(false)
   }, [])
 
   const onAskShow = () => {
@@ -56,7 +49,7 @@ export default function ForumHome() {
           <section className={style['ask-question']}>
             <div className={style['ask-question-container']}>
               <UserAvatar
-                userAvatar={currentUser.avatar}
+                userAvatar={getUser?.user?.avatar}
                 avatarStyle={'body-user-avatar'}
               />
               <p className={style['toAsk']} onClick={onAskShow}>
@@ -81,12 +74,12 @@ export default function ForumHome() {
           <>
             <div className={style['ask-modal-avatar']}>
               <UserAvatar
-                userAvatar={currentUser.avatar}
+                userAvatar={getUser?.user?.avatar}
                 avatarStyle={'body-user-avatar'}
               />
               <div className={style['user']}>
-                <p className={style['name']}>{currentUser.account}</p>
-                <p className={style['role']}>{currentUser.role}</p>
+                <p className={style['name']}>{getUser?.user?.account || ""}</p>
+                <p className={style['role']}>{getUser?.user?.role || ""}</p>
                 <p></p>
               </div>
             </div>
@@ -128,27 +121,42 @@ interface answer {
 }
 
 function DiscussionThread() {
-  const [page, setPage] = useState(1)
+  const token = localStorage.getItem('token') || ''
+  const getUser = useGetUser()
+  const { addToHistory } = useHistory()
+  const [page, setPage] = useState(2)
   const [hasMore, setHasMore] = useState(true)
-  const [qusetions, setQuestions] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [questions, setQuestions] = useState([])
+  const [questionStatus, setQuestionStatus] = useState('')
 
+  // 這裡的 loading 是用在 Button 的小型 loader
+  // 當 API 取得完成將 loading 設為 false
   useEffect(() => {
     questionsAPI
-      .getQuestions(page, 3)
+      .getQuestions(token, 1, 3)
       .then((res) => {
-        setQuestions(res.data.questions)
-        setPage(2)
+        const questionData = res.data.questions
+        setQuestions(questionData)
+        setLoading(false)
+        // 當回傳資料長度為 0 ，設置狀態為 'noting' 為顯示 '目前還沒有人問問題' 字段
+        if (questionData.length === 0) {
+          setQuestionStatus('noting')
+        } else {
+          setQuestionStatus('')
+        }
       })
-      .catch((err) => console.error(err))
+      .catch((err) => console.log(err))
   }, [])
 
   // lazy loading for questions
   const changePage = () => {
     questionsAPI
-      .getQuestions(page, 3)
+      .getQuestions(token, page, 3)
       .then((res) => {
-        if (res.data.questions.length === 0) setHasMore(false)
-        setQuestions(qusetions.concat(res.data.questions))
+        const questionData = res.data.questions
+        if (questionData.length === 0) setHasMore(false)
+        setQuestions(questions.concat(questionData))
         setPage((page) => page + 1)
       })
       .catch((err) => console.error(err))
@@ -156,135 +164,60 @@ function DiscussionThread() {
 
   return (
     <>
-      {qusetions.length !== 0 && (
-        <InfiniteScroll
-          dataLength={qusetions.length}
-          next={changePage}
-          hasMore={hasMore}
-          loader={<p>loading</p>}
-        >
-          {qusetions.map((question: question) => (
-            <div className={style['wrapper']} key={question.id}>
-              <div className={style['container']}>
-                <Question
-                  title={question.title}
-                  userAccount={question.User.account}
-                  userId={question.User.id}
-                  userAvatar={question.User.avatar}
-                  questionDate={question.createdAt}
-                  question={question.content}
-                  questionId={question.id}
-                  hashTags={[{ id: 1, name: '求職' }]}
-                  answerCount={question.answersCount}
-                />
-                <div className={style['hr']} />
+      <InfiniteScroll
+        dataLength={questions.length}
+        next={changePage}
+        hasMore={hasMore}
+        loader={loading ? <ButtonLoader /> : ""}
+      >
+        {questions.map((question: question) => (
+          <div className={style['wrapper']} key={question.id}>
+            <div className={style['container']}>
+              <Question
+                title={question.title}
+                userAccount={question.User.account}
+                userRole={question.User.role}
+                userId={question.User.id}
+                userAvatar={question.User.avatar}
+                questionDate={question.createdAt}
+                question={question.content}
+                questionId={question.id}
+                hashTags={[{ id: 1, name: '求職' }]}
+                answerCount={question.answersCount}
+                onQuestionClick={() => {
+                  addToHistory(
+                    question.id,
+                    question.title,
+                    question.User.avatar,
+                    question.content
+                  )
+                }}
+              />
+              <div className={style['hr']} />
+              {question.Answers[0] ? (
                 <Answer
                   userAccount={question.Answers[0]?.User.account}
+                  userRole={question.Answers[0]?.User.role}
                   userAvatar={question.Answers[0]?.User.avatar}
                   answerDate={question.Answers[0]?.createdAt}
                   answer={question.Answers[0]?.content}
                 />
-                <form className={style['answer-form']}>
-                  <UserAvatar
-                    userAvatar={currentUser.avatar}
-                    avatarStyle={'body-user-avatar'}
-                  />
-                  <TextAreaAnswer
-                    placeholder={'輸入你的回答...'}
-                    scrollHeight={100}
-                  />
-                </form>
-              </div>
+              ) : <p>目前還沒有人回答</p>}
+              <form className={style['answer-form']}>
+                <UserAvatar
+                  userAvatar={getUser?.user?.avatar}
+                  avatarStyle={'body-user-avatar'}
+                />
+                <TextAreaAnswer
+                  placeholder={'輸入你的回答...'}
+                  scrollHeight={100}
+                />
+              </form>
             </div>
-          ))}
-        </InfiniteScroll>
-      )}
+          </div>
+        ))}
+      </InfiniteScroll>
+      {questionStatus === 'noting' && <p>目前還沒有人問問題</p>}
     </>
   )
 }
-// TODO: Dummy Data
-const currentUser = {
-  id: '1', // user PK:id
-  role: 'TA',
-  name: '', // 可填可不填
-  account: 'user1',
-  email: 'user1@careerForum.com',
-  avatar: 'https://cdn-icons-png.flaticon.com/512/1864/1864514.png',
-  cover: 'http://...',
-  createdAt: '2023/01/07',
-  updatedAt: '2023/01/07',
-}
-
-// const questionsData = {
-//   count: 1, // 資料總筆數
-//   page: 1, // 預設回傳第一頁
-//   limit: 10, // 預設回傳 10 筆資料
-//   questions: [
-//     {
-//       id: 1, // questions PK:id
-//       title: '如何找到好工作?',
-//       content: '內文',
-//       answerCount: 1,
-//       userId: 1, // user FK:id
-//       createdAt: '2023/01/07',
-//       updatedAt: '2023/01/07',
-//       user: {
-//         //問題擁有者
-//         id: 1,
-//         role: '學期三',
-//         account: 'user1',
-//         avatar: 'https://cdn-icons-png.flaticon.com/512/4364/4364519.png',
-//       },
-//       answer: {
-//         // 預設回傳最新，limit:1
-//         id: '1', // answer PK:id
-//         content:
-//           '找好工作的秘訣就是投履歷找好工作的秘訣就是投履歷找好工作的秘訣就是投履歷找好工作的秘訣就是投履歷找好工作的秘訣就是投履歷找好工作的秘訣就是投履歷',
-//         userId: 2, // FK:user_id
-//         questionId: 1, // FK:question_id
-//         createdAt: '2023/01/07',
-//         updatedAt: '2023/01/07',
-//         user: {
-//           //回答擁有者
-//           id: 2, // user PK:id
-//           role: '助教',
-//           account: 'user2',
-//           avatar: 'https://cdn-icons-png.flaticon.com/512/9207/9207109.png',
-//         },
-//       },
-//     },
-//     {
-//       id: 2, // questions PK:id
-//       title: '如何找到好工作?',
-//       content: '內文',
-//       answerCount: 1,
-//       userId: 1, // user FK:id
-//       createdAt: '2023/01/07',
-//       updatedAt: '2023/01/07',
-//       user: {
-//         //問題擁有者
-//         id: 1,
-//         role: '學期三',
-//         account: 'user1',
-//         avatar: 'https://cdn-icons-png.flaticon.com/512/4364/4364519.png',
-//       },
-//       answer: {
-//         // 預設回傳最新，limit:1
-//         id: 2, // answer PK:id
-//         content: '找好工作的秘訣就是投履歷',
-//         userId: 2, // FK:user_id
-//         questionId: 2, // FK:question_id
-//         createdAt: '2023/01/07',
-//         updatedAt: '2023/01/07',
-//         user: {
-//           //回答擁有者
-//           id: 2, // user PK:id
-//           role: '助教',
-//           account: 'user2',
-//           avatar: 'https://cdn-icons-png.flaticon.com/512/9207/9207109.png',
-//         },
-//       },
-//     },
-//     //...
-//   ],
-// }
