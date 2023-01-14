@@ -6,20 +6,23 @@ import ForumHome from './Pages/ForumHome/ForumHome'
 import QuestionPage from './Pages/QuestionPage/QuestionPage'
 import AdminUser from './Pages/Admin/AdminUser'
 import UserContextProvider from './Contexts/UserContext'
+import ModalContextProvider from './Contexts/ModalContext'
 
 export default function App() {
   return (
     <UserContextProvider >
-      <Routes>
-        <Route path="/careerforum" element={<Layout />}>
-          <Route path="home" element={<ForumHome />} />
-          <Route path=":id" element={<QuestionPage />} />
-          <Route path="admin" element={<AdminLayout />}>
-            <Route path="users" element={<AdminUser />} />
+      <ModalContextProvider>
+        <Routes>
+          <Route path="/careerforum" element={<Layout />}>
+            <Route path="home" element={<ForumHome />} />
+            <Route path=":id" element={<QuestionPage />} />
+            <Route path="admin" element={<AdminLayout />}>
+              <Route path="users" element={<AdminUser />} />
+            </Route>
           </Route>
-        </Route>
-        <Route path="/*" element={<Layout />}></Route>
-      </Routes>
+          <Route path="/*" element={<Layout />}></Route>
+        </Routes>
+      </ModalContextProvider>
     </UserContextProvider>
   )
 }

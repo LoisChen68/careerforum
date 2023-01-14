@@ -16,10 +16,11 @@ import questionsAPI from '../../request/API/questionAPI'
 import { useGetUser } from '../../Contexts/UserContext'
 import { useHistory } from '../../utils/cookies'
 import ButtonLoader from '../../UIComponents/ButtonLoader/ButtonLoader'
+import { useModalStatus } from '../../Contexts/ModalContext'
 
 export default function ForumHome() {
-  const [authModal, setAuthModal] = useState('initialAuthModal')
   const [loading, setLoading] = useState(true)
+  const setModalStatus = useModalStatus()
   const getUser = useGetUser()
 
   // 這裡的 loading 是具有 Backdrop 的 LayoutLoader
@@ -29,11 +30,11 @@ export default function ForumHome() {
   }, [])
 
   const onAskShow = () => {
-    setAuthModal('ask')
+    setModalStatus?.handleSetModal('ask')
   }
 
   const onAskClose = () => {
-    setAuthModal('initialAuthModal')
+    setModalStatus?.handleSetModal('initial')
   }
 
   return (
@@ -64,7 +65,7 @@ export default function ForumHome() {
         </div>
       </div>
 
-      {authModal === 'ask' && (
+      {setModalStatus?.modalStatus === 'ask' && (
         <Modal
           title={'想問點什麼嗎？'}
           onConfirm={onAskClose}
