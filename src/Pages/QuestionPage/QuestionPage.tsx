@@ -116,6 +116,7 @@ export default function QuestionPage() {
             <TextAreaAnswer
               placeholder={'輸入你的回答...'}
               scrollHeight={100}
+              questionId={question.id}
             />
           </form>
         </div>
