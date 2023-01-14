@@ -23,9 +23,22 @@
   justify-content: center;
 }
 
+.user-name-role {
+  display: flex;
+  gap: 5px;
+}
+
 .user-name,
+.user-role,
 .user-post-date {
   @include func.font-setting(0.75rem, 400, color.$primary-font);
+}
+
+.user-role {
+  padding: 0 5px;
+  background-color: color.$primary-color;
+  color: #FFF;
+  border-radius: 5px;
 }
 
 .content {
