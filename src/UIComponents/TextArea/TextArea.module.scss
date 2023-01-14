@@ -27,11 +27,12 @@
 
 // style for ask's textArea
 .textareaAsk {
-  padding: 12px 12px;
+  padding: 5px 5px;
   height: 100%;
-  width: 100%;
+  width: 95%;
   border: unset;
   font-family: inherit;
+  @include func.font-setting(1rem, 400, block);
 
   &:focus {
     outline: none;
@@ -52,4 +53,12 @@
     border-radius: 3px;
     background-color: rgba(0, 0, 0, 0.1);
   }
+}
+
+.question-title-input {
+  padding: 5px 5px;
+  width: 95%;
+  border: 0px;
+  border-bottom: 1px solid color.$dim-gray;
+  @include func.font-setting(1rem, 400, block);
 }

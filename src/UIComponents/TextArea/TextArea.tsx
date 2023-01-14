@@ -1,6 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react'
+import questionAPI from '../../request/API/questionAPI'
 import Button from '../Button/Button'
 import style from './TextArea.module.scss'
+import { useModalStatus } from '../../Contexts/ModalContext'
 
 interface textAreaProps {
   placeholder: string
@@ -48,29 +50,57 @@ export function TextAreaAnswer(props: textAreaProps) {
   )
 }
 
-export function TextAreaAsk(props: textAreaProps) {
-  const [value, setValue] = useState('')
 
-  function handleChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
-    const value = e.target.value
-    setValue(value)
+export function TextAreaAsk(props: textAreaProps) {
+  const [title, setTitle] = useState("")
+  const [content, setContent] = useState("")
+  const token = localStorage.getItem('token')
+  const useSetModal = useModalStatus()
+
+  function handleInputChange(e: React.ChangeEvent<HTMLInputElement>) {
+    setTitle(e.target.value)
   }
+
+  function handleTextAreaChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
+    setContent(e.target.value)
+  }
+
 
   function onSubmitClick(e: React.MouseEvent) {
     e.preventDefault()
+    if (title && content) {
+      questionAPI
+        .postQuestion(token, title, content)
+        .then(() => {
+          useSetModal?.handleSetModal('initial')
+        })
+        .catch(err => console.log(err))
+    }
+
   }
 
   return (
     <>
+      <input
+        className={style['question-title-input']}
+        id="questionTitle"
+        name="questionTitle"
+        type="text"
+        required={true}
+        placeholder="標題"
+        value={title}
+        onChange={handleInputChange}
+      />
       <textarea
+        name="questionContent"
         className={`${style['textareaAsk']} ${style['scrollbar']}`}
-        onChange={handleChange}
+        onChange={handleTextAreaChange}
         placeholder={props.placeholder}
-        value={value}
+        value={content}
       />
       <Button
         type="button"
-        style={value ? 'button-ask-submit' : 'button-ask-submit-disable'}
+        style={title && content ? 'button-ask-submit' : 'button-ask-submit-disable'}
         onClick={onSubmitClick}
         disabled={false}
       >
