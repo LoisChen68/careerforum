@@ -1,6 +1,7 @@
 import { createContext, useContext, useState } from 'react'
 import userAPI from "../request/API/userAPI"
 import { useNavigate } from 'react-router-dom'
+import { toast } from 'react-toastify'
 
 interface userDataProps {
   id: number
@@ -48,7 +49,21 @@ export default function UserContextProvider({ children }: { children: React.Reac
     userAPI
       .getCurrentUser(token)
       .then(res => { setUser(res.data), setAuthPass(true) })
-      .catch(err => { console.log(err), setAuthPass(false), navigate('/') })
+      .catch(err => {
+        console.log(err),
+          setAuthPass(false),
+          navigate('/'),
+          toast.error('請先登入再使用！', {
+            position: 'top-right',
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: false,
+            draggable: true,
+            progress: undefined,
+            theme: 'light',
+          })
+      })
   }
 
   function logout(value: boolean) {

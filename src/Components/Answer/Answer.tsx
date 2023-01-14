@@ -4,6 +4,7 @@ import style from './Answer.module.scss'
 interface answerProps {
   userAvatar: string
   userAccount: string
+  userRole: string
   answerDate: string
   answer: string
 }
@@ -17,6 +18,7 @@ export default function Answer(props: answerProps) {
       />
       <div className={style['answer']}>
         <div className={style['user']}>
+          <p className={style['user-role']}>{props.userRole}</p>
           <p>{props.userAccount}</p>
           <p>{props.answerDate}</p>
         </div>

@@ -4,6 +4,7 @@
 .body-user-avatar {
   @include func.avatar-style(46px);
   border: 1.5px solid color.$primary-color;
+  overflow: hidden;
 }
 
 .header-user-avatar {
