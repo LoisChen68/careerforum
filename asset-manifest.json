@@ -1,16 +1,16 @@
 {
   "files": {
     "main.css": "/careerforum/static/css/main.6671fa16.css",
-    "main.js": "/careerforum/static/js/main.a97df0ad.js",
+    "main.js": "/careerforum/static/js/main.d0f73422.js",
     "static/js/787.224bcf62.chunk.js": "/careerforum/static/js/787.224bcf62.chunk.js",
     "service-worker.js": "/careerforum/service-worker.js",
     "index.html": "/careerforum/index.html",
     "main.6671fa16.css.map": "/careerforum/static/css/main.6671fa16.css.map",
-    "main.a97df0ad.js.map": "/careerforum/static/js/main.a97df0ad.js.map",
+    "main.d0f73422.js.map": "/careerforum/static/js/main.d0f73422.js.map",
     "787.224bcf62.chunk.js.map": "/careerforum/static/js/787.224bcf62.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.6671fa16.css",
-    "static/js/main.a97df0ad.js"
+    "static/js/main.d0f73422.js"
   ]
 }
