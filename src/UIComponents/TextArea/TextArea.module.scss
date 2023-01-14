@@ -62,3 +62,10 @@
   border-bottom: 1px solid color.$dim-gray;
   @include func.font-setting(1rem, 400, block);
 }
+
+.title-error,
+.content-error {
+  padding-right: 20px;
+  align-self: flex-end;
+  color: red;
+}

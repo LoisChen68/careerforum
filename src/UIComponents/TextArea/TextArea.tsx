@@ -31,8 +31,7 @@ export function TextAreaAnswer(props: textAreaProps) {
     e.preventDefault()
     questionAPI
       .postAnswers(token, props.questionId, value)
-      .then((res) => {
-        console.log(res)
+      .then(() => {
         reRender?.handleRerender(true)
       })
       .catch((err) => {
@@ -65,26 +64,47 @@ export function TextAreaAnswer(props: textAreaProps) {
 
 
 export function TextAreaAsk(props: textAreaProps) {
-  const [title, setTitle] = useState("")
-  const [content, setContent] = useState("")
   const token = localStorage.getItem('token')
   const useSetModal = useModalStatus()
+  const reRender = useRender()
+  const [title, setTitle] = useState("")
+  const [content, setContent] = useState("")
+  const [errorMessage, setErrorMessage] = useState({ title: "", content: "" })
 
   function handleInputChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const value = e.target.value
     setTitle(e.target.value)
+    if (!value) {
+      setErrorMessage({ ...errorMessage, title: "標題不得為空" })
+    } else if (value) {
+      setErrorMessage({ ...errorMessage, title: "" })
+    }
   }
 
   function handleTextAreaChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
-    setContent(e.target.value)
+    const value = e.target.value
+    setContent(value)
+    if (!value) {
+      setErrorMessage({ ...errorMessage, content: "內容不得為空" })
+    } else if (value) {
+      setErrorMessage({ ...errorMessage, content: "" })
+    }
   }
-
 
   function onSubmitClick(e: React.MouseEvent) {
     e.preventDefault()
+    if (!title.trim()) {
+      setErrorMessage({ ...errorMessage, title: "標題不得為空" })
+    }
+    if (!content.trim()) {
+      setErrorMessage({ ...errorMessage, content: "內容不得為空" })
+    }
+
     if (title && content) {
       questionAPI
         .postQuestion(token, title, content)
         .then(() => {
+          reRender?.handleRerender(true)
           useSetModal?.handleSetModal('initial')
         })
         .catch(err => console.log(err))
@@ -104,6 +124,11 @@ export function TextAreaAsk(props: textAreaProps) {
         value={title}
         onChange={handleInputChange}
       />
+      {errorMessage.title && (
+        <div className={style['title-error']}>
+          <p>標題不得為空</p>
+        </div>
+      )}
       <textarea
         name="questionContent"
         className={`${style['textareaAsk']} ${style['scrollbar']}`}
@@ -111,6 +136,11 @@ export function TextAreaAsk(props: textAreaProps) {
         placeholder={props.placeholder}
         value={content}
       />
+      {errorMessage.content && (
+        <div className={style['content-error']}>
+          <p>內容不得為空</p>
+        </div>
+      )}
       <Button
         type="button"
         style={title && content ? 'button-ask-submit' : 'button-ask-submit-disable'}
