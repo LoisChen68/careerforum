@@ -4,6 +4,7 @@ import style from './Question.module.scss'
 
 interface questionProps {
   userAccount: string
+  userRole: string
   userId: number
   userAvatar: string
   questionDate: string
@@ -12,6 +13,7 @@ interface questionProps {
   hashTags: value[]
   answerCount: number
   title: string
+  onQuestionClick: (e: React.MouseEvent) => void
 }
 
 interface value {
@@ -27,19 +29,22 @@ export default function Question(props: questionProps) {
   return (
     <div className={style['question-container']}>
       <Link to={`/careerforum/${props.questionId}`}>
-        <h3 className={style['question-title']}>{props.title}</h3>
+        <h3 className={style['question-title']} onClick={props.onQuestionClick}>{props.title}</h3>
       </Link>
       <div className={style['user']}>
-        <Link to={`/careerforum/${props.userId}`}>
+        <Link to={`/careerforum/users/${props.userId}`}>
           <UserAvatar
             userAvatar={props.userAvatar}
             avatarStyle={'body-user-avatar'}
           />
         </Link>
         <div className={style['user-text']}>
-          <Link to={`/careerforum/${props.userId}`}>
-            <p className={style['user-name']}>{props.userAccount}</p>
-          </Link>
+          <div className={style['user-name-role']}>
+            <Link to={`/careerforum/users/${props.userId}`}>
+              <p className={style['user-name']}>{props.userAccount}</p>
+            </Link>
+            <p className={style['user-role']}>{props.userRole}</p>
+          </div>
           <p className={style['user-post-date']}>{props.questionDate}</p>
         </div>
       </div>

@@ -48,32 +48,35 @@ export default function QuestionPage() {
   const { addToHistory } = useHistory()
   const param = useParams()
   const getUser = useGetUser()
-
+  const token = localStorage.getItem('token') || ""
 
   // 取得單筆問題
   useEffect(() => {
-    questionAPI
-      .getQuestion(Number(param.id))
-      .then(res => setQuestion(res.data))
-      .catch(err => console.log(err))
+    async function fetchQuestion() {
+      await questionAPI
+        .getQuestion(token, Number(param.id))
+        .then(res => setQuestion(res.data))
+        .catch(err => console.log(err))
+    }
+    fetchQuestion()
   }, [])
 
   // 取得問題底下的回答
   useEffect(() => {
     questionAPI
-      .getAnswers(Number(param.id))
+      .getAnswers(token, Number(param.id))
       .then(res => setAnswers(res.data.answers))
       .catch(err => console.log(err))
   }, [])
 
-  useEffect(() => {
+  function addHistory() {
     addToHistory(
       question.id,
       question.title,
       question.User.avatar,
       question.content
     )
-  }, [])
+  }
 
   return (
     <div className={style['discussion-thread']}>
@@ -82,6 +85,7 @@ export default function QuestionPage() {
           <Question
             title={question.title}
             userAccount={question.User.account}
+            userRole={question.User.role}
             userId={question.User.id}
             userAvatar={question.User.avatar}
             questionDate={question.createdAt}
@@ -89,12 +93,14 @@ export default function QuestionPage() {
             questionId={question.id}
             hashTags={[{ id: 1, name: '求職' }]}
             answerCount={question.answersCount}
+            onQuestionClick={() => addHistory}
           />
           <div className={style['hr']} />
           {answers.map((answer: answer) => (
             <div className={style['answer-container']} key={answer.id}>
               <Answer
                 userAvatar={answer.User.avatar}
+                userRole={answer.User.role}
                 userAccount={answer.User.account}
                 answerDate={answer.createdAt}
                 answer={answer.content}
@@ -104,7 +110,7 @@ export default function QuestionPage() {
           <form className={style['answer-form']}>
             <div className={style['answer-hr']} />
             <UserAvatar
-              userAvatar={getUser?.user?.avatar || ''}
+              userAvatar={getUser?.user?.avatar}
               avatarStyle={'body-user-avatar'}
             />
             <TextAreaAnswer
