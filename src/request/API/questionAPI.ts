@@ -11,6 +11,15 @@ export default {
       headers: { Authorization: `Bearer ${token}` },
     })
   },
+  postAnswers(token: string, id: number | undefined, content: string) {
+    return api.post(
+      `/questions/${id}/answers`,
+      { content },
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    )
+  },
   getQuestions(token: string, page: number, limit: number) {
     return api.get(`/questions?page=${page}&limit=${limit}`, {
       headers: { Authorization: `Bearer ${token}` },

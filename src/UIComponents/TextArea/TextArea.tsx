@@ -1,16 +1,21 @@
 import React, { useEffect, useRef, useState } from 'react'
 import Button from '../Button/Button'
 import style from './TextArea.module.scss'
+import questionAPI from '../../request/API/questionAPI'
+import { useRender } from '../../Contexts/RenderContext'
 
 interface textAreaProps {
   placeholder: string
   scrollHeight?: number
+  questionId?: number
 }
 
 // for 回答問題 textArea
 export function TextAreaAnswer(props: textAreaProps) {
   const [value, setValue] = useState('')
   const textAreaRef = useRef<HTMLTextAreaElement>(null)
+  const token = localStorage.getItem('token') || ''
+  const reRender = useRender()
 
   if (props.scrollHeight) {
     autoSizeTextArea(textAreaRef.current, value, props.scrollHeight)
@@ -23,6 +28,15 @@ export function TextAreaAnswer(props: textAreaProps) {
 
   function onSubmitClick(e: React.MouseEvent) {
     e.preventDefault()
+    questionAPI
+      .postAnswers(token, props.questionId, value)
+      .then((res) => {
+        console.log(res)
+        reRender?.handleRerender(true)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
   }
 
   return (

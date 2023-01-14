@@ -32,7 +32,6 @@ const loginForm = {
   password: '',
 }
 
-
 export default function Layout() {
   const token = localStorage.getItem('token') || ''
   const [authModal, setAuthModal] = useState('initialAuthModal')
@@ -331,14 +330,15 @@ export default function Layout() {
       )}
       <ToastContainer />
       <Outlet />
-      {getUser?.authPass &&
+      {getUser?.authPass && (
         <MobileFooter
           onLogoutClick={() => {
             localStorage.removeItem('token')
             getUser?.logout(false)
             navigate('/')
           }}
-        />}
+        />
+      )}
     </div>
   )
 }

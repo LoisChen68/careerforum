@@ -29,7 +29,9 @@ export default function Question(props: questionProps) {
   return (
     <div className={style['question-container']}>
       <Link to={`/careerforum/${props.questionId}`}>
-        <h3 className={style['question-title']} onClick={props.onQuestionClick}>{props.title}</h3>
+        <h3 className={style['question-title']} onClick={props.onQuestionClick}>
+          {props.title}
+        </h3>
       </Link>
       <div className={style['user']}>
         <Link to={`/careerforum/users/${props.userId}`}>

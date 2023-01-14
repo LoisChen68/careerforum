@@ -23,7 +23,10 @@ export default function Record() {
             content?: string
           }) => (
             <div className={style['list-item']} key={record.id}>
-              <UserAvatar avatarStyle={'body-user-avatar'} userAvatar={record.avatarUrl} />
+              <UserAvatar
+                avatarStyle={'body-user-avatar'}
+                userAvatar={record.avatarUrl}
+              />
               <div className={style['list-info']}>
                 <p className={style['list-title']}>{record.title}</p>
                 <p className={style['list-content']}>{record.content}</p>
