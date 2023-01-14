@@ -351,6 +351,10 @@ export default function Layout() {
       {getUser?.authPass && (
         <MobileFooter
           onLogoutClick={onLogoutClick}
+          onAskClick={() => {
+            navigate('/careerforum/home')
+            setModalStatus?.handleSetModal('ask')
+          }}
         />
       )}
     </div>

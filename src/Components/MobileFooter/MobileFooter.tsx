@@ -5,13 +5,14 @@ import { Link } from 'react-router-dom'
 
 interface mobileFooterProps {
   onLogoutClick: (e: React.MouseEvent) => void
+  onAskClick: (e: React.MouseEvent) => void
 }
 
 export default function MobileFooter(props: mobileFooterProps) {
   return (
     <footer className={style['footer']}>
       <div className={style['footer-container']}>
-        <div className={style['item']}>
+        <div className={style['item']} onClick={props.onAskClick}>
           <FaPencilAlt />
           <p>發問</p>
         </div>
