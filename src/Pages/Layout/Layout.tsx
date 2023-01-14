@@ -33,7 +33,6 @@ const loginForm = {
   password: '',
 }
 
-
 export default function Layout() {
   const token = localStorage.getItem('token') || ''
   const setModalStatus = useModalStatus()
@@ -349,10 +348,11 @@ export default function Layout() {
       )}
       <ToastContainer />
       <Outlet />
-      {getUser?.authPass &&
+      {getUser?.authPass && (
         <MobileFooter
           onLogoutClick={onLogoutClick}
-        />}
+        />
+      )}
     </div>
   )
 }

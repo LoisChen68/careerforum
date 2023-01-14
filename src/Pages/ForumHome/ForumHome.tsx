@@ -17,6 +17,7 @@ import { useGetUser } from '../../Contexts/UserContext'
 import { useHistory } from '../../utils/cookies'
 import ButtonLoader from '../../UIComponents/ButtonLoader/ButtonLoader'
 import { useModalStatus } from '../../Contexts/ModalContext'
+import { useRender } from '../../Contexts/RenderContext'
 
 export default function ForumHome() {
   const [loading, setLoading] = useState(true)
@@ -79,8 +80,8 @@ export default function ForumHome() {
                 avatarStyle={'body-user-avatar'}
               />
               <div className={style['user']}>
-                <p className={style['name']}>{getUser?.user?.account || ""}</p>
-                <p className={style['role']}>{getUser?.user?.role || ""}</p>
+                <p className={style['name']}>{getUser?.user?.account || ''}</p>
+                <p className={style['role']}>{getUser?.user?.role || ''}</p>
                 <p></p>
               </div>
             </div>
@@ -126,20 +127,23 @@ function DiscussionThread() {
   const getUser = useGetUser()
   const { addToHistory } = useHistory()
   const [page, setPage] = useState(2)
+  const [limit, setLimit] = useState(3)
   const [hasMore, setHasMore] = useState(true)
   const [loading, setLoading] = useState(true)
   const [questions, setQuestions] = useState([])
   const [questionStatus, setQuestionStatus] = useState('')
+  const render = useRender()
 
   // 這裡的 loading 是用在 Button 的小型 loader
   // 當 API 取得完成將 loading 設為 false
   useEffect(() => {
     questionsAPI
-      .getQuestions(token, 1, 3)
+      .getQuestions(token, 1, limit)
       .then((res) => {
         const questionData = res.data.questions
         setQuestions(questionData)
         setLoading(false)
+        render?.handleRerender(false)
         // 當回傳資料長度為 0 ，設置狀態為 'noting' 為顯示 '目前還沒有人問問題' 字段
         if (questionData.length === 0) {
           setQuestionStatus('noting')
@@ -148,7 +152,7 @@ function DiscussionThread() {
         }
       })
       .catch((err) => console.log(err))
-  }, [])
+  }, [render?.isRender])
 
   // lazy loading for questions
   const changePage = () => {
@@ -159,6 +163,7 @@ function DiscussionThread() {
         if (questionData.length === 0) setHasMore(false)
         setQuestions(questions.concat(questionData))
         setPage((page) => page + 1)
+        setLimit((limit) => limit + 3)
       })
       .catch((err) => console.error(err))
   }
@@ -169,7 +174,7 @@ function DiscussionThread() {
         dataLength={questions.length}
         next={changePage}
         hasMore={hasMore}
-        loader={loading ? <ButtonLoader /> : ""}
+        loader={loading ? <ButtonLoader /> : ''}
       >
         {questions.map((question: question) => (
           <div className={style['wrapper']} key={question.id}>
@@ -203,7 +208,9 @@ function DiscussionThread() {
                   answerDate={question.Answers[0]?.createdAt}
                   answer={question.Answers[0]?.content}
                 />
-              ) : <p>目前還沒有人回答</p>}
+              ) : (
+                <p>目前還沒有人回答</p>
+              )}
               <form className={style['answer-form']}>
                 <UserAvatar
                   userAvatar={getUser?.user?.avatar}
@@ -212,6 +219,7 @@ function DiscussionThread() {
                 <TextAreaAnswer
                   placeholder={'輸入你的回答...'}
                   scrollHeight={100}
+                  questionId={question.id}
                 />
               </form>
             </div>
