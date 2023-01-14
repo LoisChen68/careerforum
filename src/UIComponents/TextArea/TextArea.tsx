@@ -14,7 +14,7 @@ interface textAreaProps {
 export function TextAreaAnswer(props: textAreaProps) {
   const [value, setValue] = useState('')
   const textAreaRef = useRef<HTMLTextAreaElement>(null)
-  const token = localStorage.getItem('token') || ""
+  const token = localStorage.getItem('token') || ''
   const reRender = useRender()
 
   if (props.scrollHeight) {
@@ -30,11 +30,13 @@ export function TextAreaAnswer(props: textAreaProps) {
     e.preventDefault()
     questionAPI
       .postAnswers(token, props.questionId, value)
-      .then(res => {
+      .then((res) => {
         console.log(res)
         reRender?.handleRerender(true)
       })
-      .catch(err => { console.log(err) })
+      .catch((err) => {
+        console.log(err)
+      })
   }
 
   return (

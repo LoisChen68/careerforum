@@ -9,7 +9,7 @@
   z-index: 10;
 }
 
-.spinner>div {
+.spinner > div {
   width: 18px;
   height: 18px;
   background-color: #22577e;
@@ -30,7 +30,6 @@
 }
 
 @-webkit-keyframes sk-bouncedelay {
-
   0%,
   80%,
   100% {
@@ -43,7 +42,6 @@
 }
 
 @keyframes sk-bouncedelay {
-
   0%,
   80%,
   100% {

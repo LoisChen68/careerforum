@@ -7,7 +7,11 @@ interface RenderContextData {
 
 const RenderContext = createContext<RenderContextData | undefined>(undefined)
 
-export default function RenderContextProvider({ children }: { children: React.ReactNode }) {
+export default function RenderContextProvider({
+  children,
+}: {
+  children: React.ReactNode
+}) {
   const [isRender, setIsrender] = useState(false)
 
   const handleRerender = (value: boolean) => {
@@ -16,7 +20,7 @@ export default function RenderContextProvider({ children }: { children: React.Re
 
   const RenderContextData: RenderContextData = {
     isRender,
-    handleRerender
+    handleRerender,
   }
 
   return (

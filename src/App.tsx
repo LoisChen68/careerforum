@@ -11,7 +11,7 @@ import RenderContextProvider from './Contexts/RenderContext'
 export default function App() {
   return (
     <RenderContextProvider>
-      <UserContextProvider >
+      <UserContextProvider>
         <Routes>
           <Route path="/careerforum" element={<Layout />}>
             <Route path="home" element={<ForumHome />} />

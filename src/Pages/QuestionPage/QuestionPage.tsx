@@ -11,18 +11,18 @@ import { useGetUser } from '../../Contexts/UserContext'
 
 const questionData = {
   id: 0,
-  title: "",
-  content: "",
-  createdAt: "",
-  updatedAt: "",
+  title: '',
+  content: '',
+  createdAt: '',
+  updatedAt: '',
   userId: 0,
   User: {
     id: 0,
-    role: "",
-    account: "",
-    avatar: ""
+    role: '',
+    account: '',
+    avatar: '',
   },
-  answersCount: 0
+  answersCount: 0,
 }
 
 interface answer {
@@ -48,15 +48,15 @@ export default function QuestionPage() {
   const { addToHistory } = useHistory()
   const param = useParams()
   const getUser = useGetUser()
-  const token = localStorage.getItem('token') || ""
+  const token = localStorage.getItem('token') || ''
 
   // 取得單筆問題
   useEffect(() => {
     async function fetchQuestion() {
       await questionAPI
         .getQuestion(token, Number(param.id))
-        .then(res => setQuestion(res.data))
-        .catch(err => console.log(err))
+        .then((res) => setQuestion(res.data))
+        .catch((err) => console.log(err))
     }
     fetchQuestion()
   }, [])
@@ -65,8 +65,8 @@ export default function QuestionPage() {
   useEffect(() => {
     questionAPI
       .getAnswers(token, Number(param.id))
-      .then(res => setAnswers(res.data.answers))
-      .catch(err => console.log(err))
+      .then((res) => setAnswers(res.data.answers))
+      .catch((err) => console.log(err))
   }, [])
 
   function addHistory() {

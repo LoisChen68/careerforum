@@ -1,5 +1,5 @@
 import { createContext, useContext, useState } from 'react'
-import userAPI from "../request/API/userAPI"
+import userAPI from '../request/API/userAPI'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 
@@ -19,16 +19,16 @@ interface userDataProps {
 
 const userData = {
   id: 0,
-  role: "",
-  name: "",
-  email: "",
-  account: "",
-  avatar: "",
-  cover: "",
-  deletedAt: "",
-  approvalStatus: "",
+  role: '',
+  name: '',
+  email: '',
+  account: '',
+  avatar: '',
+  cover: '',
+  deletedAt: '',
+  approvalStatus: '',
   isAdmin: false,
-  isSuspended: false
+  isSuspended: false,
 }
 
 interface UserContextData {
@@ -40,7 +40,11 @@ interface UserContextData {
 
 const getUserContext = createContext<UserContextData | undefined>(undefined)
 
-export default function UserContextProvider({ children }: { children: React.ReactNode }) {
+export default function UserContextProvider({
+  children,
+}: {
+  children: React.ReactNode
+}) {
   const navigate = useNavigate()
   const [user, setUser] = useState(userData)
   const [authPass, setAuthPass] = useState(false)
@@ -48,8 +52,10 @@ export default function UserContextProvider({ children }: { children: React.Reac
   function getUser(token: string) {
     userAPI
       .getCurrentUser(token)
-      .then(res => { setUser(res.data), setAuthPass(true) })
-      .catch(err => {
+      .then((res) => {
+        setUser(res.data), setAuthPass(true)
+      })
+      .catch((err) => {
         console.log(err),
           setAuthPass(false),
           navigate('/'),
@@ -74,7 +80,7 @@ export default function UserContextProvider({ children }: { children: React.Reac
     getUser,
     user: user,
     authPass: authPass,
-    logout
+    logout,
   }
 
   return (
@@ -83,7 +89,6 @@ export default function UserContextProvider({ children }: { children: React.Reac
     </getUserContext.Provider>
   )
 }
-
 
 export function useGetUser() {
   return useContext(getUserContext)

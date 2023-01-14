@@ -12,7 +12,8 @@ export default {
     })
   },
   postAnswers(token: string, id: number | undefined, content: string) {
-    return api.post(`/questions/${id}/answers`,
+    return api.post(
+      `/questions/${id}/answers`,
       { content },
       {
         headers: { Authorization: `Bearer ${token}` },

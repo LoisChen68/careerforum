@@ -79,8 +79,8 @@ export default function ForumHome() {
                 avatarStyle={'body-user-avatar'}
               />
               <div className={style['user']}>
-                <p className={style['name']}>{getUser?.user?.account || ""}</p>
-                <p className={style['role']}>{getUser?.user?.role || ""}</p>
+                <p className={style['name']}>{getUser?.user?.account || ''}</p>
+                <p className={style['role']}>{getUser?.user?.role || ''}</p>
                 <p></p>
               </div>
             </div>
@@ -173,7 +173,7 @@ function DiscussionThread() {
         dataLength={questions.length}
         next={changePage}
         hasMore={hasMore}
-        loader={loading ? <ButtonLoader /> : ""}
+        loader={loading ? <ButtonLoader /> : ''}
       >
         {questions.map((question: question) => (
           <div className={style['wrapper']} key={question.id}>
@@ -207,7 +207,9 @@ function DiscussionThread() {
                   answerDate={question.Answers[0]?.createdAt}
                   answer={question.Answers[0]?.content}
                 />
-              ) : <p>目前還沒有人回答</p>}
+              ) : (
+                <p>目前還沒有人回答</p>
+              )}
               <form className={style['answer-form']}>
                 <UserAvatar
                   userAvatar={getUser?.user?.avatar}
