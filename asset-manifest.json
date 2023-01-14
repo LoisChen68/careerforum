@@ -1,16 +1,16 @@
 {
   "files": {
-    "main.css": "/career-forum/static/css/main.e78d6e99.css",
-    "main.js": "/career-forum/static/js/main.282f13cb.js",
-    "static/js/787.224bcf62.chunk.js": "/career-forum/static/js/787.224bcf62.chunk.js",
-    "service-worker.js": "/career-forum/service-worker.js",
-    "index.html": "/career-forum/index.html",
-    "main.e78d6e99.css.map": "/career-forum/static/css/main.e78d6e99.css.map",
-    "main.282f13cb.js.map": "/career-forum/static/js/main.282f13cb.js.map",
-    "787.224bcf62.chunk.js.map": "/career-forum/static/js/787.224bcf62.chunk.js.map"
+    "main.css": "/careerforum/static/css/main.6671fa16.css",
+    "main.js": "/careerforum/static/js/main.a97df0ad.js",
+    "static/js/787.224bcf62.chunk.js": "/careerforum/static/js/787.224bcf62.chunk.js",
+    "service-worker.js": "/careerforum/service-worker.js",
+    "index.html": "/careerforum/index.html",
+    "main.6671fa16.css.map": "/careerforum/static/css/main.6671fa16.css.map",
+    "main.a97df0ad.js.map": "/careerforum/static/js/main.a97df0ad.js.map",
+    "787.224bcf62.chunk.js.map": "/careerforum/static/js/787.224bcf62.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.e78d6e99.css",
-    "static/js/main.282f13cb.js"
+    "static/css/main.6671fa16.css",
+    "static/js/main.a97df0ad.js"
   ]
 }
