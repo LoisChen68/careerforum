@@ -18,7 +18,7 @@ export default function Header(props: headerProps) {
     <header className={style['header']}>
       <div className={style['header-wrapper']}>
         <div className={style['header-nav']}>
-          <Link to="/">
+          <Link to="/careerforum">
             <h3 className={style['header-title']}>Career Forum</h3>
           </Link>
           <div className={style['nav-link']}>

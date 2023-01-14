@@ -285,7 +285,7 @@ export default function Layout() {
   function onLogoutClick() {
     localStorage.removeItem('token')
     getUser?.logout(false)
-    navigate('/')
+    navigate('/careerforum')
   }
 
   // 按下 Login 表單中關閉表單的地方
