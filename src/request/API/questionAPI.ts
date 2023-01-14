@@ -1,10 +1,19 @@
 import { api } from '../index'
 
 export default {
-  getQuestion(id: number | undefined) {
-    return api.get(`/questions/${id}`)
+  getQuestion(token: string, id: number | undefined) {
+    return api.get(`/questions/${id}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
   },
-  getAnswers(id: number | undefined) {
-    return api.get(`/questions/${id}/answers`)
-  }
+  getAnswers(token: string, id: number | undefined) {
+    return api.get(`/questions/${id}/answers`, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+  },
+  getQuestions(token: string, page: number, limit: number) {
+    return api.get(`/questions?page=${page}&limit=${limit}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+  },
 }
