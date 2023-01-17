@@ -4,10 +4,28 @@
 body {
   margin: 0;
   padding: 0;
+  // background-color: color.$primary-color;
+  background-color: #1f589941;
+  overflow-x: hidden;
 }
 
 * {
   box-sizing: border-box;
+}
+
+textarea {
+  resize: none;
+  margin: 0;
+  padding: 0;
+}
+
+a {
+  color: color.$primary-color;
+  transition: 0.3s ease-out;
+
+  &:hover {
+    color: color.$secondary-color;
+  }
 }
 
 h1,
@@ -33,15 +51,6 @@ a,
 a:hover,
 a:focus {
   text-decoration: none;
-}
-
-a {
-  color: color.$primary-color;
-}
-
-a:hover,
-a:focus {
-  color: color.$secondary-color;
 }
 
 img {

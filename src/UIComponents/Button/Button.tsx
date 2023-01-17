@@ -1,15 +1,15 @@
 import ButtonLoader from '../ButtonLoader/ButtonLoader'
 import style from './Button.module.scss'
 
-interface p {
-  innerText: string
+interface buttonProps {
+  children: React.ReactElement
   style: string
   type: 'submit' | 'reset' | 'button' | undefined
   onClick: (e: React.MouseEvent) => void
   disabled: boolean
 }
 
-export default function Button(props: p) {
+export default function Button(props: buttonProps) {
   return (
     <button
       className={style[props.style]}
@@ -27,7 +27,7 @@ export default function Button(props: p) {
           </p>
         </>
       ) : (
-        <p className={style['button-text']}>{props.innerText}</p>
+        <div className={style['button-text']}>{props.children}</div>
       )}
     </button>
   )

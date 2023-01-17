@@ -1,9 +1,10 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Outlet, useNavigate } from 'react-router-dom'
 import Header from '../../Components/Header/Header'
 import Login from '../../Components/Login/Login'
 import SignUp from '../../Components/SignUp/SignUp'
-import authAPI from '../../request/API/auth'
+import authAPI from '../../request/API/authAPI'
+import MobileFooter from '../../Components/MobileFooter/MobileFooter'
 import {
   isSignUpValid,
   isRoleValue,
@@ -13,6 +14,7 @@ import {
 } from '../../utils/valid'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+import { useGetUser } from '../../Contexts/UserContext'
 
 const formData = {
   role: '',
@@ -31,13 +33,18 @@ const loginForm = {
 }
 
 export default function Layout() {
+  const token = localStorage.getItem('token') || ''
   const [authModal, setAuthModal] = useState('initialAuthModal')
   const [signUpData, setSignUpData] = useState(formData)
   const [loginData, setLoginData] = useState(loginForm)
   const [errorMessage, setErrorMessage] = useState(formData)
   const [submit, setSubmit] = useState(false)
-  const [authPass, setAuthPass] = useState(false)
   const navigate = useNavigate()
+  const getUser = useGetUser()
+
+  useEffect(() => {
+    getUser?.getUser(token)
+  }, [])
 
   //送出登入表單
   function handleLoginSubmit(e: React.MouseEvent) {
@@ -57,6 +64,7 @@ export default function Layout() {
         })
         .then((res) => {
           const token = res.data.token || ''
+          localStorage.setItem('token', token)
           setSubmit(false)
           toast.success('登入成功', {
             position: 'top-right',
@@ -68,14 +76,18 @@ export default function Layout() {
             progress: undefined,
             theme: 'light',
           })
-          localStorage.setItem('token', token)
-          setAuthPass(true)
+          getUser?.logout(true)
           setAuthModal('initialAuthModal')
           setLoginData({
             ...loginData,
             password: '',
           })
-          navigate('/career-forum/Home')
+
+          navigate('/careerforum/home')
+        })
+        .then(() => {
+          const token = localStorage.getItem('token') || ''
+          getUser?.getUser(token)
         })
         .catch((err) => {
           if (err.response.data.title === 'Incorrect email or password') {
@@ -251,10 +263,11 @@ export default function Layout() {
         onSignUpClick={() => setAuthModal('singUp')}
         onLogoutClick={() => {
           localStorage.removeItem('token')
-          setAuthPass(false)
+          getUser?.logout(false)
           navigate('/')
         }}
-        authPass={authPass}
+        avatar={getUser?.user?.avatar || ''}
+        authPass={getUser?.authPass || false}
       />
       {authModal === 'login' && (
         <Login
@@ -317,6 +330,15 @@ export default function Layout() {
       )}
       <ToastContainer />
       <Outlet />
+      {getUser?.authPass && (
+        <MobileFooter
+          onLogoutClick={() => {
+            localStorage.removeItem('token')
+            getUser?.logout(false)
+            navigate('/')
+          }}
+        />
+      )}
     </div>
   )
 }

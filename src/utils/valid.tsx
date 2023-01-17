@@ -1,4 +1,4 @@
-interface s {
+interface signUpData {
   role: string
   email: string
   account: string
@@ -6,13 +6,17 @@ interface s {
   confirmPassword: string
 }
 
-interface l {
+interface loginData {
   email: string
   password: string
 }
 
 //TODO: 驗證送出的註冊表單 onSignUpSubmitValid
-export function isSignUpValid(props: s, data: s, emailRule: RegExp) {
+export function isSignUpValid(
+  props: signUpData,
+  data: signUpData,
+  emailRule: RegExp
+) {
   // 驗證是否輸入身分
   if (!data.role.trim()) {
     props = { ...props, role: '欄位不得為空' }
@@ -82,7 +86,11 @@ export function isSignUpValid(props: s, data: s, emailRule: RegExp) {
 }
 
 //TODO: 驗證登入表單 onLoginSubmitValid
-export function isLoginValid(props: s, data: l, emailRule: RegExp) {
+export function isLoginValid(
+  props: signUpData,
+  data: loginData,
+  emailRule: RegExp
+) {
   // 驗證是否輸入Email
   if (!data.email.trim()) {
     props = { ...props, email: '欄位不得為空' }
@@ -111,7 +119,7 @@ export function isLoginValid(props: s, data: l, emailRule: RegExp) {
 
 //TODO: 驗證註冊表單輸入 onSingUpInputChangeValid
 export function signUpValueValid(
-  props: s,
+  props: signUpData,
   inputName: string,
   value: string,
   password: string,
@@ -178,7 +186,11 @@ export function signUpValueValid(
 }
 
 //TODO: 驗證登入表單輸入 onLoginInputChangeValid
-export function loginValueValid(props: s, inputName: string, value: string) {
+export function loginValueValid(
+  props: signUpData,
+  inputName: string,
+  value: string
+) {
   if (!value.trim()) {
     props = {
       ...props,
@@ -190,7 +202,7 @@ export function loginValueValid(props: s, inputName: string, value: string) {
   return props
 }
 
-export function isEmailValue(props: s, value: string) {
+export function isEmailValue(props: signUpData, value: string) {
   if (!value.trim()) {
     props = { ...props, email: '欄位不得為空' }
   } else {
@@ -199,7 +211,7 @@ export function isEmailValue(props: s, value: string) {
   return props
 }
 
-export function isRoleValue(props: s, value: string) {
+export function isRoleValue(props: signUpData, value: string) {
   if (!value.trim()) {
     props = { ...props, role: '欄位不得為空' }
   } else {
@@ -208,7 +220,7 @@ export function isRoleValue(props: s, value: string) {
   return props
 }
 
-export function isAccountValue(props: s, value: string) {
+export function isAccountValue(props: signUpData, value: string) {
   if (!value.trim()) {
     props = { ...props, account: '欄位不得為空' }
   } else {
@@ -218,7 +230,7 @@ export function isAccountValue(props: s, value: string) {
 }
 
 export function isPasswordValue(
-  props: s,
+  props: signUpData,
   value: string,
   confirmPassword: string
 ) {
@@ -248,7 +260,7 @@ export function isPasswordValue(
 }
 
 export function isConfirmPasswordValue(
-  props: s,
+  props: signUpData,
   value: string,
   password: string
 ) {

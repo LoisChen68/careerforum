@@ -4,7 +4,7 @@ import Modal from '../../UIComponents/Modal/Modal'
 import Selector from '../../UIComponents/Selector/Selector'
 import style from './SignUp.module.scss'
 
-interface p {
+interface signUpProps {
   onConfirm: (e: React.MouseEvent) => void
   onSingUpSubmit: (e: React.MouseEvent) => void
   onLoginClick: (e: React.MouseEvent) => void
@@ -27,9 +27,14 @@ interface o {
   confirmPassword: string
 }
 
-export default function SignUp(props: p) {
+export default function SignUp(props: signUpProps) {
   return (
-    <Modal title="註冊" onConfirm={props.onConfirm}>
+    <Modal
+      title="註冊"
+      onConfirm={props.onConfirm}
+      modalStyle="modal-container"
+      closeButtonStyle={'button-close-auth'}
+    >
       <>
         <Selector
           htmlFor="role"
@@ -89,13 +94,16 @@ export default function SignUp(props: p) {
           errorMessage={props.errorMessage.confirmPassword}
           onChange={props.onInputChange}
         />
-        <Button
-          type="submit"
-          style="button-submit"
-          onClick={props.onSingUpSubmit}
-          innerText="註冊"
-          disabled={props.disabled}
-        />
+        <div className={style['btn-container']}>
+          <Button
+            type="submit"
+            style="button-submit"
+            onClick={props.onSingUpSubmit}
+            disabled={props.disabled}
+          >
+            <p>註冊</p>
+          </Button>
+        </div>
         <p className={style['footer']}>
           已有帳號？
           <a href="#" onClick={props.onLoginClick}>

@@ -1,0 +1,56 @@
+@use '../../variable' as color;
+
+.discussion-thread {
+  position: relative;
+  top: 50px;
+  display: grid;
+  height: 100vh;
+  grid-template-columns: repeat(15, 1fr);
+  row-gap: 14px;
+  width: 100%;
+  z-index: 2;
+}
+
+.wrapper {
+  padding: 10px 0;
+  display: flex;
+  grid-column: 1/16;
+  justify-content: center;
+  background-color: #fff;
+}
+
+.container {
+  padding-bottom: 140px;
+  position: relative;
+  width: 90%;
+}
+
+.hr {
+  margin: 13px 0;
+  height: 1px;
+  background-color: color.$primary-color;
+}
+
+.answer-container {
+  margin-bottom: 20px;
+}
+
+.answer-form {
+  position: fixed;
+  padding: 20px 0;
+  bottom: 0px;
+  width: 90%;
+  display: flex;
+  background-color: #fff;
+  gap: 5px;
+  align-items: flex-end;
+}
+
+.answer-hr {
+  position: absolute;
+  top: 0;
+  left: -5%;
+  width: 100vw;
+  height: 1px;
+  background-color: color.$dim-gray;
+}

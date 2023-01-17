@@ -1,0 +1,58 @@
+@use '../../variable' as color;
+@use '../../mixin' as func;
+
+.question-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+}
+
+.question-title {
+  @include func.font-setting(1rem, 700, color.$primary-font);
+}
+
+.user {
+  display: flex;
+  gap: 5px;
+}
+
+.user-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.user-name-role {
+  display: flex;
+  gap: 5px;
+}
+
+.user-name,
+.user-role,
+.user-post-date {
+  @include func.font-setting(0.75rem, 400, color.$primary-font);
+}
+
+.user-role {
+  padding: 0 5px;
+  background-color: color.$primary-color;
+  color: #fff;
+  border-radius: 5px;
+}
+
+.content {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+  color: black;
+}
+
+.hash-tags {
+  display: none;
+}
+
+.answer-count {
+  @include func.font-setting(0.75rem, 400, color.$gray-font);
+}

@@ -3,7 +3,7 @@ import Input from '../../UIComponents/Input/Input'
 import Modal from '../../UIComponents/Modal/Modal'
 import style from './Login.module.scss'
 
-interface p {
+interface loginProps {
   onConfirm: (e: React.MouseEvent) => void
   onLoginSubmit: (e: React.MouseEvent) => void
   onSingUpClick: (e: React.MouseEvent) => void
@@ -19,10 +19,15 @@ interface o {
   password: string
 }
 
-export default function Login(props: p) {
+export default function Login(props: loginProps) {
   return (
     <>
-      <Modal title="登入" onConfirm={props.onConfirm}>
+      <Modal
+        title="登入"
+        onConfirm={props.onConfirm}
+        modalStyle="modal-container"
+        closeButtonStyle={'button-close-auth'}
+      >
         <>
           <Input
             htmlFor="email"
@@ -48,13 +53,16 @@ export default function Login(props: p) {
             errorMessage={props.errorMessage.password}
             onChange={props.onInputChange}
           />
-          <Button
-            type="submit"
-            style="button-submit"
-            onClick={props.onLoginSubmit}
-            innerText="送出"
-            disabled={props.disabled}
-          />
+          <div className={style['btn-container']}>
+            <Button
+              type="submit"
+              style="button-submit"
+              onClick={props.onLoginSubmit}
+              disabled={props.disabled}
+            >
+              <p>登入</p>
+            </Button>
+          </div>
           <p className={style['footer']}>
             尚未有帳號？
             <a href="#" onClick={props.onSingUpClick}>
