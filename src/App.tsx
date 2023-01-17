@@ -6,23 +6,30 @@ import ForumHome from './Pages/ForumHome/ForumHome'
 import QuestionPage from './Pages/QuestionPage/QuestionPage'
 import AdminUser from './Pages/Admin/AdminUser'
 import UserContextProvider from './Contexts/UserContext'
+import ModalContextProvider from './Contexts/ModalContext'
 import RenderContextProvider from './Contexts/RenderContext'
+import UserProfile from './Pages/UserProfile/UserProfile'
+import UserSetting from './Pages/UserSetting/UserSetting'
 
 export default function App() {
   return (
     <RenderContextProvider>
-      <UserContextProvider>
-        <Routes>
-          <Route path="/careerforum" element={<Layout />}>
-            <Route path="home" element={<ForumHome />} />
-            <Route path=":id" element={<QuestionPage />} />
-            <Route path="admin" element={<AdminLayout />}>
-              <Route path="users" element={<AdminUser />} />
+      <ModalContextProvider>
+        <UserContextProvider>
+          <Routes>
+            <Route path="/careerforum" element={<Layout />}>
+              <Route path="home" element={<ForumHome />} />
+              <Route path=":id" element={<QuestionPage />} />
+              <Route path="users/:id" element={<UserProfile />} />
+              <Route path="users/setting/:id" element={<UserSetting />} />
+              <Route path="admin" element={<AdminLayout />}>
+                <Route path="users" element={<AdminUser />} />
+              </Route>
             </Route>
-          </Route>
-          <Route path="/*" element={<Layout />}></Route>
-        </Routes>
-      </UserContextProvider>
+            <Route path="/*" element={<Layout />}></Route>
+          </Routes>
+        </UserContextProvider>
+      </ModalContextProvider>
     </RenderContextProvider>
   )
 }

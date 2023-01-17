@@ -15,6 +15,7 @@ import {
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { useGetUser } from '../../Contexts/UserContext'
+import { useModalStatus } from '../../Contexts/ModalContext'
 
 const formData = {
   role: '',
@@ -34,7 +35,7 @@ const loginForm = {
 
 export default function Layout() {
   const token = localStorage.getItem('token') || ''
-  const [authModal, setAuthModal] = useState('initialAuthModal')
+  const setModalStatus = useModalStatus()
   const [signUpData, setSignUpData] = useState(formData)
   const [loginData, setLoginData] = useState(loginForm)
   const [errorMessage, setErrorMessage] = useState(formData)
@@ -77,7 +78,7 @@ export default function Layout() {
             theme: 'light',
           })
           getUser?.logout(true)
-          setAuthModal('initialAuthModal')
+          setModalStatus?.handleSetModal('initial')
           setLoginData({
             ...loginData,
             password: '',
@@ -87,6 +88,7 @@ export default function Layout() {
         })
         .then(() => {
           const token = localStorage.getItem('token') || ''
+          localStorage.setItem('email', loginData.email)
           getUser?.getUser(token)
         })
         .catch((err) => {
@@ -166,7 +168,7 @@ export default function Layout() {
             progress: undefined,
             theme: 'light',
           })
-          setAuthModal('login')
+          setModalStatus?.handleSetModal('login')
           localStorage.setItem('email', signUpData.email)
           setLoginData({
             ...loginData,
@@ -256,69 +258,85 @@ export default function Layout() {
     )
   }
 
+  // 按下 Header 或 SignUp 表單中的 登入
+  function onLoginClick() {
+    setModalStatus?.handleSetModal('login')
+    setErrorMessage(formData)
+    setSignUpData({
+      ...signUpData,
+      password: '',
+      confirmPassword: '',
+    })
+  }
+
+  // 按下 Header 或 Login 表單中的 註冊
+  function onSignUpClick() {
+    setModalStatus?.handleSetModal('singUp')
+    setErrorMessage(formData)
+    setSignUpData({
+      ...signUpData,
+      password: '',
+      confirmPassword: '',
+    })
+  }
+
+  // 按下登出
+  function onLogoutClick() {
+    localStorage.removeItem('token')
+    getUser?.logout(false)
+    navigate('/careerforum')
+  }
+
+  // 按下 Login 表單中關閉表單的地方
+  function onLoginConfirm() {
+    setModalStatus?.handleSetModal('initial')
+    setErrorMessage(formData)
+    setLoginData({
+      ...loginData,
+      password: '',
+    })
+  }
+
+  // 按下 signUp 表單中關閉表單的地方
+  function onSignUpConfirm() {
+    setModalStatus?.handleSetModal('initial')
+    setErrorMessage(formData)
+    setSignUpData({
+      ...signUpData,
+      password: '',
+      confirmPassword: '',
+    })
+  }
+
+
   return (
     <div>
       <Header
-        onLoginClick={() => setAuthModal('login')}
-        onSignUpClick={() => setAuthModal('singUp')}
-        onLogoutClick={() => {
-          localStorage.removeItem('token')
-          getUser?.logout(false)
-          navigate('/')
-        }}
+        onLoginClick={onLoginClick}
+        onSignUpClick={onSignUpClick}
+        onLogoutClick={onLogoutClick}
         avatar={getUser?.user?.avatar || ''}
         authPass={getUser?.authPass || false}
       />
-      {authModal === 'login' && (
+      {setModalStatus?.modalStatus === 'login' && (
         <Login
-          onConfirm={() => {
-            setAuthModal('initialAuthModal')
-            setErrorMessage(formData)
-            setSignUpData({
-              ...signUpData,
-              password: '',
-            })
-          }}
+          onConfirm={onLoginConfirm}
           onInputChange={handleLoginInputChange}
           onLoginSubmit={handleLoginSubmit}
-          onSingUpClick={() => {
-            setAuthModal('singUp')
-            setErrorMessage(formData)
-            setSignUpData({
-              ...signUpData,
-              password: '',
-              confirmPassword: '',
-            })
-          }}
+          onSingUpClick={onSignUpClick}
           email={loginData.email}
           password={loginData.password}
           errorMessage={errorMessage}
           disabled={submit}
         />
       )}
-      {authModal === 'singUp' && (
+      {setModalStatus?.modalStatus === 'singUp' && (
         <SignUp
-          onConfirm={() => {
-            setAuthModal('initialAuthModal')
-            setErrorMessage(formData)
-            setSignUpData({
-              ...signUpData,
-              password: '',
-              confirmPassword: '',
-            })
-          }}
+          onConfirm={onSignUpConfirm}
           onRoleChange={handleRoleChange}
           onSingUpSubmit={handleSingUpSubmit}
           onInputChange={handleSingUpInputChange}
-          onLoginClick={() => {
-            setAuthModal('login')
-            setErrorMessage(formData)
-            setSignUpData({
-              ...signUpData,
-              password: '',
-              confirmPassword: '',
-            })
-          }}
+          onLoginClick={onLoginClick}
           role={signUpData.role}
           email={signUpData.email}
           account={signUpData.account}
@@ -332,10 +350,10 @@ export default function Layout() {
       <Outlet />
       {getUser?.authPass && (
         <MobileFooter
-          onLogoutClick={() => {
-            localStorage.removeItem('token')
-            getUser?.logout(false)
-            navigate('/')
+          onLogoutClick={onLogoutClick}
+          onAskClick={() => {
+            navigate('/careerforum/home')
+            setModalStatus?.handleSetModal('ask')
           }}
         />
       )}

@@ -1,0 +1,22 @@
+.user-profile {
+  position: relative;
+  top: 50px;
+  display: grid;
+  height: 100vh;
+  grid-template-columns: repeat(15, 1fr);
+  row-gap: 14px;
+  width: 100%;
+}
+
+.wrapper {
+  padding: 10px 0;
+  display: flex;
+  grid-column: 1/16;
+  justify-content: center;
+  background-color: #fff;
+}
+
+.container {
+  position: relative;
+  width: 90%;
+}

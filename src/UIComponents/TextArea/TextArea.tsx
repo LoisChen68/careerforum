@@ -1,8 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react'
+import questionAPI from '../../request/API/questionAPI'
 import Button from '../Button/Button'
 import style from './TextArea.module.scss'
-import questionAPI from '../../request/API/questionAPI'
 import { useRender } from '../../Contexts/RenderContext'
+import { useModalStatus } from '../../Contexts/ModalContext'
 
 interface textAreaProps {
   placeholder: string
@@ -30,8 +31,7 @@ export function TextAreaAnswer(props: textAreaProps) {
     e.preventDefault()
     questionAPI
       .postAnswers(token, props.questionId, value)
-      .then((res) => {
-        console.log(res)
+      .then(() => {
         reRender?.handleRerender(true)
       })
       .catch((err) => {
@@ -62,29 +62,88 @@ export function TextAreaAnswer(props: textAreaProps) {
   )
 }
 
-export function TextAreaAsk(props: textAreaProps) {
-  const [value, setValue] = useState('')
 
-  function handleChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
+export function TextAreaAsk(props: textAreaProps) {
+  const token = localStorage.getItem('token')
+  const useSetModal = useModalStatus()
+  const reRender = useRender()
+  const [title, setTitle] = useState("")
+  const [content, setContent] = useState("")
+  const [errorMessage, setErrorMessage] = useState({ title: "", content: "" })
+
+  function handleInputChange(e: React.ChangeEvent<HTMLInputElement>) {
     const value = e.target.value
-    setValue(value)
+    setTitle(e.target.value)
+    if (!value) {
+      setErrorMessage({ ...errorMessage, title: "標題不得為空" })
+    } else if (value) {
+      setErrorMessage({ ...errorMessage, title: "" })
+    }
+  }
+
+  function handleTextAreaChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
+    const value = e.target.value
+    setContent(value)
+    if (!value) {
+      setErrorMessage({ ...errorMessage, content: "內容不得為空" })
+    } else if (value) {
+      setErrorMessage({ ...errorMessage, content: "" })
+    }
   }
 
   function onSubmitClick(e: React.MouseEvent) {
     e.preventDefault()
+    if (!title.trim()) {
+      setErrorMessage({ ...errorMessage, title: "標題不得為空" })
+    }
+    if (!content.trim()) {
+      setErrorMessage({ ...errorMessage, content: "內容不得為空" })
+    }
+
+    if (title && content) {
+      questionAPI
+        .postQuestion(token, title, content)
+        .then(() => {
+          reRender?.handleRerender(true)
+          useSetModal?.handleSetModal('initial')
+        })
+        .catch(err => console.log(err))
+    }
+
   }
 
   return (
     <>
-      <textarea
-        className={`${style['textareaAsk']} ${style['scrollbar']}`}
-        onChange={handleChange}
-        placeholder={props.placeholder}
-        value={value}
+      <input
+        className={style['question-title-input']}
+        id="questionTitle"
+        name="questionTitle"
+        type="text"
+        required={true}
+        placeholder="標題"
+        value={title}
+        onChange={handleInputChange}
       />
+      {errorMessage.title && (
+        <div className={style['title-error']}>
+          <p>標題不得為空</p>
+        </div>
+      )}
+      <textarea
+        name="questionContent"
+        className={`${style['textareaAsk']} ${style['scrollbar']}`}
+        onChange={handleTextAreaChange}
+        placeholder={props.placeholder}
+        value={content}
+      />
+      {errorMessage.content && (
+        <div className={style['content-error']}>
+          <p>內容不得為空</p>
+        </div>
+      )}
       <Button
         type="button"
-        style={value ? 'button-ask-submit' : 'button-ask-submit-disable'}
+        style={title && content ? 'button-ask-submit' : 'button-ask-submit-disable'}
         onClick={onSubmitClick}
         disabled={false}
       >
