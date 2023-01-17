@@ -48,6 +48,7 @@ export default function UserContextProvider({
   const navigate = useNavigate()
   const [user, setUser] = useState(userData)
   const [authPass, setAuthPass] = useState(false)
+  const pathName = window.location.pathname
 
   function getUser(token: string) {
     userAPI
@@ -58,7 +59,11 @@ export default function UserContextProvider({
       .catch((err) => {
         console.log(err),
           setAuthPass(false),
-          navigate('/'),
+          navigate('/careerforum')
+        // 使用正則表達式來判斷 careerforum 或 空字浮 則返回錯誤提示
+        // `^` 代表字符串開頭 `$` 代表字符串結尾 `\/` 匹配字符
+        // `(careerforum|)` 代表匹配字符 careerforum 或空字符
+        if (!pathName.match(/^\/(careerforum|)$/)) {
           toast.error('請先登入再使用！', {
             position: 'top-right',
             autoClose: 3000,
@@ -69,6 +74,7 @@ export default function UserContextProvider({
             progress: undefined,
             theme: 'light',
           })
+        }
       })
   }
 

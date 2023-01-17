@@ -88,7 +88,7 @@ export default function QuestionPage() {
             userRole={question.User.role}
             userId={question.User.id}
             userAvatar={question.User.avatar}
-            questionDate={question.createdAt}
+            questionDate={question.createdAt.slice(0, 10)}
             question={question.content}
             questionId={question.id}
             hashTags={[{ id: 1, name: '求職' }]}

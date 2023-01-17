@@ -80,7 +80,10 @@
   }
 
   .role {
-    @include func.font-setting(0.75rem, 400, color.$primary-color);
+    padding: 0 5px;
+    background-color: color.$primary-color;
+    border-radius: 5px;
+    @include func.font-setting(0.75rem, 400, #FFF);
   }
 }
 
@@ -111,6 +114,7 @@
     .toAsk {
       display: block;
       padding: 5px 15px;
+      width: 90%;
       background-color: rgba(231, 231, 231, 0.766);
       border-radius: 16px;
     }

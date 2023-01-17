@@ -6,4 +6,9 @@ export default {
       headers: { Authorization: `Bearer ${token}` },
     })
   },
+  getUser(token: string | null, id: number) {
+    return api.get(`/users/${id}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+  }
 }

@@ -2,6 +2,7 @@ import React from 'react'
 import { fireEvent, render, screen } from '@testing-library/react'
 import { BrowserRouter } from 'react-router-dom'
 import Layout from '../Pages/Layout/Layout'
+import ModalContextProvider from '../Contexts/ModalContext'
 
 test('Should display Role, Email, Account, Password, and Confirm Password when the signUp modal is mounted.', () => {
   // 定義 Modal 容器元素
@@ -11,7 +12,9 @@ test('Should display Role, Email, Account, Password, and Confirm Password when t
 
   render(
     <BrowserRouter>
-      <Layout />
+      <ModalContextProvider>
+        <Layout />
+      </ModalContextProvider>
     </BrowserRouter>,
     { container }
   )
@@ -20,7 +23,7 @@ test('Should display Role, Email, Account, Password, and Confirm Password when t
   const headerSignUpButtonElement = screen.getByText(/註冊/i)
   fireEvent.click(headerSignUpButtonElement)
 
-  // 定義表單上的元素: Role, Email, Account, Password, Confirm, Password, 註冊按鈕
+  // 定義表單上的元素: Role, Email, Account, Password, Confirm Password, 註冊按鈕
   const roleSelectorElement = screen.getByText(/Role/i)
   const emailInputElement = screen.getByLabelText(/Email/i)
   const accountInputElement = screen.getByLabelText(/Account/i)
@@ -45,7 +48,9 @@ test('Should display the "欄位不得為空" when the input field is empty and 
 
   render(
     <BrowserRouter>
-      <Layout />
+      <ModalContextProvider>
+        <Layout />
+      </ModalContextProvider>
     </BrowserRouter>,
     { container }
   )
@@ -92,7 +97,9 @@ test('Should display the "密碼與確認密碼不相符" when the password does
 
   render(
     <BrowserRouter>
-      <Layout />
+      <ModalContextProvider>
+        <Layout />
+      </ModalContextProvider>
     </BrowserRouter>,
     { container }
   )
@@ -127,7 +134,9 @@ test('Should display the login modal when clicking the login link.', () => {
 
   render(
     <BrowserRouter>
-      <Layout />
+      <ModalContextProvider>
+        <Layout />
+      </ModalContextProvider>
     </BrowserRouter>,
     { container }
   )
@@ -153,7 +162,9 @@ test('Should display "Loading..." and button is disabled when signUp submit.', (
 
   render(
     <BrowserRouter>
-      <Layout />
+      <ModalContextProvider>
+        <Layout />
+      </ModalContextProvider>
     </BrowserRouter>,
     { container }
   )
@@ -194,7 +205,9 @@ test('Should not display the signUp modal when clicking the close button', () =>
 
   render(
     <BrowserRouter>
-      <Layout />
+      <ModalContextProvider>
+        <Layout />
+      </ModalContextProvider>
     </BrowserRouter>,
     { container }
   )
