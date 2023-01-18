@@ -69,12 +69,13 @@ export default function QuestionPage() {
   }, [])
 
   function addHistory() {
-    addToHistory(
-      question.id,
-      question.title,
-      question.User.avatar,
-      question.content
-    )
+    addToHistory({
+      questionId: question.id,
+      title: question.title,
+      userId: question.User.id,
+      avatarUrl: question.User.avatar,
+      content: question.content
+    })
   }
 
   return (

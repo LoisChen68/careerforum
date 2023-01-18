@@ -190,12 +190,13 @@ function DiscussionThread() {
                 hashTags={[{ id: 1, name: '求職' }]}
                 answerCount={question.answersCount}
                 onQuestionClick={() => {
-                  addToHistory(
-                    question.id,
-                    question.title,
-                    question.User.avatar,
-                    question.content
-                  )
+                  addToHistory({
+                    questionId: question.id,
+                    title: question.title,
+                    userId: question.User.id,
+                    avatarUrl: question.User.avatar,
+                    content: question.content
+                  })
                 }}
               />
               <div className={style['hr']} />

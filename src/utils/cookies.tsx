@@ -1,24 +1,27 @@
 import { useCookies } from 'react-cookie'
 
+interface historyData {
+  questionId: number,
+  title: string,
+  userId: number,
+  avatarUrl: string,
+  content: string
+}
+
 export function useHistory() {
   const [cookies, setCookie] = useCookies(['history'])
 
-  const addToHistory = (
-    QuestionId: number,
-    title: string,
-    avatarUrl: string,
-    content: string
-  ) => {
+  function addToHistory({ questionId, title, userId, avatarUrl, content }: historyData) {
     let history = cookies.history ? cookies.history : []
     history = history.filter(
-      (historyItem: { id: number }) => historyItem.id !== QuestionId
+      (historyItem: historyData) => historyItem.questionId !== questionId
     )
-    history.unshift({ id: QuestionId, title, avatarUrl, content })
+    history.unshift({ questionId, title, userId, avatarUrl, content })
     history = history.slice(0, 10)
     setCookie('history', history, { path: '/', sameSite: 'lax' })
   }
 
-  const getHistory = () => {
+  function getHistory() {
     return cookies.history ? cookies.history : []
   }
 
