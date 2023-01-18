@@ -15,7 +15,6 @@ interface textAreaProps {
 export function TextAreaAnswer(props: textAreaProps) {
   const [value, setValue] = useState('')
   const textAreaRef = useRef<HTMLTextAreaElement>(null)
-  const token = localStorage.getItem('token') || ''
   const reRender = useRender()
 
   if (props.scrollHeight) {
@@ -30,7 +29,7 @@ export function TextAreaAnswer(props: textAreaProps) {
   function onSubmitClick(e: React.MouseEvent) {
     e.preventDefault()
     questionAPI
-      .postAnswers(token, props.questionId, value)
+      .postAnswers(props.questionId, value)
       .then(() => {
         reRender?.handleRerender(true)
       })
@@ -64,7 +63,6 @@ export function TextAreaAnswer(props: textAreaProps) {
 
 
 export function TextAreaAsk(props: textAreaProps) {
-  const token = localStorage.getItem('token')
   const useSetModal = useModalStatus()
   const reRender = useRender()
   const [title, setTitle] = useState("")
@@ -102,7 +100,7 @@ export function TextAreaAsk(props: textAreaProps) {
 
     if (title && content) {
       questionAPI
-        .postQuestion(token, title, content)
+        .postQuestion(title, content)
         .then(() => {
           reRender?.handleRerender(true)
           useSetModal?.handleSetModal('initial')

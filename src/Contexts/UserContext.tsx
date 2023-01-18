@@ -33,7 +33,7 @@ const userData = {
 
 interface UserContextData {
   user: userDataProps
-  getUser: (token: string) => void
+  getUser: () => void
   authPass: boolean
   logout: (value: boolean) => void
 }
@@ -50,9 +50,9 @@ export default function UserContextProvider({
   const [authPass, setAuthPass] = useState(false)
   const pathName = window.location.pathname
 
-  function getUser(token: string) {
+  function getUser() {
     userAPI
-      .getCurrentUser(token)
+      .getCurrentUser()
       .then((res) => {
         setUser(res.data), setAuthPass(true)
       })

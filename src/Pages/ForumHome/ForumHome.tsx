@@ -123,7 +123,6 @@ interface answer {
 }
 
 function DiscussionThread() {
-  const token = localStorage.getItem('token') || ''
   const getUser = useGetUser()
   const { addToHistory } = useHistory()
   const [page, setPage] = useState(2)
@@ -138,7 +137,7 @@ function DiscussionThread() {
   // 當 API 取得完成將 loading 設為 false
   useEffect(() => {
     questionsAPI
-      .getQuestions(token, 1, limit)
+      .getQuestions(1, limit)
       .then((res) => {
         const questionData = res.data.questions
         setQuestions(questionData)
@@ -157,7 +156,7 @@ function DiscussionThread() {
   // lazy loading for questions
   const changePage = () => {
     questionsAPI
-      .getQuestions(token, page, 3)
+      .getQuestions(page, 3)
       .then((res) => {
         const questionData = res.data.questions
         if (questionData.length === 0) setHasMore(false)

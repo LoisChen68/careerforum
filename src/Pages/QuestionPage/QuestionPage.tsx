@@ -48,13 +48,12 @@ export default function QuestionPage() {
   const { addToHistory } = useHistory()
   const param = useParams()
   const getUser = useGetUser()
-  const token = localStorage.getItem('token') || ''
 
   // 取得單筆問題
   useEffect(() => {
     async function fetchQuestion() {
       await questionAPI
-        .getQuestion(token, Number(param.id))
+        .getQuestion(Number(param.id))
         .then((res) => setQuestion(res.data))
         .catch((err) => console.log(err))
     }
@@ -64,7 +63,7 @@ export default function QuestionPage() {
   // 取得問題底下的回答
   useEffect(() => {
     questionAPI
-      .getAnswers(token, Number(param.id))
+      .getAnswers(Number(param.id))
       .then((res) => setAnswers(res.data.answers))
       .catch((err) => console.log(err))
   }, [])
