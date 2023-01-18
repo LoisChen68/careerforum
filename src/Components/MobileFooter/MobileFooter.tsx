@@ -1,7 +1,8 @@
 import { FaPencilAlt, FaUserAlt, FaUserCog } from 'react-icons/fa'
 import { FiLogOut } from 'react-icons/fi'
 import style from './MobileFooter.module.scss'
-import { Link } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
+import { useModalStatus } from '../../Contexts/ModalContext'
 
 interface mobileFooterProps {
   onLogoutClick: (e: React.MouseEvent) => void
@@ -9,30 +10,34 @@ interface mobileFooterProps {
 }
 
 export default function MobileFooter(props: mobileFooterProps) {
+  const modalStatus = useModalStatus()
+
   return (
     <footer className={style['footer']}>
       <div className={style['footer-container']}>
-        <div className={style['item']} onClick={props.onAskClick}>
-          <FaPencilAlt />
-          <p>發問</p>
-        </div>
-        <Link to={`/careerforum/users/${1}`}>
+        <NavLink to="/careerforum/home" className={({ isActive }) => (isActive && modalStatus?.modalStatus === 'ask') ? style['activeStyle'] : undefined}>
+          <div className={style['item']} onClick={props.onAskClick}>
+            <FaPencilAlt />
+            <p>發問</p>
+          </div>
+        </NavLink>
+        <NavLink to={`/careerforum/users/${1}`} className={({ isActive }) => isActive ? style['activeStyle'] : undefined}>
           <div className={style['item']}>
             <FaUserAlt />
             <p>個人資料</p>
           </div>
-        </Link>
-        <Link to={`/careerforum/users/setting/${1}`}>
+        </NavLink>
+        <NavLink to={`/careerforum/users/setting/${1}`} className={({ isActive }) => isActive ? style['activeStyle'] : undefined}>
           <div className={style['item']}>
             <FaUserCog />
             <p>帳號設定</p>
           </div>
-        </Link>
+        </NavLink>
         <div className={style['item']} onClick={props.onLogoutClick}>
           <FiLogOut />
           <p>登出</p>
         </div>
       </div>
-    </footer>
+    </footer >
   )
 }

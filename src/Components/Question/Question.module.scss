@@ -10,6 +10,7 @@
 
 .question-title {
   @include func.font-setting(1rem, 700, color.$primary-font);
+  word-wrap: break-word;
 }
 
 .user {
