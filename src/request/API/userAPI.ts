@@ -6,5 +6,5 @@ export default {
   },
   getUser(id: number) {
     return api.get(`/users/${id}`)
-  }
+  },
 }

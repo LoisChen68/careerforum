@@ -39,8 +39,7 @@ export default function Record() {
               <p className={style['list-content']}>{record.content}</p>
             </div>
           </div>
-        )
-        )}
+        ))}
       </div>
     </div>
   )

@@ -4,8 +4,6 @@ const baseURL = 'http://localhost:3000/api'
 const AWSbaseURL =
   'https://0lrxs3wck8.execute-api.ap-northeast-1.amazonaws.com/api'
 
-
-
 export const api = axios.create({
   baseURL: baseURL,
 })
@@ -18,7 +16,7 @@ api.interceptors.request.use(
       config.headers = config.headers || {}
       config.headers['Authorization'] = `Bearer ${token}`
     }
-    return config;
+    return config
   },
   (error) => {
     console.error(error)

@@ -195,7 +195,7 @@ function DiscussionThread() {
                     title: question.title,
                     userId: question.User.id,
                     avatarUrl: question.User.avatar,
-                    content: question.content
+                    content: question.content,
                   })
                 }}
               />

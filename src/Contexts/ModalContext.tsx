@@ -1,5 +1,4 @@
-import React, { createContext, useContext, useState } from "react"
-
+import React, { createContext, useContext, useState } from 'react'
 
 interface modalContextData {
   handleSetModal: (modal: string) => void
@@ -8,7 +7,11 @@ interface modalContextData {
 
 const modalContext = createContext<modalContextData | undefined>(undefined)
 
-export default function ModalContextProvider({ children }: { children: React.ReactNode }) {
+export default function ModalContextProvider({
+  children,
+}: {
+  children: React.ReactNode
+}) {
   const [modalStatus, setModalStatus] = useState('')
 
   function handleSetModal(modal: string) {
@@ -17,7 +20,7 @@ export default function ModalContextProvider({ children }: { children: React.Rea
 
   const modalContextData: modalContextData = {
     handleSetModal,
-    modalStatus: modalStatus
+    modalStatus: modalStatus,
   }
 
   return (

@@ -25,8 +25,8 @@ export default function UserProfile() {
   useEffect(() => {
     userAPI
       .getUser(Number(param.id))
-      .then(res => setUserData(res.data))
-      .catch(err => console.log(err))
+      .then((res) => setUserData(res.data))
+      .catch((err) => console.log(err))
   }, [])
 
   return (
@@ -34,7 +34,10 @@ export default function UserProfile() {
       <div className={style['user-profile']}>
         <div className={style['wrapper']}>
           <div className={style['container']}>
-            <UserAvatar avatarStyle="body-user-avatar" userAvatar={userData.avatar} />
+            <UserAvatar
+              avatarStyle="body-user-avatar"
+              userAvatar={userData.avatar}
+            />
             <p>{userData.account}</p>
             <p>{userData.role}</p>
           </div>
