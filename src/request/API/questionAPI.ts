@@ -26,8 +26,10 @@ export default {
     })
   },
   postQuestion(token: string | null, title: string, content: string) {
-    return api.post('/questions',
+    return api.post(
+      '/questions',
       { title, content },
-      { headers: { Authorization: `Bearer ${token}` } })
+      { headers: { Authorization: `Bearer ${token}` } }
+    )
   },
 }

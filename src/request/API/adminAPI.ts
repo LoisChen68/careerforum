@@ -5,5 +5,5 @@ export default {
     api.get('/admin/users', {
       headers: { Authorization: `Bearer ${token}` },
     })
-  }
+  },
 }

@@ -15,19 +15,36 @@ export default function MobileFooter(props: mobileFooterProps) {
   return (
     <footer className={style['footer']}>
       <div className={style['footer-container']}>
-        <NavLink to="/careerforum/home" className={({ isActive }) => (isActive && modalStatus?.modalStatus === 'ask') ? style['activeStyle'] : undefined}>
+        <NavLink
+          to="/careerforum/home"
+          className={({ isActive }) =>
+            isActive && modalStatus?.modalStatus === 'ask'
+              ? style['activeStyle']
+              : undefined
+          }
+        >
           <div className={style['item']} onClick={props.onAskClick}>
             <FaPencilAlt />
             <p>發問</p>
           </div>
         </NavLink>
-        <NavLink to={`/careerforum/users/${1}`} className={({ isActive }) => isActive ? style['activeStyle'] : undefined}>
+        <NavLink
+          to={`/careerforum/users/${1}`}
+          className={({ isActive }) =>
+            isActive ? style['activeStyle'] : undefined
+          }
+        >
           <div className={style['item']}>
             <FaUserAlt />
             <p>個人資料</p>
           </div>
         </NavLink>
-        <NavLink to={`/careerforum/users/setting/${1}`} className={({ isActive }) => isActive ? style['activeStyle'] : undefined}>
+        <NavLink
+          to={`/careerforum/users/setting/${1}`}
+          className={({ isActive }) =>
+            isActive ? style['activeStyle'] : undefined
+          }
+        >
           <div className={style['item']}>
             <FaUserCog />
             <p>帳號設定</p>
@@ -38,6 +55,6 @@ export default function MobileFooter(props: mobileFooterProps) {
           <p>登出</p>
         </div>
       </div>
-    </footer >
+    </footer>
   )
 }

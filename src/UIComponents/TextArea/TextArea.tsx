@@ -62,22 +62,21 @@ export function TextAreaAnswer(props: textAreaProps) {
   )
 }
 
-
 export function TextAreaAsk(props: textAreaProps) {
   const token = localStorage.getItem('token')
   const useSetModal = useModalStatus()
   const reRender = useRender()
-  const [title, setTitle] = useState("")
-  const [content, setContent] = useState("")
-  const [errorMessage, setErrorMessage] = useState({ title: "", content: "" })
+  const [title, setTitle] = useState('')
+  const [content, setContent] = useState('')
+  const [errorMessage, setErrorMessage] = useState({ title: '', content: '' })
 
   function handleInputChange(e: React.ChangeEvent<HTMLInputElement>) {
     const value = e.target.value
     setTitle(e.target.value)
     if (!value) {
-      setErrorMessage({ ...errorMessage, title: "標題不得為空" })
+      setErrorMessage({ ...errorMessage, title: '標題不得為空' })
     } else if (value) {
-      setErrorMessage({ ...errorMessage, title: "" })
+      setErrorMessage({ ...errorMessage, title: '' })
     }
   }
 
@@ -85,19 +84,19 @@ export function TextAreaAsk(props: textAreaProps) {
     const value = e.target.value
     setContent(value)
     if (!value) {
-      setErrorMessage({ ...errorMessage, content: "內容不得為空" })
+      setErrorMessage({ ...errorMessage, content: '內容不得為空' })
     } else if (value) {
-      setErrorMessage({ ...errorMessage, content: "" })
+      setErrorMessage({ ...errorMessage, content: '' })
     }
   }
 
   function onSubmitClick(e: React.MouseEvent) {
     e.preventDefault()
     if (!title.trim()) {
-      setErrorMessage({ ...errorMessage, title: "標題不得為空" })
+      setErrorMessage({ ...errorMessage, title: '標題不得為空' })
     }
     if (!content.trim()) {
-      setErrorMessage({ ...errorMessage, content: "內容不得為空" })
+      setErrorMessage({ ...errorMessage, content: '內容不得為空' })
     }
 
     if (title && content) {
@@ -107,9 +106,8 @@ export function TextAreaAsk(props: textAreaProps) {
           reRender?.handleRerender(true)
           useSetModal?.handleSetModal('initial')
         })
-        .catch(err => console.log(err))
+        .catch((err) => console.log(err))
     }
-
   }
 
   return (
@@ -143,7 +141,9 @@ export function TextAreaAsk(props: textAreaProps) {
       )}
       <Button
         type="button"
-        style={title && content ? 'button-ask-submit' : 'button-ask-submit-disable'}
+        style={
+          title && content ? 'button-ask-submit' : 'button-ask-submit-disable'
+        }
         onClick={onSubmitClick}
         disabled={false}
       >

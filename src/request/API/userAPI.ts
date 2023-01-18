@@ -10,5 +10,5 @@ export default {
     return api.get(`/users/${id}`, {
       headers: { Authorization: `Bearer ${token}` },
     })
-  }
+  },
 }
