@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios, { AxiosRequestConfig } from 'axios'
 
 const baseURL = 'http://localhost:3000/api'
 const AWSbaseURL =
@@ -7,3 +7,17 @@ const AWSbaseURL =
 export const api = axios.create({
   baseURL: baseURL,
 })
+
+api.interceptors.request.use((config: AxiosRequestConfig) => {
+  const token = localStorage.getItem('token')
+  if (token) {
+    config.headers = config.headers || {}
+    config.headers['Authorization'] = `Bearer ${token}`
+  }
+
+  return config
+},
+  (error) => {
+    console.error(error)
+  }
+)
