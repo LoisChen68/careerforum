@@ -68,10 +68,10 @@
   overflow-y: scroll;
 
   .header {
+    position: relative;
     padding: unset;
     width: 100%;
-    background-color: #35a0ed11;
-    border-bottom: 1px solid #22577e;
+    border-bottom: 1px solid color.$dim-gray;
 
     & h2 {
       @include func.font-setting(1rem, 500, color.$primary-font);
@@ -98,14 +98,10 @@
 
 @media screen and (min-width: 570px) {
   .ask-modal-container {
-    padding: 16px;
+    padding: 0 16px;
     width: 80vw;
     height: 70vh;
     border-radius: style.$border-radius-5;
-
-    .header {
-      background-color: inherit;
-    }
   }
 }
 

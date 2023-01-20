@@ -66,8 +66,9 @@
 
 .button-close-ask {
   position: absolute;
-  top: 18px;
+  top: 50%;
   right: 30px;
+  transform: translateY(-50%);
 }
 
 .loader {
@@ -148,7 +149,6 @@
 
 @media screen and (min-width: 570px) {
   .button-close-ask {
-    top: 10px;
     right: 10px;
   }
 }
