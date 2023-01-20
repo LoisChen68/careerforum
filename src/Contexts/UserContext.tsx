@@ -33,7 +33,7 @@ const userData = {
 
 interface UserContextData {
   user: userDataProps
-  getUser: (token: string) => void
+  getUser: () => void
   authPass: boolean
   logout: (value: boolean) => void
 }
@@ -50,16 +50,14 @@ export default function UserContextProvider({
   const [authPass, setAuthPass] = useState(false)
   const pathName = window.location.pathname
 
-  function getUser(token: string) {
+  function getUser() {
     userAPI
-      .getCurrentUser(token)
+      .getCurrentUser()
       .then((res) => {
         setUser(res.data), setAuthPass(true)
       })
       .catch((err) => {
-        console.log(err),
-          setAuthPass(false),
-          navigate('/careerforum')
+        console.log(err), setAuthPass(false), navigate('/careerforum')
         // 使用正則表達式來判斷 careerforum 或 空字浮 則返回錯誤提示
         // `^` 代表字符串開頭 `$` 代表字符串結尾 `\/` 匹配字符
         // `(careerforum|)` 代表匹配字符 careerforum 或空字符

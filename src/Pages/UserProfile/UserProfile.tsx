@@ -20,14 +20,13 @@ const defaultUserData = {
 
 export default function UserProfile() {
   const param = useParams()
-  const token = localStorage.getItem('token')
   const [userData, setUserData] = useState(defaultUserData)
 
   useEffect(() => {
     userAPI
-      .getUser(token, Number(param.id))
-      .then(res => setUserData(res.data))
-      .catch(err => console.log(err))
+      .getUser(Number(param.id))
+      .then((res) => setUserData(res.data))
+      .catch((err) => console.log(err))
   }, [])
 
   return (
@@ -35,7 +34,10 @@ export default function UserProfile() {
       <div className={style['user-profile']}>
         <div className={style['wrapper']}>
           <div className={style['container']}>
-            <UserAvatar avatarStyle="body-user-avatar" userAvatar={userData.avatar} />
+            <UserAvatar
+              avatarStyle="body-user-avatar"
+              userAvatar={userData.avatar}
+            />
             <p>{userData.account}</p>
             <p>{userData.role}</p>
           </div>

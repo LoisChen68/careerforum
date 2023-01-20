@@ -34,7 +34,6 @@ const loginForm = {
 }
 
 export default function Layout() {
-  const token = localStorage.getItem('token') || ''
   const setModalStatus = useModalStatus()
   const [signUpData, setSignUpData] = useState(formData)
   const [loginData, setLoginData] = useState(loginForm)
@@ -44,7 +43,7 @@ export default function Layout() {
   const getUser = useGetUser()
 
   useEffect(() => {
-    getUser?.getUser(token)
+    getUser?.getUser()
   }, [])
 
   //送出登入表單
@@ -87,9 +86,8 @@ export default function Layout() {
           navigate('/careerforum/home')
         })
         .then(() => {
-          const token = localStorage.getItem('token') || ''
           localStorage.setItem('email', loginData.email)
-          getUser?.getUser(token)
+          getUser?.getUser()
         })
         .catch((err) => {
           if (err.response.data.title === 'Incorrect email or password') {
@@ -307,7 +305,6 @@ export default function Layout() {
       confirmPassword: '',
     })
   }
-
 
   return (
     <div>
