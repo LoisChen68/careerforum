@@ -21,15 +21,27 @@
 .item {
   text-align: center;
   color: color.$gray-font;
+  cursor: pointer;
+
   p {
-    @include func.font-setting(0.5rem, 400, color.$gray-font);
+    @include func.font-setting(0.75rem, 400, color.$gray-font);
   }
 
   &:hover {
     color: color.$primary-color;
-    cursor: pointer;
+    transform: scale(1.15);
     p {
-      @include func.font-setting(0.5rem, 700, color.$primary-color);
+      @include func.font-setting(0.75rem, 400, color.$primary-color);
+    }
+  }
+}
+
+.activeStyle {
+  .item {
+    color: color.$primary-color;
+    transform: scale(1.15);
+    p {
+      @include func.font-setting(0.75rem, 400, color.$primary-color);
     }
   }
 }

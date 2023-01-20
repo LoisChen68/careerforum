@@ -1,7 +1,7 @@
 import { api } from '../index'
 
 export default {
-  getUsers() {
-    api.get('/admin/users', {})
+  getUsers(page: number, limit: number) {
+    return api.get(`/admin/users?page=${page}&limit=${limit}`)
   },
 }
