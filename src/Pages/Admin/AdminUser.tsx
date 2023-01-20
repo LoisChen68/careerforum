@@ -46,7 +46,7 @@ export default function AdminUser() {
           setUsersStatus('')
         }
       })
-      .catch(err => console.error(err))
+      .catch((err) => console.error(err))
   })
 
   // Lazy Loading for users
@@ -57,10 +57,10 @@ export default function AdminUser() {
         const usersData = res.data.users
         if (usersData.length === 0) setHasMore(false)
         setUsers(users.concat(usersData))
-        setPage(page => page + 1)
-        setLimit(limit => limit + 3)
+        setPage((page) => page + 1)
+        setLimit((limit) => limit + 3)
       })
-      .catch(err => console.error(err))
+      .catch((err) => console.error(err))
   }
 
   return (

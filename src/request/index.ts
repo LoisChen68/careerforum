@@ -8,15 +8,16 @@ export const api = axios.create({
   baseURL: baseURL,
 })
 
-api.interceptors.request.use((config: AxiosRequestConfig) => {
-  const token = localStorage.getItem('token')
-  if (token) {
-    config.headers = config.headers || {}
-    config.headers['Authorization'] = `Bearer ${token}`
-  }
+api.interceptors.request.use(
+  (config: AxiosRequestConfig) => {
+    const token = localStorage.getItem('token')
+    if (token) {
+      config.headers = config.headers || {}
+      config.headers['Authorization'] = `Bearer ${token}`
+    }
 
-  return config
-},
+    return config
+  },
   (error) => {
     console.error(error)
   }
