@@ -30,7 +30,7 @@ export function TextAreaAnswer(props: textAreaProps) {
   function onSubmitClick(e: React.MouseEvent) {
     e.preventDefault()
     questionAPI
-      .postAnswers(token, props.questionId, value)
+      .postAnswers(props.questionId, value)
       .then(() => {
         reRender?.handleRerender(true)
       })
@@ -101,7 +101,7 @@ export function TextAreaAsk(props: textAreaProps) {
 
     if (title && content) {
       questionAPI
-        .postQuestion(token, title, content)
+        .postQuestion(title, content)
         .then(() => {
           reRender?.handleRerender(true)
           useSetModal?.handleSetModal('initial')

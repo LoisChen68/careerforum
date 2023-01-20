@@ -20,12 +20,11 @@ const defaultUserData = {
 
 export default function UserProfile() {
   const param = useParams()
-  const token = localStorage.getItem('token')
   const [userData, setUserData] = useState(defaultUserData)
 
   useEffect(() => {
     userAPI
-      .getUser(token, Number(param.id))
+      .getUser(Number(param.id))
       .then((res) => setUserData(res.data))
       .catch((err) => console.log(err))
   }, [])
