@@ -1,34 +1,96 @@
 @use '../../variable' as color;
+@use '../../mixin' as func;
+
 
 .discussion-thread {
-  position: relative;
-  top: 50px;
-  display: grid;
   height: 100vh;
-  grid-template-columns: repeat(15, 1fr);
-  row-gap: 14px;
   width: 100%;
   z-index: 2;
 }
 
 .wrapper {
-  padding: 10px 0;
   display: flex;
-  grid-column: 1/16;
   justify-content: center;
   background-color: #fff;
 }
 
 .container {
-  padding-bottom: 140px;
+  padding-bottom: 10px;
   position: relative;
   width: 90%;
+  height: 90vh;
+  overflow-y: scroll;
 }
 
-.hr {
-  margin: 13px 0;
-  height: 1px;
+.scrollbar {
+  padding-right: 10px;
+
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border-radius: 3px;
+    background-color: rgba(0, 0, 0, 0.1);
+  }
+}
+
+.title-section {
+  position: sticky;
+  display: flex;
+  flex-direction: column;
+  padding: 20px 0;
+  top: 0px;
+  background-color: #fff;
+}
+
+.user {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  @include func.font-setting(0.75rem, 400, color.$primary-font);
+}
+
+.icon {
+  display: block;
+  height: 20px;
+
+  svg {
+    width: 20px;
+    height: 20px;
+    color: #22577e;
+  }
+}
+
+.user-account {
+  display: flex;
+  gap: 5px;
+}
+
+.account {
+  color: color.$primary-font ;
+}
+
+.role {
+  padding: 0 5px;
   background-color: color.$primary-color;
+  color: #fff;
+  border-radius: 5px;
+}
+
+.title,
+.content {
+  overflow-wrap: break-word;
+}
+
+.title {
+  @include func.font-setting(1rem, 700, color.$primary-font);
+}
+
+.content-container {
+  border-bottom: 1px solid color.$primary-color;
+  padding-bottom: 10px;
+  margin-bottom: 10px;
 }
 
 .answer-container {
@@ -44,13 +106,4 @@
   background-color: #fff;
   gap: 5px;
   align-items: flex-end;
-}
-
-.answer-hr {
-  position: absolute;
-  top: 0;
-  left: -5%;
-  width: 100vw;
-  height: 1px;
-  background-color: color.$dim-gray;
 }
