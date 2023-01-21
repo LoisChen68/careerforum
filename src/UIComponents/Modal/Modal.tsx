@@ -38,3 +38,25 @@ export default function Modal(props: modalProps) {
     document.getElementById('modal-root') as Element
   )
 }
+
+interface questionModalProps {
+  onConfirm: (e: React.MouseEvent) => void
+  closeButtonStyle: string
+  children: React.ReactElement
+}
+
+
+export function QuestionModal(props: questionModalProps) {
+
+  return createPortal(
+    <>
+      <div className={style['modal-outer']}>
+        <Backdrop onConfirm={props.onConfirm} />
+        <div className={`${style['question-modal-container']} ${style['scrollbar']}`}>
+          {props.children}
+        </div>
+      </div>
+    </>,
+    document.getElementById('modal-root') as Element
+  )
+}
