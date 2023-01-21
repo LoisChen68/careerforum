@@ -18,18 +18,18 @@ export default function Modal(props: modalProps) {
       <div className={style['modal-outer']}>
         <Backdrop onConfirm={props.onConfirm} />
         <div className={`${style[props.modalStyle]} ${style['scrollbar']}`}>
-          <Button
-            type="button"
-            style={props.closeButtonStyle}
-            onClick={props.onConfirm}
-            disabled={false}
-          >
-            <p className={style['icon']} role="close">
-              <HiOutlineX />
-            </p>
-          </Button>
           <header className={style['header']}>
             <h2>{props.title}</h2>
+            <Button
+              type="button"
+              style={props.closeButtonStyle}
+              onClick={props.onConfirm}
+              disabled={false}
+            >
+              <p className={style['icon']} role="close">
+                <HiOutlineX />
+              </p>
+            </Button>
           </header>
           <form className={style['form']}>{props.children}</form>
         </div>

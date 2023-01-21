@@ -27,18 +27,6 @@
   align-items: center;
   gap: 5px;
 
-  .avatar {
-    width: 50px;
-    height: 50px;
-    border: 1px solid color.$primary-color;
-    border-radius: 50%;
-    overflow: hidden;
-    img {
-      display: block;
-      width: 100%;
-    }
-  }
-
   .appellation {
     @include func.font-setting(1rem, 300, color.$primary-font);
     &-role {
@@ -75,17 +63,56 @@
   font-family: inherit;
 }
 
+.alert-container {
+  padding: 20px;
+  width: 80%;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: style.$border-radius-5;
+  background-color: #fff;
+
+  h3 {
+    text-align: center;
+    margin-bottom: 30px;
+  }
+
+  .buttons {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+  }
+
+  .btn-cancel,
+  .btn-sure {
+    @include func.font-setting(0.75rem, 700, #fff);
+    padding: 12px 20px;
+    border-radius: 24px;
+    cursor: pointer;
+  }
+
+  .btn-cancel {
+    background-color: rgb(158, 158, 158);
+  }
+  .btn-sure {
+    background-color: color.$primary-color;
+  }
+}
+
+.back-drop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(88, 88, 88, 0.405);
+}
+
 @media screen and (min-width: 990px) {
   .users-container {
     padding: 20px 50px;
     border-radius: style.$border-radius-5;
-  }
-
-  .user-header {
-    .avatar {
-      width: 56px;
-      height: 56px;
-    }
   }
 
   .role,
