@@ -60,7 +60,12 @@
   width: 95%;
   border: 0px;
   border-bottom: 1px solid color.$dim-gray;
-  @include func.font-setting(1rem, 400, block);
+  @include func.font-setting(1rem, 400, color.$primary-font);
+  font-family: inherit;
+
+  &::placeholder {
+    color: color.$gray-font;
+  }
 }
 
 .title-error,
