@@ -18,6 +18,7 @@ import { useHistory } from '../../utils/cookies'
 import ButtonLoader from '../../UIComponents/ButtonLoader/ButtonLoader'
 import { useModalStatus } from '../../Contexts/ModalContext'
 import { useRender } from '../../Contexts/RenderContext'
+import QuestionPage from '../QuestionPage/QuestionPage'
 
 export default function ForumHome() {
   const [loading, setLoading] = useState(true)
@@ -89,6 +90,9 @@ export default function ForumHome() {
           </>
         </Modal>
       )}
+      {setModalStatus?.modalStatus === 'questionPage' && (
+        <QuestionPage />
+      )}
     </>
   )
 }
@@ -123,15 +127,16 @@ interface answer {
 }
 
 function DiscussionThread() {
-  const getUser = useGetUser()
+  const setModalStatus = useModalStatus()
   const { addToHistory } = useHistory()
+  const getUser = useGetUser()
+  const render = useRender()
   const [page, setPage] = useState(2)
   const [limit, setLimit] = useState(3)
   const [hasMore, setHasMore] = useState(true)
   const [loading, setLoading] = useState(true)
   const [questions, setQuestions] = useState([])
   const [questionStatus, setQuestionStatus] = useState('')
-  const render = useRender()
 
   // 這裡的 loading 是用在 Button 的小型 loader
   // 當 API 取得完成將 loading 設為 false
@@ -197,11 +202,13 @@ function DiscussionThread() {
                     avatarUrl: question.User.avatar,
                     content: question.content,
                   })
+                  setModalStatus?.handleSetModal('questionPage')
                 }}
               />
               <div className={style['hr']} />
               {question.Answers[0] ? (
                 <Answer
+                  userId={question.Answers[0]?.User.id}
                   userAccount={question.Answers[0]?.User.account}
                   userRole={question.Answers[0]?.User.role}
                   userAvatar={question.Answers[0]?.User.avatar}
