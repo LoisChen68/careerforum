@@ -1,7 +1,9 @@
+import { Link } from 'react-router-dom'
 import UserAvatar from '../../UIComponents/UserAvatar/UserAvatar'
 import style from './Answer.module.scss'
 
 interface answerProps {
+  userId: number
   userAvatar: string
   userAccount: string
   userRole: string
@@ -12,15 +14,19 @@ interface answerProps {
 export default function Answer(props: answerProps) {
   return (
     <div className={style['answer-container']}>
-      <UserAvatar
-        userAvatar={props.userAvatar}
-        avatarStyle={'body-user-avatar'}
-      />
+      <Link to={`/careerForum/users/${props.userId}`}>
+        <UserAvatar
+          userAvatar={props.userAvatar}
+          avatarStyle={'body-user-avatar'}
+        />
+      </Link>
       <div className={style['answer']}>
         <div className={style['user']}>
-          <p className={style['user-role']}>{props.userRole}</p>
           <p>{props.userAccount}</p>
-          <p>{props.answerDate}</p>
+          <p className={style['user-role']}>{props.userRole}</p>
+          <div>
+            <p>{props.answerDate.slice(0, 10)}</p>
+          </div>
         </div>
         {props.answer}
       </div>
