@@ -1,11 +1,9 @@
 import { useEffect, useState } from 'react'
 import Answer from '../../Components/Answer/Answer'
-import { TextAreaAnswer } from '../../UIComponents/TextArea/TextArea'
 import UserAvatar from '../../UIComponents/UserAvatar/UserAvatar'
 import style from './QuestionPage.module.scss'
 import questionAPI from '../../request/API/questionAPI'
 import { useParams } from 'react-router'
-import { useGetUser } from '../../Contexts/UserContext'
 import { QuestionModal } from '../../UIComponents/Modal/Modal'
 import { useModalStatus } from '../../Contexts/ModalContext'
 import Button from '../../UIComponents/Button/Button'
@@ -49,15 +47,15 @@ interface user {
 
 export default function QuestionPage() {
   const setModalStatus = useModalStatus()
-  const [question, setQuestion] = useState(questionData)
-  const [answers, setAnswers] = useState([])
   const param = useParams()
-  const getUser = useGetUser()
   const render = useRender()
   const [page, setPage] = useState(2)
   const [limit, setLimit] = useState(10)
   const [loading, setLoading] = useState(true)
   const [hasMore, setHasMore] = useState(true)
+  const [answers, setAnswers] = useState([])
+  const [answerStatus, setAnswerStatus] = useState('')
+  const [question, setQuestion] = useState(questionData)
 
   // 取得單筆問題
   useEffect(() => {
@@ -80,6 +78,12 @@ export default function QuestionPage() {
         setLoading(false)
         setAnswers(answersData)
         render?.handleRerender(false)
+        // 當回傳資料長度為 0 ，設置狀態為 'noting' 為顯示 '目前還沒有人回答' 字段
+        if (answersData.length === 0) {
+          setAnswerStatus('noting')
+        } else {
+          setAnswerStatus('')
+        }
       })
       .catch((err) => console.log(err))
   }, [render?.isRender])
@@ -107,6 +111,7 @@ export default function QuestionPage() {
           setModalStatus?.handleSetModal('initial')
         }}
         closeButtonStyle={'button-close-ask'}
+        questionId={question.id}
       >
         <InfiniteScroll
           dataLength={answers.length}
@@ -115,9 +120,9 @@ export default function QuestionPage() {
           loader={loading ? <ButtonLoader /> : ''}
           scrollableTarget="scrollbarDiv"
         >
-          <div className={style['discussion-thread']}>
+          <div id="scrollbarDiv" className={`${style['discussion-thread']} ${style['scrollbar']}`}>
             <div className={style['wrapper']}>
-              <div id="scrollbarDiv" className={`${style['container']} ${style['scrollbar']}`}>
+              <div className={`${style['container']}`}>
                 <section className={style['title-section']}>
                   <div className={style['user']}>
                     <Button
@@ -151,6 +156,9 @@ export default function QuestionPage() {
                 <section className={style['content-container']}>
                   <p className={style['content']}>{question.content}</p>
                 </section>
+                {answerStatus === 'noting' && (
+                  <p>目前還沒有人回答</p>
+                )}
                 {answers.map((answer: answer) => (
                   <div className={style['answer-container']} key={answer.id}>
                     <Answer
@@ -163,17 +171,6 @@ export default function QuestionPage() {
                     />
                   </div>
                 ))}
-                <form className={style['answer-form']}>
-                  <UserAvatar
-                    userAvatar={getUser?.user?.avatar}
-                    avatarStyle={'body-user-avatar'}
-                  />
-                  <TextAreaAnswer
-                    placeholder={'輸入你的回答...'}
-                    scrollHeight={100}
-                    questionId={question.id}
-                  />
-                </form>
               </div>
             </div>
           </div>
