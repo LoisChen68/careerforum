@@ -135,7 +135,7 @@ export function TextAreaAsk(props: textAreaProps) {
         type="text"
         required={true}
         placeholder="標題"
-        onKeyDown={e => e.key === 'Enter' && e.preventDefault()}
+        onKeyDown={(e) => e.key === 'Enter' && e.preventDefault()}
         value={title}
         onChange={handleInputChange}
       />

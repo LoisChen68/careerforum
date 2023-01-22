@@ -49,7 +49,6 @@ interface questionModalProps {
   questionId: number
 }
 
-
 export function QuestionModal(props: questionModalProps) {
   const getUser = useGetUser()
 
@@ -57,7 +56,9 @@ export function QuestionModal(props: questionModalProps) {
     <>
       <div className={style['modal-outer']}>
         <Backdrop onConfirm={props.onConfirm} />
-        <div className={`${style['question-modal-container']} ${style['scrollbar']}`}>
+        <div
+          className={`${style['question-modal-container']} ${style['scrollbar']}`}
+        >
           {props.children}
           <form className={style['answer-form']}>
             <UserAvatar

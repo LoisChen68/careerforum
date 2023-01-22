@@ -16,11 +16,11 @@ export default function ModalContextProvider({
 
   useEffect(() => {
     if (modalStatus !== 'initial') {
-      document.body.style.overflow = 'hidden';
+      document.body.style.overflow = 'hidden'
     } else {
-      document.body.style.overflow = 'unset';
+      document.body.style.overflow = 'unset'
     }
-  }, [modalStatus]);
+  }, [modalStatus])
 
   function handleSetModal(modal: string) {
     setModalStatus(modal)

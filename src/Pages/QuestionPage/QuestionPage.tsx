@@ -120,7 +120,10 @@ export default function QuestionPage() {
           loader={loading ? <ButtonLoader /> : ''}
           scrollableTarget="scrollbarDiv"
         >
-          <div id="scrollbarDiv" className={`${style['discussion-thread']} ${style['scrollbar']}`}>
+          <div
+            id="scrollbarDiv"
+            className={`${style['discussion-thread']} ${style['scrollbar']}`}
+          >
             <div className={style['wrapper']}>
               <div className={`${style['container']}`}>
                 <section className={style['title-section']}>
@@ -144,7 +147,9 @@ export default function QuestionPage() {
                     <div>
                       <div className={style['user-account']}>
                         <Link to={`/careerForum/users/${question.User.id}`}>
-                          <p className={style['account']}>{question.User.account}</p>
+                          <p className={style['account']}>
+                            {question.User.account}
+                          </p>
                         </Link>
                         <p className={style['role']}>{question.User.role}</p>
                       </div>
@@ -156,9 +161,7 @@ export default function QuestionPage() {
                 <section className={style['content-container']}>
                   <p className={style['content']}>{question.content}</p>
                 </section>
-                {answerStatus === 'noting' && (
-                  <p>目前還沒有人回答</p>
-                )}
+                {answerStatus === 'noting' && <p>目前還沒有人回答</p>}
                 {answers.map((answer: answer) => (
                   <div className={style['answer-container']} key={answer.id}>
                     <Answer

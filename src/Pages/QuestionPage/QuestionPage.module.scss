@@ -1,7 +1,6 @@
 @use '../../variable' as color;
 @use '../../mixin' as func;
 
-
 .discussion-thread {
   height: 90vh;
   width: 100vw;
@@ -22,7 +21,6 @@
 }
 
 .scrollbar {
-
   &::-webkit-scrollbar {
     width: 6px;
   }
@@ -69,7 +67,7 @@
 }
 
 .account {
-  color: color.$primary-font ;
+  color: color.$primary-font;
 }
 
 .role {

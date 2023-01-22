@@ -90,9 +90,7 @@ export default function ForumHome() {
           </>
         </Modal>
       )}
-      {setModalStatus?.modalStatus === 'questionPage' && (
-        <QuestionPage />
-      )}
+      {setModalStatus?.modalStatus === 'questionPage' && <QuestionPage />}
     </>
   )
 }
