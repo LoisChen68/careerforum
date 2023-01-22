@@ -4,6 +4,7 @@ import Button from '../Button/Button'
 import style from './TextArea.module.scss'
 import { useRender } from '../../Contexts/RenderContext'
 import { useModalStatus } from '../../Contexts/ModalContext'
+import { toast } from 'react-toastify'
 
 interface textAreaProps {
   placeholder: string
@@ -28,14 +29,30 @@ export function TextAreaAnswer(props: textAreaProps) {
 
   function onSubmitClick(e: React.MouseEvent) {
     e.preventDefault()
-    questionAPI
-      .postAnswers(props.questionId, value)
-      .then(() => {
-        reRender?.handleRerender(true)
+
+    if (!value.trim()) {
+      toast.error('內容不得為空', {
+        position: 'top-right',
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: 'light',
       })
-      .catch((err) => {
-        console.log(err)
-      })
+    }
+    if (value.trim()) {
+      questionAPI
+        .postAnswers(props.questionId, value)
+        .then(() => {
+          reRender?.handleRerender(true)
+          setValue('')
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    }
   }
 
   return (
@@ -93,6 +110,7 @@ export function TextAreaAsk(props: textAreaProps) {
     if (!title.trim()) {
       setErrorMessage({ ...errorMessage, title: '標題不得為空' })
     }
+
     if (!content.trim()) {
       setErrorMessage({ ...errorMessage, content: '內容不得為空' })
     }
@@ -117,6 +135,7 @@ export function TextAreaAsk(props: textAreaProps) {
         type="text"
         required={true}
         placeholder="標題"
+        onKeyDown={e => e.key === 'Enter' && e.preventDefault()}
         value={title}
         onChange={handleInputChange}
       />
