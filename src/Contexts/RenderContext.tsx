@@ -12,10 +12,10 @@ export default function RenderContextProvider({
 }: {
   children: React.ReactNode
 }) {
-  const [isRender, setIsrender] = useState(false)
+  const [isRender, setIsRender] = useState(false)
 
   const handleRerender = (value: boolean) => {
-    setIsrender(value)
+    setIsRender(value)
   }
 
   const RenderContextData: RenderContextData = {

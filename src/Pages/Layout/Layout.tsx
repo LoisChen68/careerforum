@@ -16,6 +16,7 @@ import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { useGetUser } from '../../Contexts/UserContext'
 import { useModalStatus } from '../../Contexts/ModalContext'
+import { useRender } from '../../Contexts/RenderContext'
 
 const formData = {
   role: '',
@@ -34,17 +35,18 @@ const loginForm = {
 }
 
 export default function Layout() {
+  const render = useRender()
+  const getUser = useGetUser()
+  const navigate = useNavigate()
   const setModalStatus = useModalStatus()
   const [signUpData, setSignUpData] = useState(formData)
   const [loginData, setLoginData] = useState(loginForm)
   const [errorMessage, setErrorMessage] = useState(formData)
   const [submit, setSubmit] = useState(false)
-  const navigate = useNavigate()
-  const getUser = useGetUser()
 
   useEffect(() => {
     getUser?.getUser()
-  }, [])
+  }, [render?.isRender])
 
   //送出登入表單
   function handleLoginSubmit(e: React.MouseEvent) {
