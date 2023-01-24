@@ -152,6 +152,18 @@
   }
 }
 
+.user-setting-button {
+  @extend %button;
+  margin-top: 12px;
+  width: 100%;
+  background-color: #2771a5;
+  color: #fff;
+
+  &:hover {
+    background-color: color.$primary-color;
+  }
+}
+
 @media screen and (min-width: 570px) {
   .button-close-ask {
     right: 10px;
