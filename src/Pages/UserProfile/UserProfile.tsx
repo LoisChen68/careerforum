@@ -38,7 +38,7 @@ export default function UserProfile() {
               avatarStyle="body-user-avatar"
               userAvatar={userData.avatar}
             />
-            <p>{userData.account}</p>
+            <p>{userData.name}</p>
             <p>{userData.role}</p>
           </div>
         </div>
