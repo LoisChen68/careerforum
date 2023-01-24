@@ -6,7 +6,7 @@ import Selector from '../../UIComponents/Selector/Selector'
 import UserAvatar from '../../UIComponents/UserAvatar/UserAvatar'
 import style from './UserSetting.module.scss'
 import userAPI from '../../request/API/userAPI'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useRender } from '../../Contexts/RenderContext'
 import { toast } from 'react-toastify'
 
@@ -19,8 +19,8 @@ const formData = {
 }
 
 const options = [
-  { value: 'STUDENT', name: '學期三就讀中', disable: false },
-  { value: 'GRADUATE', name: '畢業', disable: false },
+  { value: 'student', name: '學期三就讀中', disable: false },
+  { value: 'graduate', name: '畢業', disable: false },
 ]
 
 export default function UserSetting() {
@@ -147,6 +147,9 @@ export default function UserSetting() {
         <form
           className={style['form']}
           onSubmit={handleSubmit}>
+          <Link to={`/careerForum/users/${getUser?.user?.id}`}>
+            <p>返回個人資料</p>
+          </Link>
           <UserAvatar
             userAvatar={form.avatar}
             avatarStyle={'body-user-avatar'}
