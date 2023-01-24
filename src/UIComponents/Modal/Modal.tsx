@@ -3,6 +3,9 @@ import Backdrop from '../Backdrop/Backdrop'
 import Button from '../Button/Button'
 import style from './Modal.module.scss'
 import { HiOutlineX } from 'react-icons/hi'
+import UserAvatar from '../UserAvatar/UserAvatar'
+import { useGetUser } from '../../Contexts/UserContext'
+import { TextAreaAnswer } from '../TextArea/TextArea'
 
 interface modalProps {
   title: string
@@ -32,6 +35,42 @@ export default function Modal(props: modalProps) {
             </Button>
           </header>
           <form className={style['form']}>{props.children}</form>
+        </div>
+      </div>
+    </>,
+    document.getElementById('modal-root') as Element
+  )
+}
+
+interface questionModalProps {
+  onConfirm: (e: React.MouseEvent) => void
+  closeButtonStyle: string
+  children: React.ReactElement
+  questionId: number
+}
+
+export function QuestionModal(props: questionModalProps) {
+  const getUser = useGetUser()
+
+  return createPortal(
+    <>
+      <div className={style['modal-outer']}>
+        <Backdrop onConfirm={props.onConfirm} />
+        <div
+          className={`${style['question-modal-container']} ${style['scrollbar']}`}
+        >
+          {props.children}
+          <form className={style['answer-form']}>
+            <UserAvatar
+              userAvatar={getUser?.user?.avatar}
+              avatarStyle={'body-user-avatar'}
+            />
+            <TextAreaAnswer
+              placeholder={'輸入你的回答...'}
+              scrollHeight={100}
+              questionId={props.questionId}
+            />
+          </form>
         </div>
       </div>
     </>,

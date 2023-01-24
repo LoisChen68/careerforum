@@ -19,7 +19,7 @@ export default function App() {
           <Routes>
             <Route path="/careerforum" element={<Layout />}>
               <Route path="home" element={<ForumHome />} />
-              <Route path=":id" element={<QuestionPage />} />
+              <Route path=":id" element={<ForumHome />} />
               <Route path="users/:id" element={<UserProfile />} />
               <Route path="users/setting/:id" element={<UserSetting />} />
               <Route path="admin" element={<AdminLayout />}>
