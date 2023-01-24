@@ -3,7 +3,7 @@ import UserAvatar from '../../UIComponents/UserAvatar/UserAvatar'
 import style from './Question.module.scss'
 
 interface questionProps {
-  userAccount: string
+  userName: string
   userRole: string
   userId: number
   userAvatar: string
@@ -43,7 +43,7 @@ export default function Question(props: questionProps) {
         <div className={style['user-text']}>
           <div className={style['user-name-role']}>
             <Link to={`/careerforum/users/${props.userId}`}>
-              <p className={style['user-name']}>{props.userAccount}</p>
+              <p className={style['user-name']}>{props.userName}</p>
             </Link>
             <p className={style['user-role']}>{props.userRole}</p>
           </div>

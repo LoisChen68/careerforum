@@ -5,7 +5,7 @@ import style from './Answer.module.scss'
 interface answerProps {
   userId: number
   userAvatar: string
-  userAccount: string
+  userName: string
   userRole: string
   answerDate: string
   answer: string
@@ -22,7 +22,7 @@ export default function Answer(props: answerProps) {
       </Link>
       <div className={style['answer']}>
         <div className={style['user']}>
-          <p>{props.userAccount}</p>
+          <p>{props.userName}</p>
           <p className={style['user-role']}>{props.userRole}</p>
           <div>
             <p>{props.answerDate.slice(0, 10)}</p>

@@ -9,7 +9,6 @@ interface userDataProps {
   role: string
   name: string
   email: string
-  account: string
   avatar: string
   cover: string
   deletedAt: string
@@ -23,7 +22,6 @@ const userData = {
   role: '',
   name: '',
   email: '',
-  account: '',
   avatar: '',
   cover: '',
   deletedAt: '',

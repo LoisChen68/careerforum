@@ -21,7 +21,7 @@ import { useRender } from '../../Contexts/RenderContext'
 const formData = {
   role: '',
   email: '',
-  account: '',
+  name: '',
   password: '',
   confirmPassword: '',
 }
@@ -145,7 +145,7 @@ export default function Layout() {
 
     if (
       signUpData.email &&
-      signUpData.account &&
+      signUpData.name &&
       signUpData.password &&
       signUpData.confirmPassword &&
       emailRule.test(signUpData.email) &&
@@ -338,7 +338,7 @@ export default function Layout() {
           onLoginClick={onLoginClick}
           role={signUpData.role}
           email={signUpData.email}
-          account={signUpData.account}
+          name={signUpData.name}
           password={signUpData.password}
           confirmPassword={signUpData.confirmPassword}
           errorMessage={errorMessage}

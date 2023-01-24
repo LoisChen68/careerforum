@@ -81,7 +81,7 @@ export default function ForumHome() {
                 avatarStyle={'body-user-avatar'}
               />
               <div className={style['user']}>
-                <p className={style['name']}>{getUser?.user?.account || ''}</p>
+                <p className={style['name']}>{getUser?.user?.name || ''}</p>
                 <p className={style['role']}>{getUser?.user?.role || ''}</p>
                 <p></p>
               </div>
@@ -110,7 +110,7 @@ interface question {
 interface user {
   id: number
   role: string
-  account: string
+  name: string
   avatar: string
 }
 
@@ -183,7 +183,7 @@ function DiscussionThread() {
             <div className={style['container']}>
               <Question
                 title={question.title}
-                userAccount={question.User.account}
+                userName={question.User.name}
                 userRole={question.User.role}
                 userId={question.User.id}
                 userAvatar={question.User.avatar}
@@ -207,7 +207,7 @@ function DiscussionThread() {
               {question.Answers[0] ? (
                 <Answer
                   userId={question.Answers[0]?.User.id}
-                  userAccount={question.Answers[0]?.User.account}
+                  userName={question.Answers[0]?.User.name}
                   userRole={question.Answers[0]?.User.role}
                   userAvatar={question.Answers[0]?.User.avatar}
                   answerDate={question.Answers[0]?.createdAt}

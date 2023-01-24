@@ -23,7 +23,7 @@ const questionData = {
   User: {
     id: 0,
     role: '',
-    account: '',
+    name: '',
     avatar: '',
   },
   answersCount: 0,
@@ -41,7 +41,7 @@ interface answer {
 interface user {
   id: number
   role: string
-  account: string
+  name: string
   avatar: string
 }
 
@@ -145,10 +145,10 @@ export default function QuestionPage() {
                       />
                     </Link>
                     <div>
-                      <div className={style['user-account']}>
+                      <div className={style['user-name']}>
                         <Link to={`/careerForum/users/${question.User.id}`}>
-                          <p className={style['account']}>
-                            {question.User.account}
+                          <p className={style['name']}>
+                            {question.User.name}
                           </p>
                         </Link>
                         <p className={style['role']}>{question.User.role}</p>
@@ -168,7 +168,7 @@ export default function QuestionPage() {
                       userId={answer.User.id}
                       userAvatar={answer.User.avatar}
                       userRole={answer.User.role}
-                      userAccount={answer.User.account}
+                      userName={answer.User.name}
                       answerDate={answer.createdAt}
                       answer={answer.content}
                     />

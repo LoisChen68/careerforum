@@ -1,7 +1,7 @@
 interface signUpData {
   role: string
   email: string
-  account: string
+  name: string
   password: string
   confirmPassword: string
 }
@@ -40,10 +40,10 @@ export function isSignUpValid(
   }
 
   // 驗證是否輸入帳號
-  if (!data.account.trim()) {
-    props = { ...props, account: '欄位不得為空' }
+  if (!data.name.trim()) {
+    props = { ...props, name: '欄位不得為空' }
   } else {
-    props = { ...props, account: '' }
+    props = { ...props, name: '' }
   }
 
   // 驗證密碼與確認密碼是否相符
@@ -68,8 +68,8 @@ export function isSignUpValid(
   }
 
   //驗證帳號不得有空白鍵
-  if (data.account.includes(' ')) {
-    props = { ...props, account: '不能有空白' }
+  if (data.name.includes(' ')) {
+    props = { ...props, name: '不能有空白' }
   }
 
   //驗證密碼不得有空白鍵
@@ -220,11 +220,11 @@ export function isRoleValue(props: signUpData, value: string) {
   return props
 }
 
-export function isAccountValue(props: signUpData, value: string) {
+export function isNameValue(props: signUpData, value: string) {
   if (!value.trim()) {
-    props = { ...props, account: '欄位不得為空' }
+    props = { ...props, name: '欄位不得為空' }
   } else {
-    props = { ...props, account: '' }
+    props = { ...props, name: '' }
   }
   return props
 }
