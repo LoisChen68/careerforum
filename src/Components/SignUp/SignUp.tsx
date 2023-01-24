@@ -40,6 +40,7 @@ export default function SignUp(props: signUpProps) {
           htmlFor="role"
           label="Role"
           id="role"
+          name="role"
           value={options}
           selectedValue={props.role}
           errorMessage={props.errorMessage.role}

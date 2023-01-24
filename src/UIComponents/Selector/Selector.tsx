@@ -10,6 +10,7 @@ interface selectorProps {
   onChange: React.ChangeEventHandler<HTMLSelectElement>
   errorMessage: string
   selectedValue: string
+  name: string
 }
 
 interface value {
@@ -29,9 +30,10 @@ export default function Selector(props: selectorProps) {
     <div className={style['select-container']}>
       <select
         id={props.id}
+        name={props.name}
         className={style['select']}
         required={props.required}
-        defaultValue={'' || props.selectedValue}
+        value={props.selectedValue}
         onChange={props.onChange}
       >
         {option}
