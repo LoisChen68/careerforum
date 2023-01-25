@@ -47,7 +47,7 @@ export default function UserProfile() {
             </div>
             <div>
               {getUser?.user.id === Number(param.id) && (
-                <Link to={`/careerForum/users/setting/${getUser?.user?.id}`} >
+                <Link to={'/careerforum/users/setting'} >
                   <Button
                     type="submit"
                     style="user-setting-button"

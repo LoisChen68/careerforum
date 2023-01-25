@@ -42,7 +42,7 @@ export default function MobileFooter(props: mobileFooterProps) {
           </div>
         </NavLink>
         <NavLink
-          to={`/careerforum/users/setting/${getUser?.user?.id}`}
+          to={'/careerforum/users/setting'}
           className={({ isActive }) =>
             isActive ? style['activeStyle'] : undefined
           }

@@ -3,7 +3,6 @@ import './App.scss'
 import Layout from './Pages/Layout/Layout'
 import AdminLayout from './Pages/Layout/AdminLayout'
 import ForumHome from './Pages/ForumHome/ForumHome'
-import QuestionPage from './Pages/QuestionPage/QuestionPage'
 import AdminUser from './Pages/Admin/AdminUser'
 import UserContextProvider from './Contexts/UserContext'
 import ModalContextProvider from './Contexts/ModalContext'
@@ -21,7 +20,7 @@ export default function App() {
               <Route path="home" element={<ForumHome />} />
               <Route path=":id" element={<ForumHome />} />
               <Route path="users/:id" element={<UserProfile />} />
-              <Route path="users/setting/:id" element={<UserSetting />} />
+              <Route path="users/setting" element={<UserSetting />} />
               <Route path="admin" element={<AdminLayout />}>
                 <Route path="users" element={<AdminUser />} />
               </Route>
