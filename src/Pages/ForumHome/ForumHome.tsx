@@ -19,16 +19,26 @@ import ButtonLoader from '../../UIComponents/ButtonLoader/ButtonLoader'
 import { useModalStatus } from '../../Contexts/ModalContext'
 import { useRender } from '../../Contexts/RenderContext'
 import QuestionPage from '../QuestionPage/QuestionPage'
+import { useParams } from 'react-router-dom'
 
 export default function ForumHome() {
-  const [loading, setLoading] = useState(true)
-  const setModalStatus = useModalStatus()
+  const param = useParams()
   const getUser = useGetUser()
+  const setModalStatus = useModalStatus()
+  const [loading, setLoading] = useState(true)
 
   // 這裡的 loading 是具有 Backdrop 的 LayoutLoader
   // 頁面渲染完成將 loading 設為 false
   useEffect(() => {
     setLoading(false)
+  }, [])
+
+  // 若抓取到網址列上有 id 時，載入 questionPage Modal
+  useEffect(() => {
+    const id = param.id
+    if (id) {
+      setModalStatus?.handleSetModal('questionPage')
+    }
   }, [])
 
   const onAskShow = () => {
@@ -67,6 +77,7 @@ export default function ForumHome() {
         </div>
       </div>
 
+      <EditQuestion />
       {setModalStatus?.modalStatus === 'ask' && (
         <Modal
           title={'想問點什麼嗎？'}
@@ -170,6 +181,7 @@ function DiscussionThread() {
       .catch((err) => console.error(err))
   }
 
+
   return (
     <>
       <InfiniteScroll
@@ -188,7 +200,9 @@ function DiscussionThread() {
                 userId={question.User.id}
                 userAvatar={question.User.avatar}
                 questionDate={question.createdAt.slice(0, 10)}
+                questionTitle={question.title}
                 question={question.content}
+                questionUserId={question.User.id}
                 questionId={question.id}
                 hashTags={[{ id: 1, name: '求職' }]}
                 answerCount={question.answersCount}
@@ -232,6 +246,82 @@ function DiscussionThread() {
         ))}
       </InfiniteScroll>
       {questionStatus === 'noting' && <p>目前還沒有人問問題</p>}
+    </>
+  )
+}
+
+function EditQuestion() {
+  const setModalStatus = useModalStatus()
+  const getUser = useGetUser()
+  const [question, setQuestion] = useState({ id: 0, title: '', content: '' })
+  const questionId = Number(localStorage.getItem('questionId'))
+  const [isLoad, setIsLoad] = useState(false)
+
+  useEffect(() => {
+    if (setModalStatus?.modalStatus === 'editAsk') {
+      setIsLoad(true)
+      questionsAPI
+        .getQuestion(questionId)
+        .then(res => {
+          setIsLoad(false)
+          setQuestion(res.data)
+        })
+        .catch(err => console.log(err))
+    }
+  }, [setModalStatus?.modalStatus])
+
+  return (
+    <>
+      {isLoad && (
+        <Modal
+          title={'編輯問題'}
+          onConfirm={() => setModalStatus?.handleSetModal('initial')}
+          modalStyle="ask-modal-container"
+          closeButtonStyle={'button-close-ask'}
+        >
+          <>
+            <div className={style['ask-modal-avatar']}>
+              <UserAvatar
+                userAvatar={getUser?.user?.avatar}
+                avatarStyle={'body-user-avatar'}
+              />
+              <div className={style['user']}>
+                <p className={style['name']}>{getUser?.user?.name || ''}</p>
+                <p className={style['role']}>{getUser?.user?.role || ''}</p>
+                <p></p>
+              </div>
+            </div>
+            <ButtonLoader />
+          </>
+        </Modal>
+      )}
+      {setModalStatus?.modalStatus === 'editAsk' && !isLoad && (
+        <Modal
+          title={'編輯問題'}
+          onConfirm={() => setModalStatus?.handleSetModal('initial')}
+          modalStyle="ask-modal-container"
+          closeButtonStyle={'button-close-ask'}
+        >
+          <>
+            <div className={style['ask-modal-avatar']}>
+              <UserAvatar
+                userAvatar={getUser?.user?.avatar}
+                avatarStyle={'body-user-avatar'}
+              />
+              <div className={style['user']}>
+                <p className={style['name']}>{getUser?.user?.name || ''}</p>
+                <p className={style['role']}>{getUser?.user?.role || ''}</p>
+                <p></p>
+              </div>
+            </div>
+            <TextAreaAsk
+              questionId={question.id}
+              title={question.title}
+              content={question.content}
+              placeholder={'請輸入你的問題...'} />
+          </>
+        </Modal>
+      )}
     </>
   )
 }
