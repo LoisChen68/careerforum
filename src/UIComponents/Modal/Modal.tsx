@@ -6,6 +6,7 @@ import { HiOutlineX } from 'react-icons/hi'
 import UserAvatar from '../UserAvatar/UserAvatar'
 import { useGetUser } from '../../Contexts/UserContext'
 import { TextAreaAnswer } from '../TextArea/TextArea'
+import { Link } from 'react-router-dom'
 
 interface modalProps {
   title: string
@@ -55,7 +56,9 @@ export function QuestionModal(props: questionModalProps) {
   return createPortal(
     <>
       <div className={style['modal-outer']}>
-        <Backdrop onConfirm={props.onConfirm} />
+        <Link to='/careerforum/home'>
+          <Backdrop onConfirm={props.onConfirm} />
+        </Link>
         <div
           className={`${style['question-modal-container']} ${style['scrollbar']}`}
         >

@@ -128,16 +128,18 @@ export default function QuestionPage() {
               <div className={`${style['container']}`}>
                 <section className={style['title-section']}>
                   <div className={style['user']}>
-                    <Button
-                      type="button"
-                      style={'button-close-question'}
-                      onClick={() => setModalStatus?.handleSetModal('initial')}
-                      disabled={false}
-                    >
-                      <p className={style['icon']} role="close">
-                        <HiOutlineX />
-                      </p>
-                    </Button>
+                    <Link to='/careerforum/home'>
+                      <Button
+                        type="button"
+                        style={'button-close-question'}
+                        onClick={() => setModalStatus?.handleSetModal('initial')}
+                        disabled={false}
+                      >
+                        <p className={style['icon']} role="close">
+                          <HiOutlineX />
+                        </p>
+                      </Button>
+                    </Link>
                     <Link to={`/careerForum/users/${question.User.id}`}>
                       <UserAvatar
                         userAvatar={question.User.avatar}
