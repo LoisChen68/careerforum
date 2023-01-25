@@ -7,6 +7,8 @@ import { useModalStatus } from '../../Contexts/ModalContext'
 import { toast } from 'react-toastify'
 
 interface textAreaProps {
+  title?: string
+  content?: string
   placeholder: string
   scrollHeight?: number
   questionId?: number
@@ -78,11 +80,12 @@ export function TextAreaAnswer(props: textAreaProps) {
   )
 }
 
+// for 發問問題 textArea
 export function TextAreaAsk(props: textAreaProps) {
-  const useSetModal = useModalStatus()
   const reRender = useRender()
-  const [title, setTitle] = useState('')
-  const [content, setContent] = useState('')
+  const useSetModal = useModalStatus()
+  const [title, setTitle] = useState(props.title ? props.title : '')
+  const [content, setContent] = useState(props.content ? props.content : '')
   const [errorMessage, setErrorMessage] = useState({ title: '', content: '' })
 
   function handleInputChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -115,6 +118,24 @@ export function TextAreaAsk(props: textAreaProps) {
       setErrorMessage({ ...errorMessage, content: '內容不得為空' })
     }
 
+    // 如果父層有 questionId 則修改問題
+    if (props.questionId) {
+      questionAPI
+        .putQuestion(props.questionId, title, content)
+        .then(() =>
+          toast.success('編輯成功', {
+            position: 'top-right',
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: false,
+            draggable: true,
+            progress: undefined,
+            theme: 'light',
+          }))
+        .catch(err => console.log(err))
+    }
+    // 新增問題
     if (title && content) {
       questionAPI
         .postQuestion(title, content)
