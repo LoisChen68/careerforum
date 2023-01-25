@@ -16,4 +16,10 @@ export default {
   postQuestion(title: string, content: string) {
     return api.post('/questions', { title, content })
   },
+  putQuestion(id: number, title: string, content: string) {
+    return api.put(`/questions/${id}`, { title, content })
+  },
+  deleteQuestion(id: number | undefined) {
+    return api.delete(`/questions/${id}`)
+  }
 }
