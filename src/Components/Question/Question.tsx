@@ -1,6 +1,14 @@
 import { Link } from 'react-router-dom'
+import { useModalStatus } from '../../Contexts/ModalContext'
+import { useGetUser } from '../../Contexts/UserContext'
 import UserAvatar from '../../UIComponents/UserAvatar/UserAvatar'
 import style from './Question.module.scss'
+import { BiDotsVerticalRounded } from 'react-icons/bi'
+import { createRef, useState } from 'react'
+import questionAPI from '../../request/API/questionAPI'
+import Backdrop from '../../UIComponents/Backdrop/Backdrop'
+import { useRender } from '../../Contexts/RenderContext'
+import { toast } from 'react-toastify'
 
 interface questionProps {
   userName: string
@@ -8,8 +16,10 @@ interface questionProps {
   userId: number
   userAvatar: string
   questionDate: string
+  questionTitle: string
   question: string
   questionId: number
+  questionUserId: number
   hashTags: value[]
   answerCount: number
   title: string
@@ -22,17 +32,126 @@ interface value {
 }
 
 export default function Question(props: questionProps) {
+  const render = useRender()
+  const getUser = useGetUser()
+  const setModalStatus = useModalStatus()
+  const checkboxRef = createRef<HTMLInputElement>()
+  const [activeId, setActiveId] = useState<number>()
+  const [alert, setAlert] = useState(false)
+  const questionId = localStorage.getItem('questionId')
+  const origin = window.location.origin
+
   const hashTag = props.hashTags.map((item: value) => (
     <p key={item.id}>{`#${item.name}`}</p>
   ))
 
+  function handleEditClick(id: number) {
+    if (questionId) {
+      localStorage.removeItem('questionId')
+    }
+    setModalStatus?.handleSetModal('editAsk')
+    localStorage.setItem('questionId', id.toString())
+  }
+
+  function handleDeleteClick(id: number) {
+    setAlert(true)
+    localStorage.setItem('questionId', id.toString())
+  }
+
+  function handleOnCancel() {
+    setAlert(false)
+  }
+
+  function handleOnSure() {
+    questionAPI
+      .deleteQuestion(Number(questionId))
+      .then(() => {
+        setAlert(false)
+        render?.handleRerender(true)
+        toast.success('刪除成功', {
+          position: 'top-right',
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+          theme: 'light',
+        })
+      })
+      .catch(err => console.log(err))
+  }
+
+  function copyURL() {
+    navigator.clipboard.writeText(`${origin}/careerforum/${props.questionId}`)
+    toast.success('複製分享網址成功', {
+      position: 'top-right',
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: false,
+      draggable: true,
+      progress: undefined,
+      theme: 'light',
+    })
+  }
+
   return (
     <div className={style['question-container']}>
-      <Link to={`/careerforum/${props.questionId}`}>
-        <h3 className={style['question-title']} onClick={props.onQuestionClick}>
-          {props.title}
-        </h3>
-      </Link>
+      <div className={style['title-container']}>
+        <Link to={`/careerforum/${props.questionId}`}>
+          <h3 className={style['question-title']} onClick={props.onQuestionClick}>
+            {props.title}
+          </h3>
+        </Link>
+        <div>
+          <label htmlFor={`dot-icon-${props.questionId}`}>
+            <p><BiDotsVerticalRounded /></p>
+          </label>
+          <input
+            ref={checkboxRef}
+            id={`dot-icon-${props.questionId}`}
+            type="checkbox"
+            className={style['menu-toggle']}
+            onClick={() => setActiveId(props.questionId)}
+          />
+          {activeId === props.questionId && (
+            <div className={style['menu']} onClick={() => checkboxRef.current && (checkboxRef.current.checked = false)}>
+              <ul className={style['menu-list']}>
+                {getUser?.user?.id === props.questionUserId && (
+                  <>
+                    <li className={style['menu-item']}>
+                      <p onClick={() => handleEditClick(props.questionId)}>編輯</p>
+                    </li>
+                    <li className={style['menu-item']}>
+                      <p onClick={() => handleDeleteClick(props.questionId)}>刪除</p>
+                    </li>
+                  </>
+                )}
+                <li className={style['menu-item']}>
+                  <p onClick={copyURL}>分享</p>
+                </li>
+              </ul>
+            </div>
+          )}
+          {alert && (
+            <>
+              <Backdrop onConfirm={handleOnCancel} />
+              <div className={style['alert-container']}>
+                <h3>{`確定要刪除 ${props.questionTitle} 這則問題嗎？`}</h3>
+                <div className={style['buttons']}>
+                  <button className={style['btn-cancel']} onClick={handleOnCancel}>
+                    取消
+                  </button>
+                  <button className={style['btn-sure']} onClick={handleOnSure}>
+                    確定
+                  </button>
+                </div>
+              </div>
+            </>
+          )}
+        </div>
+      </div>
       <div className={style['user']}>
         <Link to={`/careerforum/users/${props.userId}`}>
           <UserAvatar
