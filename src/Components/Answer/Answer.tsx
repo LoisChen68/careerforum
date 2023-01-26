@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import UserAvatar from '../../UIComponents/UserAvatar/UserAvatar'
 import style from './Answer.module.scss'
+import { dayFormat } from '../../utils/dayFormat'
 
 interface answerProps {
   userId: number
@@ -36,7 +37,8 @@ export default function Answer(props: answerProps) {
             <p className={style['user-role']}>{'助教'}</p>
           )}
           <div>
-            <p className={style['user-post-date']}>{props.answerDate.slice(0, 10)}</p>
+            <p className={style['user-post-date']}>{dayFormat(props.answerDate)
+            }</p>
           </div>
         </div>
         <p className={style['content']}>{props.answer}</p>

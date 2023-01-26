@@ -9,6 +9,7 @@ import questionAPI from '../../request/API/questionAPI'
 import Backdrop from '../../UIComponents/Backdrop/Backdrop'
 import { useRender } from '../../Contexts/RenderContext'
 import { toast } from 'react-toastify'
+import { dayFormat } from '../../utils/dayFormat'
 
 interface questionProps {
   userName: string
@@ -174,7 +175,7 @@ export default function Question(props: questionProps) {
               <p className={style['user-role']}>{'助教'}</p>
             )}
           </div>
-          <p className={style['user-post-date']}>{props.questionDate}</p>
+          <p className={style['user-post-date']}>{dayFormat(props.questionDate)}</p>
         </div>
       </div>
       <div className={style['content']}>{props.question}</div>

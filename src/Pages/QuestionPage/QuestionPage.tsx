@@ -12,6 +12,7 @@ import { Link } from 'react-router-dom'
 import { useRender } from '../../Contexts/RenderContext'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import ButtonLoader from '../../UIComponents/ButtonLoader/ButtonLoader'
+import { dayFormat } from '../../utils/dayFormat'
 
 const questionData = {
   id: 0,
@@ -170,7 +171,7 @@ export default function QuestionPage() {
                           <p className={style['role']}>{'助教'}</p>
                         )}
                       </div>
-                      <p>{question.createdAt.slice(0, 10)}</p>
+                      <p>{dayFormat(question.createdAt)}</p>
                     </div>
                   </div>
                   <h3 className={style['title']}>
