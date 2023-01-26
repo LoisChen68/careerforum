@@ -104,12 +104,16 @@ export default function QuestionPage() {
       .catch((err) => console.error(err))
   }
 
+  function close() {
+    setModalStatus?.handleSetModal('initial')
+  }
+
+
+
   return (
     <>
       <QuestionModal
-        onConfirm={() => {
-          setModalStatus?.handleSetModal('initial')
-        }}
+        onConfirm={close}
         closeButtonStyle={'button-close-ask'}
         questionId={question.id}
       >
@@ -132,7 +136,7 @@ export default function QuestionPage() {
                       <Button
                         type="button"
                         style={'button-close-question'}
-                        onClick={() => setModalStatus?.handleSetModal('initial')}
+                        onClick={close}
                         disabled={false}
                       >
                         <p className={style['icon']} role="close">
@@ -163,10 +167,11 @@ export default function QuestionPage() {
                 <section className={style['content-container']}>
                   <p className={style['content']}>{question.content}</p>
                 </section>
-                {answerStatus === 'noting' && <p>目前還沒有人回答</p>}
-                {answers.map((answer: answer) => (
-                  <div className={style['answer-container']} key={answer.id}>
+                <div className={style['answer-container']} >
+                  {answerStatus === 'noting' && <p>目前還沒有人回答</p>}
+                  {answers.map((answer: answer) => (
                     <Answer
+                      key={answer.id}
                       userId={answer.User.id}
                       userAvatar={answer.User.avatar}
                       userRole={answer.User.role}
@@ -174,8 +179,8 @@ export default function QuestionPage() {
                       answerDate={answer.createdAt}
                       answer={answer.content}
                     />
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
             </div>
           </div>

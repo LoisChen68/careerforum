@@ -15,8 +15,10 @@
 }
 
 .container {
-  padding-bottom: 10px;
   position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
   width: 90%;
 }
 
@@ -37,10 +39,12 @@
 
 .title-section {
   position: sticky;
+  top: 0px;
   display: flex;
   flex-direction: column;
-  top: 0px;
+  gap: 5px;
   background-color: #fff;
+  z-index: 3;
 }
 
 .user {
@@ -80,20 +84,31 @@
 .title,
 .content {
   overflow-wrap: break-word;
+  white-space: pre-wrap;
 }
 
 .title {
   @include func.font-setting(1rem, 700, color.$primary-font);
+  position: relative;
+  left: 5px;
 }
 
 .content-container {
+  position: relative;
+  left: 5px;
+  width: 95%;
   border-bottom: 1px solid color.$primary-color;
   padding-bottom: 10px;
   margin-bottom: 10px;
 }
 
 .answer-container {
-  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  position: relative;
+  left: 5px;
+  width: 90%;
 }
 
 .answer-form {
