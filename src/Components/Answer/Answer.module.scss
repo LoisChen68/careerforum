@@ -8,13 +8,22 @@
 }
 
 .answer {
+  width: 90%;
   flex: 1;
   color: black;
+}
+
+.content {
+  overflow-wrap: break-word;
 }
 
 .user {
   display: flex;
   gap: 5px;
+  @include func.font-setting(0.75rem, 400, color.$primary-font);
+}
+
+.user-name {
   @include func.font-setting(0.75rem, 400, color.$primary-font);
 }
 

@@ -22,13 +22,15 @@ export default function Answer(props: answerProps) {
       </Link>
       <div className={style['answer']}>
         <div className={style['user']}>
-          <p>{props.userName}</p>
+          <Link to={`/careerForum/users/${props.userId}`}>
+            <p className={style['user-name']}>{props.userName}</p>
+          </Link>
           <p className={style['user-role']}>{props.userRole}</p>
           <div>
             <p>{props.answerDate.slice(0, 10)}</p>
           </div>
         </div>
-        {props.answer}
+        <p className={style['content']}>{props.answer}</p>
       </div>
     </div>
   )
