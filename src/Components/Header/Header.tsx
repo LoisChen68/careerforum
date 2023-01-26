@@ -1,4 +1,4 @@
-import { createRef } from 'react'
+import { useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { useGetUser } from '../../Contexts/UserContext'
 import Button from '../../UIComponents/Button/Button'
@@ -15,7 +15,7 @@ interface headerProps {
 
 export default function Header(props: headerProps) {
   const getUser = useGetUser()
-  const checkboxRef = createRef<HTMLInputElement>()
+  const checkboxRef = useRef<HTMLInputElement>(null)
 
   return (
     <header className={style['header']}>

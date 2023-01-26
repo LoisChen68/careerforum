@@ -40,7 +40,7 @@ export default function ForumHome() {
     if (id) {
       setModalStatus?.handleSetModal('questionPage')
     }
-  }, [])
+  }, [param.id])
 
   const onAskShow = () => {
     setModalStatus?.handleSetModal('ask')
@@ -58,7 +58,6 @@ export default function ForumHome() {
     setAlert(false)
     setModalStatus?.handleSetModal('initial')
   }
-
 
   return (
     <>
@@ -283,15 +282,12 @@ function EditQuestion() {
   const [question, setQuestion] = useState({ id: 0, title: '', content: '' })
   const questionId = Number(localStorage.getItem('questionId'))
   const [alert, setAlert] = useState(false)
-  const [isLoad, setIsLoad] = useState(false)
 
   useEffect(() => {
     if (setModalStatus?.modalStatus === 'editAsk') {
-      setIsLoad(true)
       questionsAPI
         .getQuestion(questionId)
         .then(res => {
-          setIsLoad(false)
           setQuestion(res.data)
         })
         .catch(err => console.log(err))
@@ -313,30 +309,7 @@ function EditQuestion() {
 
   return (
     <>
-      {isLoad && (
-        <Modal
-          title={'編輯問題'}
-          onConfirm={close}
-          modalStyle="ask-modal-container"
-          closeButtonStyle={'button-close-ask'}
-        >
-          <>
-            <div className={style['ask-modal-avatar']}>
-              <UserAvatar
-                userAvatar={getUser?.user?.avatar}
-                avatarStyle={'body-user-avatar'}
-              />
-              <div className={style['user']}>
-                <p className={style['name']}>{getUser?.user?.name || ''}</p>
-                <p className={style['role']}>{getUser?.user?.role || ''}</p>
-                <p></p>
-              </div>
-            </div>
-            <ButtonLoader />
-          </>
-        </Modal>
-      )}
-      {setModalStatus?.modalStatus === 'editAsk' && !isLoad && (
+      {setModalStatus?.modalStatus === 'editAsk' && (
         <Modal
           title={'編輯問題'}
           onConfirm={close}
