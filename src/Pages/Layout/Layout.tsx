@@ -146,6 +146,7 @@ export default function Layout() {
     if (
       signUpData.email &&
       signUpData.name &&
+      signUpData.name.length <= 20 &&
       signUpData.password &&
       signUpData.confirmPassword &&
       emailRule.test(signUpData.email) &&

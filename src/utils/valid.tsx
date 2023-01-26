@@ -17,6 +17,7 @@ export function isSignUpValid(
   data: signUpData,
   emailRule: RegExp
 ) {
+
   // 驗證是否輸入身分
   if (!data.role.trim()) {
     props = { ...props, role: '欄位不得為空' }
@@ -39,10 +40,15 @@ export function isSignUpValid(
     props = { ...props, email: '' }
   }
 
-  // 驗證是否輸入帳號
+  // 驗證是否輸入名稱
   if (!data.name.trim()) {
     props = { ...props, name: '欄位不得為空' }
-  } else {
+  }
+
+  // 驗證輸入名稱長度是否大於 20 字
+  if (data.name.trim() && data.name.trim().length > 20) {
+    props = { ...props, name: 'Name 長度不得超過20字' }
+  } else if (data.name.trim() && data.name.trim().length <= 20) {
     props = { ...props, name: '' }
   }
 
@@ -132,6 +138,10 @@ export function signUpValueValid(
     }
   } else {
     props = { ...props, [inputName]: '' }
+  }
+
+  if (inputName === 'name' && value.trim().length > 20) {
+    props = { ...props, ['name']: 'Name 長度不得超過20字' }
   }
 
   if (inputName === 'password' && value && value !== confirmPassword) {

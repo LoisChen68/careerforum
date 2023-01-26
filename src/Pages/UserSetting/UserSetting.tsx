@@ -74,6 +74,11 @@ export default function UserSetting() {
       } else {
         setErrorMessage({ ...errorMessage, name: "" })
       }
+      if (value.length > 20) {
+        setErrorMessage({ ...errorMessage, name: "Name 長度不得超過20字" })
+      } else {
+        setErrorMessage({ ...errorMessage, name: "" })
+      }
     }
     if (name === 'password') {
       setForm({ ...form, password: value })
@@ -115,6 +120,15 @@ export default function UserSetting() {
   function handleSubmit(e: React.FormEvent) {
     const userId = getUser?.user?.id
     e.preventDefault()
+    if (form.name.trim().length > 20) {
+      return setErrorMessage({ ...errorMessage, name: "Name 長度不得超過20字" })
+    }
+    if (form.password.trim() !== form.confirmPassword.trim()) {
+      return setErrorMessage({ ...errorMessage, password: "密碼與確認密碼不符", confirmPassword: "密碼與確認密碼不符" })
+    }
+    if (!form.password.trim() && !form.confirmPassword.trim()) {
+      return setErrorMessage({ ...errorMessage, password: "欄位不得為空", confirmPassword: "欄位不得為空" })
+    }
     setDisable(true)
     if (form.name &&
       form.password && form.confirmPassword &&
