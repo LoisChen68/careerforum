@@ -24,6 +24,7 @@ import { useParams } from 'react-router-dom'
 export default function ForumHome() {
   const param = useParams()
   const getUser = useGetUser()
+  const [alert, setAlert] = useState(false)
   const setModalStatus = useModalStatus()
   const [loading, setLoading] = useState(true)
 
@@ -46,8 +47,18 @@ export default function ForumHome() {
   }
 
   const onAskClose = () => {
+    setAlert(true)
+  }
+
+  function handleOnCancel() {
+    setAlert(false)
+  }
+
+  function handleOnSure() {
+    setAlert(false)
     setModalStatus?.handleSetModal('initial')
   }
+
 
   return (
     <>
@@ -100,6 +111,22 @@ export default function ForumHome() {
             <TextAreaAsk placeholder={'請輸入你的問題...'} />
           </>
         </Modal>
+      )}
+      {alert && (
+        <>
+          <div className={style['back-drop']} onClick={handleOnCancel} />
+          <div className={style['alert-container']}>
+            <h3>{'確定要離開嗎？ 編輯內容將不被保存'}</h3>
+            <div className={style['buttons']}>
+              <button className={style['btn-cancel']} onClick={handleOnCancel}>
+                取消
+              </button>
+              <button className={style['btn-sure']} onClick={handleOnSure}>
+                確定
+              </button>
+            </div>
+          </div>
+        </>
       )}
       {setModalStatus?.modalStatus === 'questionPage' && <QuestionPage />}
     </>
@@ -255,6 +282,7 @@ function EditQuestion() {
   const getUser = useGetUser()
   const [question, setQuestion] = useState({ id: 0, title: '', content: '' })
   const questionId = Number(localStorage.getItem('questionId'))
+  const [alert, setAlert] = useState(false)
   const [isLoad, setIsLoad] = useState(false)
 
   useEffect(() => {
@@ -270,12 +298,25 @@ function EditQuestion() {
     }
   }, [setModalStatus?.modalStatus])
 
+  function close() {
+    setAlert(true)
+  }
+
+  function handleOnCancel() {
+    setAlert(false)
+  }
+
+  function handleOnSure() {
+    setAlert(false)
+    setModalStatus?.handleSetModal('initial')
+  }
+
   return (
     <>
       {isLoad && (
         <Modal
           title={'編輯問題'}
-          onConfirm={() => setModalStatus?.handleSetModal('initial')}
+          onConfirm={close}
           modalStyle="ask-modal-container"
           closeButtonStyle={'button-close-ask'}
         >
@@ -298,7 +339,7 @@ function EditQuestion() {
       {setModalStatus?.modalStatus === 'editAsk' && !isLoad && (
         <Modal
           title={'編輯問題'}
-          onConfirm={() => setModalStatus?.handleSetModal('initial')}
+          onConfirm={close}
           modalStyle="ask-modal-container"
           closeButtonStyle={'button-close-ask'}
         >
@@ -321,6 +362,22 @@ function EditQuestion() {
               placeholder={'請輸入你的問題...'} />
           </>
         </Modal>
+      )}
+      {alert && (
+        <>
+          <div className={style['back-drop']} onClick={handleOnCancel} />
+          <div className={style['alert-container']}>
+            <h3>{'確定要離開嗎？ 編輯內容將不被保存'}</h3>
+            <div className={style['buttons']}>
+              <button className={style['btn-cancel']} onClick={handleOnCancel}>
+                取消
+              </button>
+              <button className={style['btn-sure']} onClick={handleOnSure}>
+                確定
+              </button>
+            </div>
+          </div>
+        </>
       )}
     </>
   )
