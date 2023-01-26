@@ -62,7 +62,10 @@ export default function QuestionPage() {
     async function fetchQuestion() {
       await questionAPI
         .getQuestion(Number(param.id))
-        .then((res) => setQuestion(res.data))
+        .then((res) => {
+          setLoading(false)
+          setQuestion(res.data)
+        })
         .catch((err) => console.log(err))
     }
     fetchQuestion()
@@ -157,17 +160,31 @@ export default function QuestionPage() {
                             {question.User.name}
                           </p>
                         </Link>
-                        <p className={style['role']}>{question.User.role}</p>
+                        {question.User.role === 'student' && (
+                          <p className={style['role']}>{'學期三'}</p>
+                        )}
+                        {question.User.role === 'graduate' && (
+                          <p className={style['role']}>{'畢業'}</p>
+                        )}
+                        {question.User.role === 'TA' && (
+                          <p className={style['role']}>{'助教'}</p>
+                        )}
                       </div>
                       <p>{question.createdAt.slice(0, 10)}</p>
                     </div>
                   </div>
-                  <h3 className={style['title']}>{question.title}</h3>
+                  <h3 className={style['title']}>
+                    {question.title}
+                  </h3>
                 </section>
                 <section className={style['content-container']}>
+                  {loading && (
+                    <ButtonLoader />
+                  )}
                   <p className={style['content']}>{question.content}</p>
                 </section>
                 <div className={style['answer-container']} >
+                  {loading && (<ButtonLoader />)}
                   {answerStatus === 'noting' && <p>目前還沒有人回答</p>}
                   {answers.map((answer: answer) => (
                     <Answer

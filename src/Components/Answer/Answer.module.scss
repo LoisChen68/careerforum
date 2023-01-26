@@ -19,17 +19,21 @@
 
 .user {
   display: flex;
+  align-items: center;
   gap: 5px;
-  @include func.font-setting(0.75rem, 400, color.$primary-font);
 }
 
 .user-name {
-  @include func.font-setting(0.75rem, 400, color.$primary-font);
+  @include func.font-setting(1rem, 400, color.$primary-font);
 }
 
 .user-role {
   padding: 0 5px;
   background-color: color.$primary-color;
-  color: #fff;
   border-radius: 5px;
+  @include func.font-setting(0.75rem, 400, #fff);
+}
+
+.user-post-date {
+  @include func.font-setting(0.75rem, 400, color.$primary-font);
 }

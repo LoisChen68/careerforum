@@ -12,6 +12,7 @@ interface answerProps {
 }
 
 export default function Answer(props: answerProps) {
+
   return (
     <div className={style['answer-container']}>
       <Link to={`/careerForum/users/${props.userId}`}>
@@ -25,9 +26,17 @@ export default function Answer(props: answerProps) {
           <Link to={`/careerForum/users/${props.userId}`}>
             <p className={style['user-name']}>{props.userName}</p>
           </Link>
-          <p className={style['user-role']}>{props.userRole}</p>
+          {props.userRole === 'student' && (
+            <p className={style['user-role']}>{'學期三'}</p>
+          )}
+          {props.userRole === 'graduate' && (
+            <p className={style['user-role']}>{'畢業'}</p>
+          )}
+          {props.userRole === 'TA' && (
+            <p className={style['user-role']}>{'助教'}</p>
+          )}
           <div>
-            <p>{props.answerDate.slice(0, 10)}</p>
+            <p className={style['user-post-date']}>{props.answerDate.slice(0, 10)}</p>
           </div>
         </div>
         <p className={style['content']}>{props.answer}</p>

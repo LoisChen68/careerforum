@@ -43,7 +43,15 @@ export default function UserProfile() {
             />
             <div className={style['user-data']}>
               <p>{userData.name}</p>
-              <p className={style['role']}>{userData.role}</p>
+              {userData.role === 'student' && (
+                <p className={style['role']}>{'學期三'}</p>
+              )}
+              {userData.role === 'graduate' && (
+                <p className={style['role']}>{'畢業'}</p>
+              )}
+              {userData.role === 'TA' && (
+                <p className={style['role']}>{'助教'}</p>
+              )}
             </div>
             <div>
               {getUser?.user.id === Number(param.id) && (

@@ -4,7 +4,7 @@ import { useGetUser } from '../../Contexts/UserContext'
 import UserAvatar from '../../UIComponents/UserAvatar/UserAvatar'
 import style from './Question.module.scss'
 import { BiDotsVerticalRounded } from 'react-icons/bi'
-import { createRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import questionAPI from '../../request/API/questionAPI'
 import Backdrop from '../../UIComponents/Backdrop/Backdrop'
 import { useRender } from '../../Contexts/RenderContext'
@@ -35,7 +35,7 @@ export default function Question(props: questionProps) {
   const render = useRender()
   const getUser = useGetUser()
   const setModalStatus = useModalStatus()
-  const checkboxRef = createRef<HTMLInputElement>()
+  const checkboxRef = useRef<HTMLInputElement>(null)
   const [activeId, setActiveId] = useState<number>()
   const [alert, setAlert] = useState(false)
   const questionId = localStorage.getItem('questionId')
@@ -164,7 +164,15 @@ export default function Question(props: questionProps) {
             <Link to={`/careerforum/users/${props.userId}`}>
               <p className={style['user-name']}>{props.userName}</p>
             </Link>
-            <p className={style['user-role']}>{props.userRole}</p>
+            {props.userRole === 'student' && (
+              <p className={style['user-role']}>{'學期三'}</p>
+            )}
+            {props.userRole === 'graduate' && (
+              <p className={style['user-role']}>{'畢業'}</p>
+            )}
+            {props.userRole === 'TA' && (
+              <p className={style['user-role']}>{'助教'}</p>
+            )}
           </div>
           <p className={style['user-post-date']}>{props.questionDate}</p>
         </div>
