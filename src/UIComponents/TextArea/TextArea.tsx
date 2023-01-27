@@ -37,7 +37,7 @@ export function TextAreaAnswer(props: textAreaProps) {
 
     if (props.answerId) {
       answerAPI
-        .putAnswers(props.answerId, content)
+        .putAnswer(props.answerId, content)
         .then(() => {
           toast.success('編輯成功', {
             position: 'top-right',

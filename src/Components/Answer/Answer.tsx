@@ -11,6 +11,8 @@ import { TextAreaAnswer } from '../../UIComponents/TextArea/TextArea'
 import answerAPI from '../../request/API/answerAPI'
 import ButtonLoader from '../../UIComponents/ButtonLoader/ButtonLoader'
 import Backdrop from '../../UIComponents/Backdrop/Backdrop'
+import { useRender } from '../../Contexts/RenderContext'
+import { toast } from 'react-toastify'
 
 interface answerProps {
   userId: number
@@ -23,10 +25,12 @@ interface answerProps {
 }
 
 export default function Answer(props: answerProps) {
-  const checkboxRef = useRef<HTMLInputElement>(null)
+  const render = useRender()
   const getUser = useGetUser()
+  const checkboxRef = useRef<HTMLInputElement>(null)
   const [alert, setAlert] = useState(false)
   const setModalStatus = useModalStatus()
+  const answerId = Number(localStorage.getItem('answerId'))
 
   function handleEditClick(id: number) {
     setModalStatus?.handleSetModal('editAnswer')
@@ -43,7 +47,23 @@ export default function Answer(props: answerProps) {
   }
 
   function handleOnSure() {
-    setAlert(false)
+    answerAPI
+      .deleteAnswer(answerId)
+      .then(() => {
+        setAlert(false)
+        render?.handleRerender(true)
+        toast.success('刪除成功', {
+          position: 'top-right',
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+          theme: 'light',
+        })
+      })
+      .catch(err => console.log(err))
   }
 
   return (
