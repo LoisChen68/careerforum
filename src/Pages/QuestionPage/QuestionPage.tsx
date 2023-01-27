@@ -135,7 +135,34 @@ export default function QuestionPage() {
             <div className={style['wrapper']}>
               <div className={`${style['container']}`}>
                 <section className={style['title-section']}>
-                  <div className={style['user']}>
+                  <div className={style['user-close-button']}>
+                    <div className={style['user']}>
+                      <Link to={`/careerForum/users/${question.User.id}`}>
+                        <UserAvatar
+                          userAvatar={question.User.avatar}
+                          avatarStyle={'body-user-avatar'}
+                        />
+                      </Link>
+                      <div>
+                        <div className={style['user-name']}>
+                          <Link to={`/careerForum/users/${question.User.id}`}>
+                            <p className={style['name']}>
+                              {question.User.name}
+                            </p>
+                          </Link>
+                          {question.User.role === 'student' && (
+                            <p className={style['role']}>{'學期三'}</p>
+                          )}
+                          {question.User.role === 'graduate' && (
+                            <p className={style['role']}>{'畢業'}</p>
+                          )}
+                          {question.User.role === 'TA' && (
+                            <p className={style['role']}>{'助教'}</p>
+                          )}
+                        </div>
+                        <p>{dayFormat(question.createdAt)}</p>
+                      </div>
+                    </div>
                     <Link to='/careerforum/home'>
                       <Button
                         type="button"
@@ -148,31 +175,6 @@ export default function QuestionPage() {
                         </p>
                       </Button>
                     </Link>
-                    <Link to={`/careerForum/users/${question.User.id}`}>
-                      <UserAvatar
-                        userAvatar={question.User.avatar}
-                        avatarStyle={'body-user-avatar'}
-                      />
-                    </Link>
-                    <div>
-                      <div className={style['user-name']}>
-                        <Link to={`/careerForum/users/${question.User.id}`}>
-                          <p className={style['name']}>
-                            {question.User.name}
-                          </p>
-                        </Link>
-                        {question.User.role === 'student' && (
-                          <p className={style['role']}>{'學期三'}</p>
-                        )}
-                        {question.User.role === 'graduate' && (
-                          <p className={style['role']}>{'畢業'}</p>
-                        )}
-                        {question.User.role === 'TA' && (
-                          <p className={style['role']}>{'助教'}</p>
-                        )}
-                      </div>
-                      <p>{dayFormat(question.createdAt)}</p>
-                    </div>
                   </div>
                   <h3 className={style['title']}>
                     {question.title}
