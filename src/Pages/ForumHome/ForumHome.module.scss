@@ -45,6 +45,10 @@
   display: flex;
   gap: 5px;
   align-items: flex-end;
+
+  .user-avatar {
+    align-self: flex-start;
+  }
 }
 
 .ask-question {
@@ -65,7 +69,7 @@
   }
 
   .toAsk {
-    @include func.font-setting(1rem, 400, color.$gray-font);
+    @include func.font-setting(0.9375rem, 400, color.$gray-font);
     cursor: pointer;
   }
 }
@@ -168,6 +172,10 @@
       background-color: rgba(231, 231, 231, 0.766);
       border-radius: 16px;
     }
+  }
+
+  .alert-container {
+    width: 50%;
   }
 }
 
