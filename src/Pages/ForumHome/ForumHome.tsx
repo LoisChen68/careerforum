@@ -103,7 +103,15 @@ export default function ForumHome() {
               />
               <div className={style['user']}>
                 <p className={style['name']}>{getUser?.user?.name || ''}</p>
-                <p className={style['role']}>{getUser?.user?.role || ''}</p>
+                {getUser?.user?.role === 'student' && (
+                  <p className={style['role']}>{'學期三'}</p>
+                )}
+                {getUser?.user?.role === 'graduate' && (
+                  <p className={style['role']}>{'畢業'}</p>
+                )}
+                {getUser?.user?.role === 'TA' && (
+                  <p className={style['role']}>{'助教'}</p>
+                )}
                 <p></p>
               </div>
             </div>
@@ -225,7 +233,7 @@ function DiscussionThread() {
                 userRole={question.User.role}
                 userId={question.User.id}
                 userAvatar={question.User.avatar}
-                questionDate={question.createdAt.slice(0, 10)}
+                questionDate={question.createdAt}
                 questionTitle={question.title}
                 question={question.content}
                 questionUserId={question.User.id}
@@ -251,16 +259,19 @@ function DiscussionThread() {
                   userRole={question.Answers[0]?.User.role}
                   userAvatar={question.Answers[0]?.User.avatar}
                   answerDate={question.Answers[0]?.createdAt}
+                  answerId={question.Answers[0]?.id}
                   answer={question.Answers[0]?.content}
                 />
               ) : (
                 <p>目前還沒有人回答</p>
               )}
               <form className={style['answer-form']}>
-                <UserAvatar
-                  userAvatar={getUser?.user?.avatar}
-                  avatarStyle={'body-user-avatar'}
-                />
+                <div className={style['user-avatar']}>
+                  <UserAvatar
+                    userAvatar={getUser?.user?.avatar}
+                    avatarStyle={'body-user-avatar'}
+                  />
+                </div>
                 <TextAreaAnswer
                   placeholder={'輸入你的回答...'}
                   scrollHeight={100}
@@ -277,17 +288,20 @@ function DiscussionThread() {
 }
 
 function EditQuestion() {
-  const setModalStatus = useModalStatus()
   const getUser = useGetUser()
-  const [question, setQuestion] = useState({ id: 0, title: '', content: '' })
+  const setModalStatus = useModalStatus()
   const questionId = Number(localStorage.getItem('questionId'))
+  const [question, setQuestion] = useState({ id: 0, title: '', content: '' })
   const [alert, setAlert] = useState(false)
+  const [isLoad, setIsLoad] = useState(false)
 
   useEffect(() => {
     if (setModalStatus?.modalStatus === 'editAsk') {
+      setIsLoad(true)
       questionsAPI
         .getQuestion(questionId)
         .then(res => {
+          setIsLoad(false)
           setQuestion(res.data)
         })
         .catch(err => console.log(err))
@@ -309,7 +323,8 @@ function EditQuestion() {
 
   return (
     <>
-      {setModalStatus?.modalStatus === 'editAsk' && (
+      {/* TODO: 需要這樣設計，否則會造成資料為上一筆 */}
+      {isLoad && (
         <Modal
           title={'編輯問題'}
           onConfirm={close}
@@ -325,6 +340,36 @@ function EditQuestion() {
               <div className={style['user']}>
                 <p className={style['name']}>{getUser?.user?.name || ''}</p>
                 <p className={style['role']}>{getUser?.user?.role || ''}</p>
+              </div>
+            </div>
+            <ButtonLoader />
+          </>
+        </Modal>
+      )}
+      {setModalStatus?.modalStatus === 'editAsk' && !isLoad && (
+        <Modal
+          title={'編輯問題'}
+          onConfirm={close}
+          modalStyle="ask-modal-container"
+          closeButtonStyle={'button-close-ask'}
+        >
+          <>
+            <div className={style['ask-modal-avatar']}>
+              <UserAvatar
+                userAvatar={getUser?.user?.avatar}
+                avatarStyle={'body-user-avatar'}
+              />
+              <div className={style['user']}>
+                <p className={style['name']}>{getUser?.user?.name || ''}</p>
+                {getUser?.user?.role === 'student' && (
+                  <p className={style['role']}>{'學期三'}</p>
+                )}
+                {getUser?.user?.role === 'graduate' && (
+                  <p className={style['role']}>{'畢業'}</p>
+                )}
+                {getUser?.user?.role === 'TA' && (
+                  <p className={style['role']}>{'助教'}</p>
+                )}
                 <p></p>
               </div>
             </div>
