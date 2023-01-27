@@ -12,6 +12,7 @@ import { Link } from 'react-router-dom'
 import { useRender } from '../../Contexts/RenderContext'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import ButtonLoader from '../../UIComponents/ButtonLoader/ButtonLoader'
+import { dayFormat } from '../../utils/dayFormat'
 
 const questionData = {
   id: 0,
@@ -23,7 +24,7 @@ const questionData = {
   User: {
     id: 0,
     role: '',
-    account: '',
+    name: '',
     avatar: '',
   },
   answersCount: 0,
@@ -41,7 +42,7 @@ interface answer {
 interface user {
   id: number
   role: string
-  account: string
+  name: string
   avatar: string
 }
 
@@ -62,7 +63,10 @@ export default function QuestionPage() {
     async function fetchQuestion() {
       await questionAPI
         .getQuestion(Number(param.id))
-        .then((res) => setQuestion(res.data))
+        .then((res) => {
+          setLoading(false)
+          setQuestion(res.data)
+        })
         .catch((err) => console.log(err))
     }
     fetchQuestion()
@@ -104,12 +108,16 @@ export default function QuestionPage() {
       .catch((err) => console.error(err))
   }
 
+  function close() {
+    setModalStatus?.handleSetModal('initial')
+  }
+
+
+
   return (
     <>
       <QuestionModal
-        onConfirm={() => {
-          setModalStatus?.handleSetModal('initial')
-        }}
+        onConfirm={close}
         closeButtonStyle={'button-close-ask'}
         questionId={question.id}
       >
@@ -127,53 +135,73 @@ export default function QuestionPage() {
             <div className={style['wrapper']}>
               <div className={`${style['container']}`}>
                 <section className={style['title-section']}>
-                  <div className={style['user']}>
-                    <Button
-                      type="button"
-                      style={'button-close-question'}
-                      onClick={() => setModalStatus?.handleSetModal('initial')}
-                      disabled={false}
-                    >
-                      <p className={style['icon']} role="close">
-                        <HiOutlineX />
-                      </p>
-                    </Button>
-                    <Link to={`/careerForum/users/${question.User.id}`}>
-                      <UserAvatar
-                        userAvatar={question.User.avatar}
-                        avatarStyle={'body-user-avatar'}
-                      />
-                    </Link>
-                    <div>
-                      <div className={style['user-account']}>
-                        <Link to={`/careerForum/users/${question.User.id}`}>
-                          <p className={style['account']}>
-                            {question.User.account}
-                          </p>
-                        </Link>
-                        <p className={style['role']}>{question.User.role}</p>
+                  <div className={style['user-close-button']}>
+                    <div className={style['user']}>
+                      <Link to={`/careerForum/users/${question.User.id}`}>
+                        <UserAvatar
+                          userAvatar={question.User.avatar}
+                          avatarStyle={'body-user-avatar'}
+                        />
+                      </Link>
+                      <div>
+                        <div className={style['user-name']}>
+                          <Link to={`/careerForum/users/${question.User.id}`}>
+                            <p className={style['name']}>
+                              {question.User.name}
+                            </p>
+                          </Link>
+                          {question.User.role === 'student' && (
+                            <p className={style['role']}>{'學期三'}</p>
+                          )}
+                          {question.User.role === 'graduate' && (
+                            <p className={style['role']}>{'畢業'}</p>
+                          )}
+                          {question.User.role === 'TA' && (
+                            <p className={style['role']}>{'助教'}</p>
+                          )}
+                        </div>
+                        <p>{dayFormat(question.createdAt)}</p>
                       </div>
-                      <p>{question.createdAt.slice(0, 10)}</p>
                     </div>
+                    <Link to='/careerforum/home'>
+                      <Button
+                        type="button"
+                        style={'button-close-question'}
+                        onClick={close}
+                        disabled={false}
+                      >
+                        <p className={style['icon']} role="close">
+                          <HiOutlineX />
+                        </p>
+                      </Button>
+                    </Link>
                   </div>
-                  <h3 className={style['title']}>{question.title}</h3>
+                  <h3 className={style['title']}>
+                    {question.title}
+                  </h3>
                 </section>
                 <section className={style['content-container']}>
+                  {loading && (
+                    <ButtonLoader />
+                  )}
                   <p className={style['content']}>{question.content}</p>
                 </section>
-                {answerStatus === 'noting' && <p>目前還沒有人回答</p>}
-                {answers.map((answer: answer) => (
-                  <div className={style['answer-container']} key={answer.id}>
+                <div className={style['answer-container']} >
+                  {loading && (<ButtonLoader />)}
+                  {answerStatus === 'noting' && <p>目前還沒有人回答</p>}
+                  {answers.map((answer: answer) => (
                     <Answer
+                      key={answer.id}
                       userId={answer.User.id}
                       userAvatar={answer.User.avatar}
                       userRole={answer.User.role}
-                      userAccount={answer.User.account}
+                      userName={answer.User.name}
                       answerDate={answer.createdAt}
+                      answerId={answer.id}
                       answer={answer.content}
                     />
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
             </div>
           </div>

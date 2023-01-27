@@ -45,6 +45,10 @@
   display: flex;
   gap: 5px;
   align-items: flex-end;
+
+  .user-avatar {
+    align-self: flex-start;
+  }
 }
 
 .ask-question {
@@ -65,7 +69,7 @@
   }
 
   .toAsk {
-    @include func.font-setting(1rem, 400, color.$gray-font);
+    @include func.font-setting(0.9375rem, 400, color.$gray-font);
     cursor: pointer;
   }
 }
@@ -90,6 +94,55 @@
 
 .record {
   display: none;
+}
+
+.back-drop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(88, 88, 88, 0.405);
+  z-index: 20;
+}
+
+.alert-container {
+  padding: 20px;
+  width: 80%;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: style.$border-radius-5;
+  background-color: #fff;
+  z-index: 20;
+
+  h3 {
+    text-align: center;
+    margin-bottom: 30px;
+  }
+
+  .buttons {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+  }
+
+  .btn-cancel,
+  .btn-sure {
+    @include func.font-setting(0.75rem, 700, #fff);
+    padding: 12px 20px;
+    border-radius: 24px;
+    cursor: pointer;
+  }
+
+  .btn-cancel {
+    background-color: rgb(158, 158, 158);
+  }
+
+  .btn-sure {
+    background-color: color.$primary-color;
+  }
 }
 
 @media screen and (min-width: 570px) {
@@ -119,6 +172,10 @@
       background-color: rgba(231, 231, 231, 0.766);
       border-radius: 16px;
     }
+  }
+
+  .alert-container {
+    width: 50%;
   }
 }
 

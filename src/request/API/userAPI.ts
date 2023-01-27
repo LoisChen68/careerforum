@@ -7,4 +7,7 @@ export default {
   getUser(id: number) {
     return api.get(`/users/${id}`)
   },
+  putUser(id: number | undefined, data: object) {
+    return api.put(`/users/${id}`, data)
+  }
 }

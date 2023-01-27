@@ -3,6 +3,7 @@ import { FiLogOut } from 'react-icons/fi'
 import style from './MobileFooter.module.scss'
 import { NavLink } from 'react-router-dom'
 import { useModalStatus } from '../../Contexts/ModalContext'
+import { useGetUser } from '../../Contexts/UserContext'
 
 interface mobileFooterProps {
   onLogoutClick: (e: React.MouseEvent) => void
@@ -10,6 +11,7 @@ interface mobileFooterProps {
 }
 
 export default function MobileFooter(props: mobileFooterProps) {
+  const getUser = useGetUser()
   const modalStatus = useModalStatus()
 
   return (
@@ -29,7 +31,7 @@ export default function MobileFooter(props: mobileFooterProps) {
           </div>
         </NavLink>
         <NavLink
-          to={`/careerforum/users/${1}`}
+          to={`/careerforum/users/${getUser?.user?.id}`}
           className={({ isActive }) =>
             isActive ? style['activeStyle'] : undefined
           }
@@ -40,7 +42,7 @@ export default function MobileFooter(props: mobileFooterProps) {
           </div>
         </NavLink>
         <NavLink
-          to={`/careerforum/users/setting/${1}`}
+          to={'/careerforum/users/setting'}
           className={({ isActive }) =>
             isActive ? style['activeStyle'] : undefined
           }

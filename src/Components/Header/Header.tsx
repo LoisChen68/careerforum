@@ -1,4 +1,6 @@
+import { useRef } from 'react'
 import { Link } from 'react-router-dom'
+import { useGetUser } from '../../Contexts/UserContext'
 import Button from '../../UIComponents/Button/Button'
 import UserAvatar from '../../UIComponents/UserAvatar/UserAvatar'
 import style from './Header.module.scss'
@@ -12,6 +14,9 @@ interface headerProps {
 }
 
 export default function Header(props: headerProps) {
+  const getUser = useGetUser()
+  const checkboxRef = useRef<HTMLInputElement>(null)
+
   return (
     <header className={style['header']}>
       <div className={style['header-wrapper']}>
@@ -57,17 +62,18 @@ export default function Header(props: headerProps) {
                 />
               </label>
               <input
+                ref={checkboxRef}
                 id="avatar"
                 type="checkbox"
                 className={style['menu-toggle']}
               />
-              <div className={style['avatar-menu']}>
+              <div className={style['avatar-menu']} onClick={() => checkboxRef.current && (checkboxRef.current.checked = false)}>
                 <ul className={style['avatar-list']}>
                   <li className={style['avatar-item']}>
-                    <Link to={`/careerforum/users/${1}`}>個人資料</Link>
+                    <Link to={`/careerforum/users/${getUser?.user?.id}`}>個人資料</Link>
                   </li>
                   <li className={style['avatar-item']}>
-                    <Link to={`/careerforum/users/setting/${1}`}>帳號設定</Link>
+                    <Link to={'/careerforum/users/setting'}>帳號設定</Link>
                   </li>
                   <li onClick={props.onLogoutClick}>
                     <Link to="/">登出</Link>

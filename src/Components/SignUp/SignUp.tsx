@@ -12,7 +12,7 @@ interface signUpProps {
   onInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void
   errorMessage: o
   email: string
-  account: string
+  name: string
   password: string
   confirmPassword: string
   role: string
@@ -22,7 +22,7 @@ interface signUpProps {
 interface o {
   role: string
   email: string
-  account: string
+  name: string
   password: string
   confirmPassword: string
 }
@@ -40,6 +40,7 @@ export default function SignUp(props: signUpProps) {
           htmlFor="role"
           label="Role"
           id="role"
+          name="role"
           value={options}
           selectedValue={props.role}
           errorMessage={props.errorMessage.role}
@@ -59,15 +60,15 @@ export default function SignUp(props: signUpProps) {
           onChange={props.onInputChange}
         />
         <Input
-          htmlFor="account"
-          label="Account"
-          id="account"
-          name="account"
+          htmlFor="name"
+          label="Name"
+          id="name"
+          name="name"
           type="text"
           placeholder=" "
-          value={props.account}
+          value={props.name}
           required={true}
-          errorMessage={props.errorMessage.account}
+          errorMessage={props.errorMessage.name}
           onChange={props.onInputChange}
         />
         <Input

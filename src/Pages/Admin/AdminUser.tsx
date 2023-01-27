@@ -12,7 +12,6 @@ interface user {
   role: string
   name: string | null
   email: string
-  account: string
   avatar: string
   cover: string | null
   deletedAt: string | null
@@ -109,12 +108,12 @@ export default function AdminUser() {
                   avatarStyle={'body-user-avatar'}
                 />
                 <div className={style['appellation']}>
-                  <p>{user.account}</p>
+                  <p>{user.name}</p>
                   <p className={style['appellation-role']}>{user.role}</p>
                 </div>
               </div>
               <div className={style['user-info']}>
-                <p>{`Account：${user.account}`}</p>
+                <p>{`Name${user.name}`}</p>
                 <p>{`Name： ${user.name}`}</p>
                 <p>{`Email： ${user.email}`}</p>
                 <div className={style['role']}>

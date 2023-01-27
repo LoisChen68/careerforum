@@ -16,11 +16,13 @@ import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { useGetUser } from '../../Contexts/UserContext'
 import { useModalStatus } from '../../Contexts/ModalContext'
+import { useRender } from '../../Contexts/RenderContext'
+import { passwordStrength } from 'check-password-strength'
 
 const formData = {
   role: '',
   email: '',
-  account: '',
+  name: '',
   password: '',
   confirmPassword: '',
 }
@@ -34,17 +36,18 @@ const loginForm = {
 }
 
 export default function Layout() {
+  const render = useRender()
+  const getUser = useGetUser()
+  const navigate = useNavigate()
   const setModalStatus = useModalStatus()
   const [signUpData, setSignUpData] = useState(formData)
   const [loginData, setLoginData] = useState(loginForm)
   const [errorMessage, setErrorMessage] = useState(formData)
   const [submit, setSubmit] = useState(false)
-  const navigate = useNavigate()
-  const getUser = useGetUser()
 
   useEffect(() => {
     getUser?.getUser()
-  }, [])
+  }, [render?.isRender])
 
   //送出登入表單
   function handleLoginSubmit(e: React.MouseEvent) {
@@ -138,14 +141,20 @@ export default function Layout() {
   //送出註冊表單
   function handleSingUpSubmit(e: React.MouseEvent) {
     e.preventDefault()
-
+    const pwdStrength = passwordStrength(signUpData.password).value
+    const confirmPwdStrength = passwordStrength(signUpData.confirmPassword).value
     setErrorMessage(isSignUpValid(errorMessage, signUpData, emailRule))
 
     if (
       signUpData.email &&
-      signUpData.account &&
+      signUpData.name &&
+      signUpData.name.length <= 20 &&
       signUpData.password &&
       signUpData.confirmPassword &&
+      pwdStrength !== 'Too weak' &&
+      pwdStrength !== 'Weak' &&
+      confirmPwdStrength !== 'Too weak' &&
+      confirmPwdStrength !== 'Weak' &&
       emailRule.test(signUpData.email) &&
       signUpData.password === signUpData.confirmPassword
     ) {
@@ -336,7 +345,7 @@ export default function Layout() {
           onLoginClick={onLoginClick}
           role={signUpData.role}
           email={signUpData.email}
-          account={signUpData.account}
+          name={signUpData.name}
           password={signUpData.password}
           confirmPassword={signUpData.confirmPassword}
           errorMessage={errorMessage}

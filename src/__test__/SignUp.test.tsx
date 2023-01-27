@@ -26,7 +26,7 @@ test('Should display Role, Email, Account, Password, and Confirm Password when t
   // 定義表單上的元素: Role, Email, Account, Password, Confirm Password, 註冊按鈕
   const roleSelectorElement = screen.getByText(/Role/i)
   const emailInputElement = screen.getByLabelText(/Email/i)
-  const accountInputElement = screen.getByLabelText(/Account/i)
+  const nameInputElement = screen.getByLabelText(/Name/i)
   const passwordInputElement = screen.getByLabelText('Password')
   const confirmPasswordElement = screen.getByLabelText(/Confirm Password/i)
   const signUpSubmitElement = screen.getAllByRole('button', { name: /註冊/i })
@@ -34,7 +34,7 @@ test('Should display Role, Email, Account, Password, and Confirm Password when t
   // 預期註冊表單上應顯示元素有: Role, Email, Account, Password, Confirm Password, 註冊按鈕
   expect(roleSelectorElement).toBeInTheDocument()
   expect(emailInputElement).toBeInTheDocument()
-  expect(accountInputElement).toBeInTheDocument()
+  expect(nameInputElement).toBeInTheDocument()
   expect(passwordInputElement).toBeInTheDocument()
   expect(confirmPasswordElement).toBeInTheDocument()
   expect(signUpSubmitElement[1]).toBeInTheDocument()
@@ -62,7 +62,7 @@ test('Should display the "欄位不得為空" when the input field is empty and 
   // 定義表單上的元素: Role, Email, Account, Password, Confirm Password
   const roleSelectorElement = screen.getByText(/Role/i)
   const emailInputElement = screen.getByLabelText(/Email/i)
-  const accountInputElement = screen.getByLabelText(/Account/i)
+  const nameInputElement = screen.getByLabelText(/Name/i)
   const passwordInputElement = screen.getByLabelText('Password')
   const confirmPasswordElement = screen.getByLabelText(/Confirm Password/i)
   // 定義 errorMessage 的字段
@@ -76,7 +76,7 @@ test('Should display the "欄位不得為空" when the input field is empty and 
   // 模擬使用者尚未輸入表單
   fireEvent.change(roleSelectorElement, { target: { value: '' } })
   fireEvent.change(emailInputElement, { target: { value: '' } })
-  fireEvent.change(accountInputElement, { target: { value: '' } })
+  fireEvent.change(nameInputElement, { target: { value: '' } })
   fireEvent.change(passwordInputElement, { target: { value: '' } })
   fireEvent.change(confirmPasswordElement, { target: { value: '' } })
 
@@ -176,14 +176,14 @@ test('Should display "Loading..." and button is disabled when signUp submit.', (
   // 定義表單上的元素: Role, Email, Account, Password, Confirm Password
   const roleSelectorElement = screen.getByText(/Role/i)
   const emailInputElement = screen.getByLabelText(/Email/i)
-  const accountInputElement = screen.getByLabelText(/Account/i)
+  const nameInputElement = screen.getByLabelText(/Name/i)
   const passwordInputElement = screen.getByLabelText('Password')
   const confirmPasswordElement = screen.getByLabelText(/Confirm Password/i)
 
   // 模擬使用者輸入表單
   fireEvent.change(roleSelectorElement, { target: { value: 'test' } })
   fireEvent.change(emailInputElement, { target: { value: 'test@test.com' } })
-  fireEvent.change(accountInputElement, { target: { value: 'test' } })
+  fireEvent.change(nameInputElement, { target: { value: 'test' } })
   fireEvent.change(passwordInputElement, { target: { value: '123' } })
   fireEvent.change(confirmPasswordElement, { target: { value: '123' } })
 

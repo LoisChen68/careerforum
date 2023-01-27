@@ -1,22 +1,48 @@
-.user-profile {
-  position: relative;
-  top: 50px;
-  display: grid;
-  height: 100vh;
-  grid-template-columns: repeat(15, 1fr);
-  row-gap: 14px;
-  width: 100%;
-}
+@use '../../variable' as color;
 
 .wrapper {
-  padding: 10px 0;
   display: flex;
-  grid-column: 1/16;
+  width: 100%;
+  height: 100vh;
   justify-content: center;
   background-color: #fff;
 }
 
 .container {
-  position: relative;
   width: 90%;
+}
+
+.user-profile {
+  position: relative;
+  top: 100px;
+}
+
+.user-data {
+  position: relative;
+  left: 10px;
+}
+
+.role {
+  display: flex;
+  justify-content: center;
+  padding: 0 5px;
+  width: 80px;
+  background-color: color.$primary-color;
+  color: #fff;
+  border-radius: 5px;
+}
+
+@media screen and (min-width: 570px) {
+  .wrapper {
+    margin: 0 auto;
+    position: relative;
+    top: 100px;
+    max-width: 600px;
+    height: 70vh;
+    border-radius: 5px;
+  }
+
+  .user-profile {
+    top: 20px;
+  }
 }

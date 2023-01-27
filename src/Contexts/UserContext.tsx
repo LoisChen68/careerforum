@@ -2,13 +2,13 @@ import { createContext, useContext, useState } from 'react'
 import userAPI from '../request/API/userAPI'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
+import { useRender } from './RenderContext'
 
 interface userDataProps {
   id: number
   role: string
   name: string
   email: string
-  account: string
   avatar: string
   cover: string
   deletedAt: string
@@ -22,7 +22,6 @@ const userData = {
   role: '',
   name: '',
   email: '',
-  account: '',
   avatar: '',
   cover: '',
   deletedAt: '',
@@ -49,12 +48,15 @@ export default function UserContextProvider({
   const [user, setUser] = useState(userData)
   const [authPass, setAuthPass] = useState(false)
   const pathName = window.location.pathname
+  const render = useRender()
 
   function getUser() {
     userAPI
       .getCurrentUser()
       .then((res) => {
-        setUser(res.data), setAuthPass(true)
+        setUser(res.data),
+          setAuthPass(true),
+          render?.handleRerender(false)
       })
       .catch((err) => {
         console.log(err), setAuthPass(false), navigate('/careerforum')

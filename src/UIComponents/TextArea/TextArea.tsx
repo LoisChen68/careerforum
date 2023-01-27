@@ -5,32 +5,57 @@ import style from './TextArea.module.scss'
 import { useRender } from '../../Contexts/RenderContext'
 import { useModalStatus } from '../../Contexts/ModalContext'
 import { toast } from 'react-toastify'
+import answerAPI from '../../request/API/answerAPI'
 
 interface textAreaProps {
+  title?: string
+  content?: string
   placeholder: string
   scrollHeight?: number
   questionId?: number
+  answerId?: number
 }
 
 // for 回答問題 textArea
 export function TextAreaAnswer(props: textAreaProps) {
-  const [value, setValue] = useState('')
-  const textAreaRef = useRef<HTMLTextAreaElement>(null)
   const reRender = useRender()
+  const useSetModal = useModalStatus()
+  const textAreaRef = useRef<HTMLTextAreaElement>(null)
+  const [content, setContent] = useState(props.content ? props.content : '')
 
   if (props.scrollHeight) {
-    autoSizeTextArea(textAreaRef.current, value, props.scrollHeight)
+    autoSizeTextArea(textAreaRef.current, content, props.scrollHeight)
   }
 
   function handleChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
     const value = e.target.value
-    setValue(value)
+    setContent(value)
   }
 
   function onSubmitClick(e: React.MouseEvent) {
     e.preventDefault()
 
-    if (!value.trim()) {
+    if (props.answerId) {
+      answerAPI
+        .putAnswer(props.answerId, content)
+        .then(() => {
+          toast.success('編輯成功', {
+            position: 'top-right',
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: false,
+            draggable: true,
+            progress: undefined,
+            theme: 'light',
+          })
+          reRender?.handleRerender(true)
+          useSetModal?.handleSetModal('initial')
+        })
+        .catch(err => console.log(err))
+    }
+
+    if (!content.trim()) {
       toast.error('內容不得為空', {
         position: 'top-right',
         autoClose: 3000,
@@ -42,12 +67,12 @@ export function TextAreaAnswer(props: textAreaProps) {
         theme: 'light',
       })
     }
-    if (value.trim()) {
+    if (!props.answerId && content.trim()) {
       questionAPI
-        .postAnswers(props.questionId, value)
+        .postAnswers(props.questionId, content)
         .then(() => {
           reRender?.handleRerender(true)
-          setValue('')
+          setContent('')
         })
         .catch((err) => {
           console.log(err)
@@ -62,9 +87,9 @@ export function TextAreaAnswer(props: textAreaProps) {
         onChange={handleChange}
         placeholder={props.placeholder}
         ref={textAreaRef}
-        value={value}
+        value={content}
       />
-      {value && (
+      {content && (
         <Button
           type="button"
           style="button-answer-submit"
@@ -78,11 +103,12 @@ export function TextAreaAnswer(props: textAreaProps) {
   )
 }
 
+// for 發問問題 textArea
 export function TextAreaAsk(props: textAreaProps) {
-  const useSetModal = useModalStatus()
   const reRender = useRender()
-  const [title, setTitle] = useState('')
-  const [content, setContent] = useState('')
+  const useSetModal = useModalStatus()
+  const [title, setTitle] = useState(props.title ? props.title : '')
+  const [content, setContent] = useState(props.content ? props.content : '')
   const [errorMessage, setErrorMessage] = useState({ title: '', content: '' })
 
   function handleInputChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -115,7 +141,28 @@ export function TextAreaAsk(props: textAreaProps) {
       setErrorMessage({ ...errorMessage, content: '內容不得為空' })
     }
 
-    if (title && content) {
+    // 如果父層有 questionId 則修改問題
+    if (props.questionId) {
+      questionAPI
+        .putQuestion(props.questionId, title, content)
+        .then(() => {
+          toast.success('編輯成功', {
+            position: 'top-right',
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: false,
+            draggable: true,
+            progress: undefined,
+            theme: 'light',
+          })
+          reRender?.handleRerender(true)
+          useSetModal?.handleSetModal('initial')
+        })
+        .catch(err => console.log(err))
+    }
+    // 新增問題
+    if (!props.questionId && title && content) {
       questionAPI
         .postQuestion(title, content)
         .then(() => {

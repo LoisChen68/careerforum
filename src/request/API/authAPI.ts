@@ -3,7 +3,7 @@ import { api } from '../index'
 interface signUpData {
   role: string
   email: string
-  account: string
+  name: string
   password: string
   confirmPassword: string
 }
