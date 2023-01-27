@@ -9,6 +9,8 @@ import userAPI from '../../request/API/userAPI'
 import { Link, useNavigate } from 'react-router-dom'
 import { useRender } from '../../Contexts/RenderContext'
 import { toast } from 'react-toastify'
+import { isConfirmPasswordValue, isNameValue, isPasswordValue } from '../../utils/valid'
+import { passwordStrength } from 'check-password-strength'
 
 const formData = {
   avatar: '',
@@ -69,68 +71,39 @@ export default function UserSetting() {
     // TODO: 驗證表單資料
     if (name === 'name') {
       setForm({ ...form, name: value })
-      if (!value) {
-        setErrorMessage({ ...errorMessage, name: "欄位不得為空" })
-      } else {
-        setErrorMessage({ ...errorMessage, name: "" })
-      }
-      if (value.length > 20) {
-        setErrorMessage({ ...errorMessage, name: "Name 長度不得超過20字" })
-      } else {
-        setErrorMessage({ ...errorMessage, name: "" })
-      }
+      setErrorMessage(isNameValue(errorMessage, value))
     }
     if (name === 'password') {
       setForm({ ...form, password: value })
-      if (!value) {
-        setErrorMessage({ ...errorMessage, password: "欄位不得為空" })
-      } else {
-        setErrorMessage({ ...errorMessage, password: "" })
-      }
-      if (!value && !form.confirmPassword) {
-        setErrorMessage({ ...errorMessage, password: "欄位不得為空", confirmPassword: "欄位不得為空" })
-      }
-      if (value && value !== form.confirmPassword) {
-        setErrorMessage({ ...errorMessage, password: "密碼與確認密碼不符", confirmPassword: "密碼與確認密碼不符" })
-      }
-      if (value && value === form.confirmPassword) {
-        setErrorMessage({ ...errorMessage, password: "", confirmPassword: "" })
-      }
+      setErrorMessage(isPasswordValue(errorMessage, value, form.confirmPassword))
     }
     if (name === 'confirmPassword') {
       setForm({ ...form, confirmPassword: value })
-      if (!value) {
-        setErrorMessage({ ...errorMessage, confirmPassword: "欄位不得為空" })
-      } else {
-        setErrorMessage({ ...errorMessage, confirmPassword: "" })
-      }
-      if (!value && !form.password) {
-        setErrorMessage({ ...errorMessage, password: "欄位不得為空", confirmPassword: "欄位不得為空" })
-      }
-      if (value && value !== form.password) {
-        setErrorMessage({ ...errorMessage, password: "密碼與確認密碼不符", confirmPassword: "密碼與確認密碼不符" })
-      }
-      if (value && value === form.password) {
-        setErrorMessage({ ...errorMessage, password: "", confirmPassword: "" })
-      }
+      setErrorMessage(isConfirmPasswordValue(errorMessage, value, form.password))
     }
   }
 
   // 送出表單
   function handleSubmit(e: React.FormEvent) {
-    const userId = getUser?.user?.id
     e.preventDefault()
-    if (form.name.trim().length > 20) {
-      return setErrorMessage({ ...errorMessage, name: "Name 長度不得超過20字" })
-    }
-    if (form.password.trim() !== form.confirmPassword.trim()) {
-      return setErrorMessage({ ...errorMessage, password: "密碼與確認密碼不符", confirmPassword: "密碼與確認密碼不符" })
-    }
-    if (!form.password.trim() && !form.confirmPassword.trim()) {
-      return setErrorMessage({ ...errorMessage, password: "欄位不得為空", confirmPassword: "欄位不得為空" })
-    }
+    const userId = getUser?.user?.id
+    const pwdStrength = passwordStrength(form.password).value
+    const confirmPwdStrength = passwordStrength(form.confirmPassword).value
+    setErrorMessage(isNameValue(errorMessage, form.name))
+    setErrorMessage(isPasswordValue(errorMessage, form.password, form.confirmPassword))
+    setErrorMessage(isConfirmPasswordValue(errorMessage, form.confirmPassword, form.password))
+
+
+    if (
+      form.name.length > 20 ||
+      pwdStrength === 'Too weak' ||
+      pwdStrength === 'Weak' ||
+      confirmPwdStrength === 'Too weak' ||
+      confirmPwdStrength === 'Weak'
+    ) return
+
     setDisable(true)
-    if (form.name &&
+    if (form.name && form.name.length <= 20 &&
       form.password && form.confirmPassword &&
       form.password === form.confirmPassword) {
       const bodyFormData = new FormData(e.target as HTMLFormElement)

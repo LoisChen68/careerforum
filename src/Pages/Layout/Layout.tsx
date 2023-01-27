@@ -17,6 +17,7 @@ import 'react-toastify/dist/ReactToastify.css'
 import { useGetUser } from '../../Contexts/UserContext'
 import { useModalStatus } from '../../Contexts/ModalContext'
 import { useRender } from '../../Contexts/RenderContext'
+import { passwordStrength } from 'check-password-strength'
 
 const formData = {
   role: '',
@@ -140,7 +141,8 @@ export default function Layout() {
   //送出註冊表單
   function handleSingUpSubmit(e: React.MouseEvent) {
     e.preventDefault()
-
+    const pwdStrength = passwordStrength(signUpData.password).value
+    const confirmPwdStrength = passwordStrength(signUpData.confirmPassword).value
     setErrorMessage(isSignUpValid(errorMessage, signUpData, emailRule))
 
     if (
@@ -149,6 +151,10 @@ export default function Layout() {
       signUpData.name.length <= 20 &&
       signUpData.password &&
       signUpData.confirmPassword &&
+      pwdStrength !== 'Too weak' &&
+      pwdStrength !== 'Weak' &&
+      confirmPwdStrength !== 'Too weak' &&
+      confirmPwdStrength !== 'Weak' &&
       emailRule.test(signUpData.email) &&
       signUpData.password === signUpData.confirmPassword
     ) {

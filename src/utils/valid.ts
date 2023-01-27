@@ -1,3 +1,5 @@
+import { passwordStrength } from 'check-password-strength'
+
 interface signUpData {
   role: string
   email: string
@@ -17,6 +19,8 @@ export function isSignUpValid(
   data: signUpData,
   emailRule: RegExp
 ) {
+  const pwdStrength = passwordStrength(data.password).value
+  const confirmPwdStrength = passwordStrength(data.confirmPassword).value
 
   // 驗證是否輸入身分
   if (!data.role.trim()) {
@@ -71,6 +75,50 @@ export function isSignUpValid(
   // 驗證是否輸入確認密碼
   if (!data.confirmPassword.trim()) {
     props = { ...props, confirmPassword: '欄位不得為空' }
+  }
+
+  // 驗證密碼有值時
+  if (data.password.trim()) {
+    if (pwdStrength === 'Too weak') {
+      props = {
+        ...props,
+        ['password']: '密碼太簡單，請至少 6 碼並包含英文大小寫及特殊符號'
+      }
+    }
+    if (pwdStrength === 'Weak') {
+      props = {
+        ...props,
+        ['password']: '密碼太簡單，請至少 6 碼並包含英文大小寫及特殊符號'
+      }
+    }
+    if (pwdStrength !== 'Weak' && pwdStrength !== 'Too weak') {
+      props = {
+        ...props,
+        ['password']: ''
+      }
+    }
+  }
+
+  // 驗證確認密碼有值時
+  if (data.confirmPassword.trim()) {
+    if (confirmPwdStrength === 'Too weak') {
+      props = {
+        ...props,
+        ['confirmPassword']: '密碼太簡單，請至少 6 碼並包含英文大小寫及特殊符號'
+      }
+    }
+    if (confirmPwdStrength === 'Weak') {
+      props = {
+        ...props,
+        ['confirmPassword']: '密碼太簡單，請至少 6 碼並包含英文大小寫及特殊符號'
+      }
+    }
+    if (confirmPwdStrength !== 'Weak' && pwdStrength !== 'Too weak') {
+      props = {
+        ...props,
+        ['confirmPassword']: ''
+      }
+    }
   }
 
   //驗證帳號不得有空白鍵
@@ -131,6 +179,8 @@ export function signUpValueValid(
   password: string,
   confirmPassword: string
 ) {
+  const pwdStrength = passwordStrength(value).value
+
   if (!value.trim()) {
     props = {
       ...props,
@@ -144,51 +194,161 @@ export function signUpValueValid(
     props = { ...props, ['name']: 'Name 長度不得超過20字' }
   }
 
-  if (inputName === 'password' && value && value !== confirmPassword) {
-    props = {
-      ...props,
-      ['password']: '密碼與確認密碼不符',
-      ['confirmPassword']: '密碼與確認密碼不符',
+  // 輸入「密碼」欄位時
+  if (inputName === 'password') {
+    const passwordValue = value
+
+    //若密碼欄有值時
+    if (passwordValue) {
+
+      if (pwdStrength === 'Too weak') {
+        props = {
+          ...props,
+          ['password']: '密碼太簡單，請至少 6 碼並包含英文大小寫及特殊符號'
+        }
+      }
+      if (pwdStrength === 'Weak') {
+        props = {
+          ...props,
+          ['password']: '密碼太簡單，請至少 6 碼並包含英文大小寫及特殊符號'
+        }
+      }
+      if (pwdStrength !== 'Weak' && pwdStrength !== 'Too weak') {
+        props = {
+          ...props,
+          ['password']: ''
+        }
+      }
+
+      // 密碼與確認密碼不符
+      if (confirmPassword && passwordValue !== confirmPassword) {
+        props = {
+          ...props,
+          ['password']: '密碼與確認密碼不符',
+          ['confirmPassword']: '密碼與確認密碼不符',
+        }
+      }
+
+      // 若密碼與確認密碼相同
+      if (passwordValue === confirmPassword) {
+        if (pwdStrength === 'Too weak') {
+          props = {
+            ...props,
+            ['password']: '密碼太簡單，請至少 6 碼並包含英文大小寫及特殊符號',
+            ['confirmPassword']: '密碼太簡單，請至少 6 碼並包含英文大小寫及特殊符號'
+          }
+        }
+        if (pwdStrength === 'Weak') {
+          props = {
+            ...props,
+            ['password']: '密碼太簡單，請至少 6 碼並包含英文大小寫及特殊符號',
+            ['confirmPassword']: '密碼太簡單，請至少 6 碼並包含英文大小寫及特殊符號'
+          }
+        }
+        if (pwdStrength !== 'Weak' && pwdStrength !== 'Too weak') {
+          props = {
+            ...props,
+            ['password']: '',
+            ['confirmPassword']: ''
+          }
+        }
+      }
+
+      // 確認密碼為空值
+      if (!confirmPassword) {
+        props = {
+          ...props,
+          ['confirmPassword']: '密碼與確認密碼不符',
+        }
+      }
+    }
+
+    // 若密碼與確認密碼皆為空值
+    if (!passwordValue && !confirmPassword) {
+      props = {
+        ...props,
+        ['password']: '欄位不得為空',
+        ['confirmPassword']: '欄位不得為空',
+      }
     }
   }
 
-  if (inputName === 'password' && !value && !confirmPassword) {
-    props = {
-      ...props,
-      ['password']: '欄位不得為空',
-      ['confirmPassword']: '欄位不得為空',
-    }
-  }
+  // 輸入「確認密碼」欄位時
+  if (inputName === 'confirmPassword') {
+    const confirmPasswordValue = value
 
-  if (inputName === 'password' && value && value === confirmPassword) {
-    props = {
-      ...props,
-      ['password']: '',
-      ['confirmPassword']: '',
-    }
-  }
+    //若確認密碼欄有值時
+    if (confirmPasswordValue) {
 
-  if (inputName === 'confirmPassword' && value && value !== password) {
-    props = {
-      ...props,
-      ['password']: '密碼與確認密碼不符',
-      ['confirmPassword']: '密碼與確認密碼不符',
-    }
-  }
+      if (pwdStrength === 'Too weak') {
+        props = {
+          ...props,
+          ['confirmPassword']: '密碼太簡單，請至少 6 碼並包含英文大小寫及特殊符號'
+        }
+      }
+      if (pwdStrength === 'Weak') {
+        props = {
+          ...props,
+          ['confirmPassword']: '密碼太簡單，請至少 6 碼並包含英文大小寫及特殊符號'
+        }
+      }
+      if (pwdStrength !== 'Weak' && pwdStrength !== 'Too weak') {
+        props = {
+          ...props,
+          ['confirmPassword']: ''
+        }
+      }
 
-  if (inputName === 'confirmPassword' && !value && !password) {
-    props = {
-      ...props,
-      ['password']: '欄位不得為空',
-      ['confirmPassword']: '欄位不得為空',
-    }
-  }
+      // 若密碼有值且確認密碼與密碼不符
+      if (password && confirmPasswordValue !== password) {
+        props = {
+          ...props,
+          ['password']: '密碼與確認密碼不符',
+          ['confirmPassword']: '密碼與確認密碼不符',
+        }
+      }
 
-  if (inputName === 'confirmPassword' && value && value === password) {
-    props = {
-      ...props,
-      ['password']: '',
-      ['confirmPassword']: '',
+      // 若確認密碼與密碼相同
+      if (confirmPasswordValue === password) {
+        if (pwdStrength === 'Too weak') {
+          props = {
+            ...props,
+            ['password']: '密碼太簡單，請至少 6 碼並包含英文大小寫及特殊符號',
+            ['confirmPassword']: '密碼太簡單，請至少 6 碼並包含英文大小寫及特殊符號'
+          }
+        }
+        if (pwdStrength === 'Weak') {
+          props = {
+            ...props,
+            ['password']: '密碼太簡單，請至少 6 碼並包含英文大小寫及特殊符號',
+            ['confirmPassword']: '密碼太簡單，請至少 6 碼並包含英文大小寫及特殊符號'
+          }
+        }
+        if (pwdStrength !== 'Weak' && pwdStrength !== 'Too weak') {
+          props = {
+            ...props,
+            ['password']: '',
+            ['confirmPassword']: ''
+          }
+        }
+      }
+
+      // 若密碼為空值
+      if (!password) {
+        props = {
+          ...props,
+          ['confirmPassword']: '密碼與確認密碼不符',
+        }
+      }
+    }
+
+    // 若確認密碼與密碼皆為空值
+    if (!confirmPasswordValue && !password) {
+      props = {
+        ...props,
+        ['password']: '欄位不得為空',
+        ['confirmPassword']: '欄位不得為空',
+      }
     }
   }
 
@@ -230,9 +390,22 @@ export function isRoleValue(props: signUpData, value: string) {
   return props
 }
 
-export function isNameValue(props: signUpData, value: string) {
+interface settingData {
+  avatar: string
+  role: string
+  name: string
+  password: string
+  confirmPassword: string
+}
+
+export function isNameValue(props: settingData, value: string) {
   if (!value.trim()) {
     props = { ...props, name: '欄位不得為空' }
+  } else {
+    props = { ...props, name: '' }
+  }
+  if (value.length > 20) {
+    props = { ...props, name: 'Name 長度不得超過20字' }
   } else {
     props = { ...props, name: '' }
   }
@@ -240,59 +413,165 @@ export function isNameValue(props: signUpData, value: string) {
 }
 
 export function isPasswordValue(
-  props: signUpData,
-  value: string,
+  props: settingData,
+  passwordValue: string,
   confirmPassword: string
 ) {
-  if (value && value !== confirmPassword) {
-    props = {
-      ...props,
-      password: '密碼與確認密碼不符',
-      confirmPassword: '密碼與確認密碼不符',
+  const pwdStrength = passwordStrength(passwordValue).value
+  //若密碼欄有值時
+  if (passwordValue) {
+
+    if (pwdStrength === 'Too weak') {
+      props = {
+        ...props,
+        password: '密碼太簡單，請至少 6 碼並包含英文大小寫及特殊符號'
+      }
     }
-  } else {
-    props = { ...props, password: '', confirmPassword: '' }
+    if (pwdStrength === 'Weak') {
+      props = {
+        ...props,
+        password: '密碼太簡單，請至少 6 碼並包含英文大小寫及特殊符號'
+      }
+    }
+    if (pwdStrength !== 'Weak' && pwdStrength !== 'Too weak') {
+      props = {
+        ...props,
+        password: ''
+      }
+    }
+
+    // 密碼與確認密碼不符
+    if (confirmPassword && passwordValue !== confirmPassword) {
+      props = {
+        ...props,
+        password: '密碼與確認密碼不符',
+        confirmPassword: '密碼與確認密碼不符',
+      }
+    }
+
+    // 若密碼與確認密碼相同
+    if (passwordValue === confirmPassword) {
+      if (pwdStrength === 'Too weak') {
+        props = {
+          ...props,
+          password: '密碼太簡單，請至少 6 碼並包含英文大小寫及特殊符號',
+          confirmPassword: '密碼太簡單，請至少 6 碼並包含英文大小寫及特殊符號'
+        }
+      }
+      if (pwdStrength === 'Weak') {
+        props = {
+          ...props,
+          password: '密碼太簡單，請至少 6 碼並包含英文大小寫及特殊符號',
+          confirmPassword: '密碼太簡單，請至少 6 碼並包含英文大小寫及特殊符號'
+        }
+      }
+      if (pwdStrength !== 'Weak' && pwdStrength !== 'Too weak') {
+        props = {
+          ...props,
+          password: '',
+          confirmPassword: ''
+        }
+      }
+    }
+
+    // 確認密碼為空值
+    if (!confirmPassword) {
+      props = {
+        ...props,
+        confirmPassword: '密碼與確認密碼不符',
+      }
+    }
   }
-  if (!value.trim() && !confirmPassword) {
+
+  // 若密碼與確認密碼皆為空值
+  if (!passwordValue && !confirmPassword) {
     props = {
       ...props,
       password: '欄位不得為空',
       confirmPassword: '欄位不得為空',
     }
-  }
-  if (!value.trim()) {
-    props = { ...props, password: '欄位不得為空' }
-  }
-  if (value && value === confirmPassword) {
-    props = { ...props, password: '', confirmPassword: '' }
   }
   return props
 }
 
 export function isConfirmPasswordValue(
-  props: signUpData,
-  value: string,
+  props: settingData,
+  confirmPasswordValue: string,
   password: string
 ) {
-  if (value && value !== password) {
-    props = {
-      ...props,
-      password: '密碼與確認密碼不符',
-      confirmPassword: '密碼與確認密碼不符',
+  const confirmPasswordStrength = passwordStrength(confirmPasswordValue).value
+  //若確認密碼欄有值時
+  if (confirmPasswordValue) {
+
+    if (confirmPasswordStrength === 'Too weak') {
+      props = {
+        ...props,
+        confirmPassword: '密碼太簡單，請至少 6 碼並包含英文大小寫及特殊符號'
+      }
+    }
+    if (confirmPasswordStrength === 'Weak') {
+      props = {
+        ...props,
+        confirmPassword: '密碼太簡單，請至少 6 碼並包含英文大小寫及特殊符號'
+      }
+    }
+    if (confirmPasswordStrength !== 'Weak' && confirmPasswordStrength !== 'Too weak') {
+      props = {
+        ...props,
+        confirmPassword: ''
+      }
+    }
+
+    // 若密碼有值且確認密碼與密碼不符
+    if (password && confirmPasswordValue !== password) {
+      props = {
+        ...props,
+        password: '密碼與確認密碼不符',
+        confirmPassword: '密碼與確認密碼不符',
+      }
+    }
+
+    // 若確認密碼與密碼相同
+    if (confirmPasswordValue === password) {
+      if (confirmPasswordStrength === 'Too weak') {
+        props = {
+          ...props,
+          password: '密碼太簡單，請至少 6 碼並包含英文大小寫及特殊符號',
+          confirmPassword: '密碼太簡單，請至少 6 碼並包含英文大小寫及特殊符號'
+        }
+      }
+      if (confirmPasswordStrength === 'Weak') {
+        props = {
+          ...props,
+          password: '密碼太簡單，請至少 6 碼並包含英文大小寫及特殊符號',
+          confirmPassword: '密碼太簡單，請至少 6 碼並包含英文大小寫及特殊符號'
+        }
+      }
+      if (confirmPasswordStrength !== 'Weak' && confirmPasswordStrength !== 'Too weak') {
+        props = {
+          ...props,
+          password: '',
+          confirmPassword: ''
+        }
+      }
+    }
+
+    // 若密碼為空值
+    if (!password) {
+      props = {
+        ...props,
+        confirmPassword: '密碼與確認密碼不符',
+      }
     }
   }
-  if (!value.trim() && !password) {
+
+  // 若確認密碼與密碼皆為空值
+  if (!confirmPasswordValue && !password) {
     props = {
       ...props,
       password: '欄位不得為空',
       confirmPassword: '欄位不得為空',
     }
-  }
-  if (!value.trim()) {
-    props = { ...props, confirmPassword: '欄位不得為空' }
-  }
-  if (value && value === password) {
-    props = { ...props, password: '', confirmPassword: '' }
   }
   return props
 }
