@@ -195,6 +195,7 @@ export default function QuestionPage() {
                       userRole={answer.User.role}
                       userName={answer.User.name}
                       answerDate={answer.createdAt}
+                      answerId={answer.id}
                       answer={answer.content}
                     />
                   ))}

@@ -113,6 +113,40 @@
   z-index: 20;
 }
 
+.edit-answer-container {
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100vw;
+  height: 35vh;
+  background-color: #fff;
+  box-shadow: 1px 1px 5px 1px rgba(0, 0, 0, 0.1);
+  z-index: 20;
+  overflow-y: scroll;
+
+  .header {
+    position: relative;
+    padding: unset;
+    width: 100%;
+    border-bottom: 1px solid color.$dim-gray;
+
+    & h2 {
+      @include func.font-setting(1rem, 500, color.$primary-font);
+      display: block;
+      margin: 16px auto;
+      width: fit-content;
+      letter-spacing: 0px;
+    }
+  }
+
+  .form {
+    justify-content: center;
+    gap: 0px;
+  }
+}
+
 .scrollbar {
   &::-webkit-scrollbar {
     width: 6px;
@@ -154,6 +188,10 @@
   .answer-form {
     right: 7px;
     width: 90%;
+  }
+
+  .edit-answer-container {
+    width: 50%;
   }
 }
 

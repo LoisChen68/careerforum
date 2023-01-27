@@ -37,7 +37,6 @@ export default function Question(props: questionProps) {
   const getUser = useGetUser()
   const setModalStatus = useModalStatus()
   const checkboxRef = useRef<HTMLInputElement>(null)
-  const [activeId, setActiveId] = useState<number>()
   const [alert, setAlert] = useState(false)
   const questionId = localStorage.getItem('questionId')
   const origin = window.location.origin
@@ -106,35 +105,32 @@ export default function Question(props: questionProps) {
           </h3>
         </Link>
         <div>
-          <label htmlFor={`dot-icon-${props.questionId}`}>
+          <label htmlFor={`dot-icon-question-${props.questionId}`}>
             <p><BiDotsVerticalRounded /></p>
           </label>
           <input
             ref={checkboxRef}
-            id={`dot-icon-${props.questionId}`}
+            id={`dot-icon-question-${props.questionId}`}
             type="checkbox"
             className={style['menu-toggle']}
-            onClick={() => setActiveId(props.questionId)}
           />
-          {activeId === props.questionId && (
-            <div className={style['menu']} onClick={() => checkboxRef.current && (checkboxRef.current.checked = false)}>
-              <ul className={style['menu-list']}>
-                {getUser?.user?.id === props.questionUserId && (
-                  <>
-                    <li className={style['menu-item']}>
-                      <p onClick={() => handleEditClick(props.questionId)}>編輯</p>
-                    </li>
-                    <li className={style['menu-item']}>
-                      <p onClick={() => handleDeleteClick(props.questionId)}>刪除</p>
-                    </li>
-                  </>
-                )}
-                <li className={style['menu-item']}>
-                  <p onClick={copyURL}>分享</p>
-                </li>
-              </ul>
-            </div>
-          )}
+          <div className={style['menu']} onClick={() => checkboxRef.current && (checkboxRef.current.checked = false)}>
+            <ul className={style['menu-list']}>
+              {getUser?.user?.id === props.questionUserId && (
+                <>
+                  <li className={style['menu-item']}>
+                    <p onClick={() => handleEditClick(props.questionId)}>編輯</p>
+                  </li>
+                  <li className={style['menu-item']}>
+                    <p onClick={() => handleDeleteClick(props.questionId)}>刪除</p>
+                  </li>
+                </>
+              )}
+              <li className={style['menu-item']}>
+                <p onClick={copyURL}>分享</p>
+              </li>
+            </ul>
+          </div>
           {alert && (
             <>
               <Backdrop onConfirm={handleOnCancel} />
