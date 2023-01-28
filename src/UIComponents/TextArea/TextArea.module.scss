@@ -68,9 +68,24 @@
   }
 }
 
+.message {
+  display: flex;
+  @include func.font-setting(0.9375rem, 400, rgb(0, 0, 0, 0.5));
+}
+
 .title-error,
 .content-error {
   padding-right: 20px;
   align-self: flex-end;
-  color: red;
+  @include func.font-setting(0.9375rem, 400, red);
+}
+
+.title-error {
+  position: absolute;
+  right: 0px;
+}
+
+.content-error {
+  position: absolute;
+  right: 0px;
 }
