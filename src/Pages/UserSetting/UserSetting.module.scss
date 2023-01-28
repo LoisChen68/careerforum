@@ -1,3 +1,6 @@
+@use '../../variable' as style;
+@use '../../mixin' as func;
+
 .wrapper {
   height: 100vh;
   width: 100vw;
@@ -18,6 +21,18 @@
   flex-direction: column;
   align-items: flex-start;
   gap: 20px;
+}
+
+.user-email {
+  @include func.font-setting(0.9375rem, 400, style.$primary-font);
+
+  p {
+    @include func.font-setting(0.9375rem, 400, rgb(158, 158, 158));
+  }
+}
+
+.name-length-number {
+  @include func.font-setting(0.9375rem, 400, rgb(158, 158, 158));
 }
 
 .scrollbar {

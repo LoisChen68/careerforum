@@ -11,6 +11,7 @@ interface inputProps {
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
   errorMessage: string
   value: string
+  maxLength?: number
 }
 
 export default function Input(props: inputProps) {
@@ -22,6 +23,7 @@ export default function Input(props: inputProps) {
         name={props.name}
         type={props.type}
         value={props.value}
+        maxLength={props.maxLength}
         placeholder={props.placeholder}
         required={props.required}
         onChange={props.onChange}

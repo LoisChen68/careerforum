@@ -151,33 +151,55 @@ export default function UserSetting() {
             name="avatar"
             accept=".jpg,.png"
             onChange={handleAvatarFileChange} />
-          <Selector
-            htmlFor="role"
-            label="Role"
-            id="role"
-            name="role"
-            value={options}
-            selectedValue={form.role}
-            errorMessage={errorMessage.role}
-            required={true}
-            onChange={handleRoleChange}
-          />
+          <div>
+            <label htmlFor='role'>Role</label>
+            {form.role === 'TA' && (
+              <Selector
+                htmlFor="role"
+                label="Role"
+                id="role"
+                name="role"
+                value={[{ value: 'TA', name: '助教', disable: false }]}
+                selectedValue={'TA'}
+                errorMessage={errorMessage.role}
+                required={true}
+                onChange={handleRoleChange}
+              />
+            )}
+          {form.role !== 'TA' && (
+            <Selector
+              htmlFor="role"
+              label="Role"
+              id="role"
+              name="role"
+              value={options}
+              selectedValue={form.role}
+              errorMessage={errorMessage.role}
+              required={true}
+              onChange={handleRoleChange}
+            />
+          )}
+          </div>
           <div className={style['user-email']}>
             <label>Email</label>
             <p>{getUser?.user?.email}</p>
           </div>
-          <Input
-            htmlFor="name"
-            label="Name"
-            id="name"
-            name="name"
-            type="text"
-            placeholder=" "
-            value={form.name}
-            required={true}
-            errorMessage={errorMessage.name}
-            onChange={handleInputChange}
-          />
+          <div>
+            <Input
+              htmlFor="name"
+              label='Name'
+              id="name"
+              name="name"
+              type="text"
+              placeholder=" "
+              value={form.name}
+              maxLength={20}
+              required={true}
+              errorMessage={errorMessage.name}
+              onChange={handleInputChange}
+            />
+            <span className={style['name-length-number']}>{form.name.length}/20</span>
+          </div>
           <Input
             htmlFor="password"
             label="Password"
