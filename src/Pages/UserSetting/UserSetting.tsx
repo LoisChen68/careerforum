@@ -39,13 +39,15 @@ export default function UserSetting() {
   useEffect(() => {
     userAPI
       .getCurrentUser()
-      .then(res =>
+      .then(res => {
+        const user = res.data.user
         setForm({
           ...form,
-          avatar: res.data.avatar,
-          role: res.data.role,
-          name: res.data.name
-        }))
+          avatar: user.avatar,
+          role: user.role,
+          name: user.name
+        })
+      })
       .catch(err => console.log(err))
   }, [])
 
@@ -166,19 +168,19 @@ export default function UserSetting() {
                 onChange={handleRoleChange}
               />
             )}
-          {form.role !== 'TA' && (
-            <Selector
-              htmlFor="role"
-              label="Role"
-              id="role"
-              name="role"
-              value={options}
-              selectedValue={form.role}
-              errorMessage={errorMessage.role}
-              required={true}
-              onChange={handleRoleChange}
-            />
-          )}
+            {form.role !== 'TA' && (
+              <Selector
+                htmlFor="role"
+                label="Role"
+                id="role"
+                name="role"
+                value={options}
+                selectedValue={form.role}
+                errorMessage={errorMessage.role}
+                required={true}
+                onChange={handleRoleChange}
+              />
+            )}
           </div>
           <div className={style['user-email']}>
             <label>Email</label>

@@ -162,7 +162,7 @@ function EditAnswer() {
       answerAPI.getAnswer(answerId)
         .then(res => {
           setIsLoad(isLoad)
-          setContent(res.data.content)
+          setContent(res.data.answer.content)
         })
         .catch(err => console.log(err))
     }

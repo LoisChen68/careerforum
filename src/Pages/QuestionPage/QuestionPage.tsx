@@ -75,7 +75,7 @@ export default function QuestionPage() {
         .getQuestion(Number(param.id))
         .then((res) => {
           setLoading(false)
-          setQuestion(res.data)
+          setQuestion(res.data.question)
         })
         .catch((err) => console.log(err))
     }

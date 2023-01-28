@@ -28,7 +28,7 @@ export default function UserProfile() {
   useEffect(() => {
     userAPI
       .getUser(Number(param.id))
-      .then((res) => setUserData(res.data))
+      .then((res) => setUserData(res.data.user))
       .catch((err) => console.log(err))
   }, [Number(param.id)])
 

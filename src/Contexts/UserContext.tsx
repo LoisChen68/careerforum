@@ -54,7 +54,7 @@ export default function UserContextProvider({
     userAPI
       .getCurrentUser()
       .then((res) => {
-        setUser(res.data),
+        setUser(res.data.user),
           setAuthPass(true),
           render?.handleRerender(false)
       })

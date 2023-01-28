@@ -302,7 +302,7 @@ function EditQuestion() {
         .getQuestion(questionId)
         .then(res => {
           setIsLoad(false)
-          setQuestion(res.data)
+          setQuestion(res.data.question)
         })
         .catch(err => console.log(err))
     }
