@@ -11,6 +11,7 @@ interface userDataProps {
   email: string
   avatar: string
   cover: string
+  permissionRole: string,
   deletedAt: string
   approvalStatus: string
   isAdmin: boolean
@@ -24,6 +25,7 @@ const userData = {
   email: '',
   avatar: '',
   cover: '',
+  permissionRole: '',
   deletedAt: '',
   approvalStatus: '',
   isAdmin: false,
@@ -34,7 +36,7 @@ interface UserContextData {
   user: userDataProps
   getUser: () => void
   authPass: boolean
-  logout: (value: boolean) => void
+  auth: (value: boolean) => void
 }
 
 const getUserContext = createContext<UserContextData | undefined>(undefined)
@@ -49,7 +51,6 @@ export default function UserContextProvider({
   const [authPass, setAuthPass] = useState(false)
   const pathName = window.location.pathname
   const render = useRender()
-
   function getUser() {
     userAPI
       .getCurrentUser()
@@ -58,8 +59,8 @@ export default function UserContextProvider({
           setAuthPass(true),
           render?.handleRerender(false)
       })
-      .catch((err) => {
-        console.log(err), setAuthPass(false), navigate('/careerforum')
+      .catch(() => {
+        setAuthPass(false), navigate('/careerforum')
         // 使用正則表達式來判斷 careerforum 或 空字浮 則返回錯誤提示
         // `^` 代表字符串開頭 `$` 代表字符串結尾 `\/` 匹配字符
         // `(careerforum|)` 代表匹配字符 careerforum 或空字符
@@ -78,7 +79,7 @@ export default function UserContextProvider({
       })
   }
 
-  function logout(value: boolean) {
+  function auth(value: boolean) {
     setAuthPass(value)
   }
 
@@ -86,7 +87,7 @@ export default function UserContextProvider({
     getUser,
     user: user,
     authPass: authPass,
-    logout,
+    auth,
   }
 
   return (

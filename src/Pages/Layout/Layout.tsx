@@ -79,7 +79,7 @@ export default function Layout() {
             progress: undefined,
             theme: 'light',
           })
-          getUser?.logout(true)
+          getUser?.auth(true)
           setModalStatus?.handleSetModal('initial')
           setLoginData({
             ...loginData,
@@ -290,7 +290,7 @@ export default function Layout() {
   // 按下登出
   function onLogoutClick() {
     localStorage.removeItem('token')
-    getUser?.logout(false)
+    getUser?.auth(false)
     navigate('/careerforum')
   }
 
