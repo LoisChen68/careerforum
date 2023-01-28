@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { useRender } from '../../Contexts/RenderContext'
 import UserAvatar from '../../UIComponents/UserAvatar/UserAvatar'
 import { useHistory } from '../../utils/cookies'
 import style from './Record.module.scss'
@@ -13,12 +14,13 @@ interface record {
 }
 
 export default function Record() {
+  const render = useRender()
   const [records, setRecords] = useState([])
   const { getHistory } = useHistory()
 
   useEffect(() => {
     setRecords(getHistory())
-  }, [])
+  }, [render?.isRender])
 
   return (
     <div className={style['record']}>

@@ -77,6 +77,10 @@
 
   .btn-sure {
     background-color: color.$primary-color;
+
+    &:disabled {
+      background-color: rgb(158, 158, 158);
+    }
   }
 }
 

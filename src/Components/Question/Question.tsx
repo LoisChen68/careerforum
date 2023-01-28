@@ -10,6 +10,7 @@ import Backdrop from '../../UIComponents/Backdrop/Backdrop'
 import { useRender } from '../../Contexts/RenderContext'
 import { toast } from 'react-toastify'
 import { dayFormat } from '../../utils/dayFormat'
+import { useHistory } from '../../utils/cookies'
 
 interface questionProps {
   userName: string
@@ -35,9 +36,11 @@ interface value {
 export default function Question(props: questionProps) {
   const render = useRender()
   const getUser = useGetUser()
+  const { removeHistory } = useHistory()
   const setModalStatus = useModalStatus()
   const checkboxRef = useRef<HTMLInputElement>(null)
   const [alert, setAlert] = useState(false)
+  const [submitLoad, setSubmitLoad] = useState(false)
   const questionId = localStorage.getItem('questionId')
   const origin = window.location.origin
 
@@ -63,11 +66,11 @@ export default function Question(props: questionProps) {
   }
 
   function handleOnSure() {
+    setSubmitLoad(true)
     questionAPI
       .deleteQuestion(Number(questionId))
-      .then(() => {
-        setAlert(false)
-        render?.handleRerender(true)
+      .then((res) => {
+        const question = res.data.question
         toast.success('刪除成功', {
           position: 'top-right',
           autoClose: 3000,
@@ -78,6 +81,10 @@ export default function Question(props: questionProps) {
           progress: undefined,
           theme: 'light',
         })
+        setAlert(false)
+        setSubmitLoad(false)
+        render?.handleRerender(true)
+        removeHistory(question.id)
       })
       .catch(err => console.log(err))
   }
@@ -140,7 +147,11 @@ export default function Question(props: questionProps) {
                   <button className={style['btn-cancel']} onClick={handleOnCancel}>
                     取消
                   </button>
-                  <button className={style['btn-sure']} onClick={handleOnSure}>
+                  <button
+                    className={style['btn-sure']}
+                    onClick={handleOnSure}
+                    disabled={submitLoad}
+                  >
                     確定
                   </button>
                 </div>

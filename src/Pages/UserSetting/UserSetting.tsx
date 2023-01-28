@@ -11,6 +11,7 @@ import { useRender } from '../../Contexts/RenderContext'
 import { toast } from 'react-toastify'
 import { isConfirmPasswordValue, isNameValue, isPasswordValue } from '../../utils/valid'
 import { passwordStrength } from 'check-password-strength'
+import { useHistory } from '../../utils/cookies'
 
 const formData = {
   avatar: '',
@@ -29,6 +30,7 @@ export default function UserSetting() {
   const render = useRender()
   const getUser = useGetUser()
   const navigate = useNavigate()
+  const { modifyHistoryAvatar } = useHistory()
   const [form, setForm] = useState(formData)
   const [errorMessage, setErrorMessage] = useState(formData)
   const [disable, setDisable] = useState(false)
@@ -109,7 +111,8 @@ export default function UserSetting() {
       const bodyFormData = new FormData(e.target as HTMLFormElement)
       userAPI
         .putUser(userId, bodyFormData)
-        .then(() => {
+        .then(res => {
+          const user = res.data.user
           toast.success('成功修改個人資料', {
             position: 'top-right',
             autoClose: 3000,
@@ -122,6 +125,7 @@ export default function UserSetting() {
           })
           setDisable(false)
           render?.handleRerender(true)
+          modifyHistoryAvatar(user.id, user.avatar)
           navigate(`/careerforum/users/${userId}`)
         })
         .catch(err => console.log(err))
@@ -145,7 +149,7 @@ export default function UserSetting() {
             id="avatar"
             type="file"
             name="avatar"
-            accept="image/*"
+            accept=".jpg,.png"
             onChange={handleAvatarFileChange} />
           <Selector
             htmlFor="role"
