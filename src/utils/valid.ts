@@ -171,7 +171,7 @@ export function isLoginValid(
   return props
 }
 
-//TODO: 驗證註冊表單輸入 onSingUpInputChangeValid
+//TODO: 驗證註冊表單輸入 onSignUpInputChangeValid
 export function signUpValueValid(
   props: signUpData,
   inputName: string,

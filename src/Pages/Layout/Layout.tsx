@@ -136,7 +136,7 @@ export default function Layout() {
   }
 
   //送出註冊表單
-  function handleSingUpSubmit(e: React.MouseEvent) {
+  function handleSignUpSubmit(e: React.MouseEvent) {
     e.preventDefault()
     const pwdStrength = passwordStrength(signUpData.password).value
     const confirmPwdStrength = passwordStrength(signUpData.confirmPassword).value
@@ -232,7 +232,7 @@ export default function Layout() {
   }
 
   // 輸入註冊表單
-  function handleSingUpInputChange(e: React.ChangeEvent<HTMLInputElement>) {
+  function handleSignUpInputChange(e: React.ChangeEvent<HTMLInputElement>) {
     if (e.target.name === 'password') {
       setSignUpData({
         ...signUpData,
@@ -274,7 +274,7 @@ export default function Layout() {
 
   // 按下 Header 或 Login 表單中的 註冊
   function onSignUpClick() {
-    setModalStatus?.handleSetModal('singUp')
+    setModalStatus?.handleSetModal('signUp')
     setErrorMessage(formData)
     setSignUpData({
       ...signUpData,
@@ -326,19 +326,19 @@ export default function Layout() {
           onConfirm={onLoginConfirm}
           onInputChange={handleLoginInputChange}
           onLoginSubmit={handleLoginSubmit}
-          onSingUpClick={onSignUpClick}
+          onSignUpClick={onSignUpClick}
           email={loginData.email}
           password={loginData.password}
           errorMessage={errorMessage}
           disabled={submit}
         />
       )}
-      {setModalStatus?.modalStatus === 'singUp' && (
+      {setModalStatus?.modalStatus === 'signUp' && (
         <SignUp
           onConfirm={onSignUpConfirm}
           onRoleChange={handleRoleChange}
-          onSingUpSubmit={handleSingUpSubmit}
-          onInputChange={handleSingUpInputChange}
+          onSignUpSubmit={handleSignUpSubmit}
+          onInputChange={handleSignUpInputChange}
           onLoginClick={onLoginClick}
           role={signUpData.role}
           email={signUpData.email}
