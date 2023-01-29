@@ -60,8 +60,8 @@ test('Should not display the "登入" and "註冊" button when authPass is true.
     </BrowserRouter>
   )
 
-  const loginElement = screen.queryByText("登入")
-  const signUpElement = screen.queryByText("註冊")
+  const loginElement = screen.queryByText('登入')
+  const signUpElement = screen.queryByText('註冊')
 
   expect(loginElement).not.toBeInTheDocument
   expect(signUpElement).not.toBeInTheDocument

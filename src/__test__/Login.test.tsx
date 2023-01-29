@@ -74,7 +74,7 @@ test('Should display the "欄位不得為空" when the input field is empty and 
   expect(errorMessages).toHaveLength(2)
 })
 
-test('Should display the signUp modal when clicking the Singup link.', () => {
+test('Should display the signUp modal when clicking the signUp link.', () => {
   // 定義 Modal 容器元素
   const container = document.createElement('div')
   container.id = 'modal-root'

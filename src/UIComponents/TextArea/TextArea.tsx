@@ -4,39 +4,81 @@ import Button from '../Button/Button'
 import style from './TextArea.module.scss'
 import { useRender } from '../../Contexts/RenderContext'
 import { useModalStatus } from '../../Contexts/ModalContext'
+import { toast } from 'react-toastify'
+import answerAPI from '../../request/API/answerAPI'
+import { useHistory } from '../../utils/cookies'
 
 interface textAreaProps {
+  title?: string
+  content?: string
   placeholder: string
   scrollHeight?: number
   questionId?: number
+  answerId?: number
 }
 
 // for 回答問題 textArea
 export function TextAreaAnswer(props: textAreaProps) {
-  const [value, setValue] = useState('')
-  const textAreaRef = useRef<HTMLTextAreaElement>(null)
-  const token = localStorage.getItem('token') || ''
   const reRender = useRender()
+  const useSetModal = useModalStatus()
+  const textAreaRef = useRef<HTMLTextAreaElement>(null)
+  const [content, setContent] = useState(props.content ? props.content : '')
 
   if (props.scrollHeight) {
-    autoSizeTextArea(textAreaRef.current, value, props.scrollHeight)
+    autoSizeTextArea(textAreaRef.current, content, props.scrollHeight)
   }
 
   function handleChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
     const value = e.target.value
-    setValue(value)
+    setContent(value)
   }
 
   function onSubmitClick(e: React.MouseEvent) {
     e.preventDefault()
-    questionAPI
-      .postAnswers(token, props.questionId, value)
-      .then(() => {
-        reRender?.handleRerender(true)
+
+    if (props.answerId) {
+      answerAPI
+        .putAnswer(props.answerId, content)
+        .then(() => {
+          toast.success('編輯成功', {
+            position: 'top-right',
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: false,
+            draggable: true,
+            progress: undefined,
+            theme: 'light',
+          })
+          reRender?.handleRerender(true)
+          useSetModal?.handleSetModal('initial')
+        })
+        .catch(err => console.log(err))
+    }
+
+    if (!content.trim()) {
+      toast.error('內容不得為空', {
+        position: 'top-right',
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: 'light',
       })
-      .catch((err) => {
-        console.log(err)
-      })
+    }
+    if (!props.answerId && content.trim()) {
+      questionAPI
+        .postAnswers(props.questionId, content)
+        .then(() => {
+          reRender?.handleRerender(true)
+          setContent('')
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    }
   }
 
   return (
@@ -46,9 +88,9 @@ export function TextAreaAnswer(props: textAreaProps) {
         onChange={handleChange}
         placeholder={props.placeholder}
         ref={textAreaRef}
-        value={value}
+        value={content}
       />
-      {value && (
+      {content && (
         <Button
           type="button"
           style="button-answer-submit"
@@ -62,54 +104,93 @@ export function TextAreaAnswer(props: textAreaProps) {
   )
 }
 
-
+// for 發問問題 textArea
 export function TextAreaAsk(props: textAreaProps) {
-  const token = localStorage.getItem('token')
-  const useSetModal = useModalStatus()
   const reRender = useRender()
-  const [title, setTitle] = useState("")
-  const [content, setContent] = useState("")
-  const [errorMessage, setErrorMessage] = useState({ title: "", content: "" })
+  const useSetModal = useModalStatus()
+  const { modifyHistoryQuestion } = useHistory()
+  const [submitLoad, setSubmitLoad] = useState(false)
+  const [title, setTitle] = useState(props.title ? props.title : '')
+  const [content, setContent] = useState(props.content ? props.content : '')
+  const [errorMessage, setErrorMessage] = useState({ title: '', content: '' })
+  const [titleLengthLimit, contentLengthLimit] = [50, 500]
 
   function handleInputChange(e: React.ChangeEvent<HTMLInputElement>) {
     const value = e.target.value
     setTitle(e.target.value)
+    if (value.length > titleLengthLimit) {
+      setErrorMessage({ ...errorMessage, title: '標題長度超過限制' })
+    }
     if (!value) {
-      setErrorMessage({ ...errorMessage, title: "標題不得為空" })
-    } else if (value) {
-      setErrorMessage({ ...errorMessage, title: "" })
+      setErrorMessage({ ...errorMessage, title: '標題不得為空' })
+    } else if (value && value.length <= titleLengthLimit) {
+      setErrorMessage({ ...errorMessage, title: '' })
     }
   }
 
   function handleTextAreaChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
     const value = e.target.value
     setContent(value)
+    if (value.length > contentLengthLimit) {
+      setErrorMessage({ ...errorMessage, content: '內容長度超過限制' })
+    }
     if (!value) {
-      setErrorMessage({ ...errorMessage, content: "內容不得為空" })
-    } else if (value) {
-      setErrorMessage({ ...errorMessage, content: "" })
+      setErrorMessage({ ...errorMessage, content: '內容不得為空' })
+    } else if (value && value.length <= contentLengthLimit) {
+      setErrorMessage({ ...errorMessage, content: '' })
     }
   }
 
   function onSubmitClick(e: React.MouseEvent) {
     e.preventDefault()
     if (!title.trim()) {
-      setErrorMessage({ ...errorMessage, title: "標題不得為空" })
-    }
-    if (!content.trim()) {
-      setErrorMessage({ ...errorMessage, content: "內容不得為空" })
+      setErrorMessage({ ...errorMessage, title: '標題不得為空' })
     }
 
-    if (title && content) {
+    if (!content.trim()) {
+      setErrorMessage({ ...errorMessage, content: '內容不得為空' })
+    }
+
+    if (title.length > titleLengthLimit || content.length > contentLengthLimit) {
+      return setErrorMessage({ ...errorMessage, content: '內容長度超過限制' })
+    }
+
+    // 如果父層有 questionId 則修改問題
+    if (props.questionId) {
+      setSubmitLoad(true)
       questionAPI
-        .postQuestion(token, title, content)
-        .then(() => {
+        .putQuestion(props.questionId, title, content)
+        .then(res => {
+          const question = res.data.question
+          toast.success('編輯成功', {
+            position: 'top-right',
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: false,
+            draggable: true,
+            progress: undefined,
+            theme: 'light',
+          })
+          setSubmitLoad(false)
           reRender?.handleRerender(true)
           useSetModal?.handleSetModal('initial')
+          modifyHistoryQuestion(question.id, question.title, question.content)
         })
         .catch(err => console.log(err))
     }
-
+    // 新增問題
+    if (!props.questionId && title && content) {
+      setSubmitLoad(true)
+      questionAPI
+        .postQuestion(title, content)
+        .then(() => {
+          setSubmitLoad(false)
+          reRender?.handleRerender(true)
+          useSetModal?.handleSetModal('initial')
+        })
+        .catch((err) => console.log(err))
+    }
   }
 
   return (
@@ -121,31 +202,42 @@ export function TextAreaAsk(props: textAreaProps) {
         type="text"
         required={true}
         placeholder="標題"
+        onKeyDown={(e) => e.key === 'Enter' && e.preventDefault()}
         value={title}
+        maxLength={50}
         onChange={handleInputChange}
       />
-      {errorMessage.title && (
-        <div className={style['title-error']}>
-          <p>標題不得為空</p>
-        </div>
-      )}
+      <div className={style['message']}>
+        <span>{title.length}/50</span>
+        {errorMessage.title && (
+          <div className={style['title-error']}>
+            <p>{errorMessage.title}</p>
+          </div>
+        )}
+      </div>
       <textarea
         name="questionContent"
         className={`${style['textareaAsk']} ${style['scrollbar']}`}
         onChange={handleTextAreaChange}
         placeholder={props.placeholder}
         value={content}
+        maxLength={500}
       />
-      {errorMessage.content && (
-        <div className={style['content-error']}>
-          <p>內容不得為空</p>
-        </div>
-      )}
+      <div className={style['message']}>
+        <span>{content.length}/500</span>
+        {errorMessage.content && (
+          <div className={style['content-error']}>
+            {errorMessage.content}
+          </div>
+        )}
+      </div>
       <Button
         type="button"
-        style={title && content ? 'button-ask-submit' : 'button-ask-submit-disable'}
+        style={
+          title && content ? 'button-ask-submit' : 'button-ask-submit-disable'
+        }
         onClick={onSubmitClick}
-        disabled={false}
+        disabled={submitLoad}
       >
         <p>送出</p>
       </Button>

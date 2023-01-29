@@ -68,10 +68,10 @@
   overflow-y: scroll;
 
   .header {
+    position: relative;
     padding: unset;
     width: 100%;
-    background-color: #35a0ed11;
-    border-bottom: 1px solid #22577e;
+    border-bottom: 1px solid color.$dim-gray;
 
     & h2 {
       @include func.font-setting(1rem, 500, color.$primary-font);
@@ -81,6 +81,7 @@
       letter-spacing: 0px;
     }
   }
+
   .form {
     gap: 0px;
   }
@@ -89,6 +90,7 @@
 .icon {
   display: block;
   height: 20px;
+
   svg {
     width: 20px;
     height: 20px;
@@ -96,16 +98,100 @@
   }
 }
 
+.question-modal-container {
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  height: 100vh;
+  width: 100vw;
+  background-color: #fff;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  z-index: 20;
+}
+
+.edit-answer-container {
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100vw;
+  height: 35vh;
+  background-color: #fff;
+  box-shadow: 1px 1px 5px 1px rgba(0, 0, 0, 0.1);
+  z-index: 20;
+  overflow-y: scroll;
+
+  .header {
+    position: relative;
+    padding: unset;
+    width: 100%;
+    border-bottom: 1px solid color.$dim-gray;
+
+    & h2 {
+      @include func.font-setting(1rem, 500, color.$primary-font);
+      display: block;
+      margin: 16px auto;
+      width: fit-content;
+      letter-spacing: 0px;
+    }
+  }
+
+  .form {
+    justify-content: center;
+    gap: 0px;
+  }
+}
+
+.scrollbar {
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border-radius: 3px;
+    background-color: rgba(0, 0, 0, 0.2);
+  }
+
+  &::-webkit-scrollbar:hover {
+    background-color: rgba(0, 0, 0, 0.2);
+  }
+}
+
+.answer-form {
+  position: relative;
+  right: 4px;
+  display: flex;
+  gap: 5px;
+  width: 90%;
+  align-items: flex-end;
+}
+
 @media screen and (min-width: 570px) {
   .ask-modal-container {
-    padding: 16px;
+    padding: 0 16px;
     width: 80vw;
     height: 70vh;
     border-radius: style.$border-radius-5;
+  }
 
-    .header {
-      background-color: inherit;
-    }
+  .question-modal-container {
+    width: 90vw;
+    height: 90vh;
+    border-radius: style.$border-radius-5;
+  }
+
+  .answer-form {
+    right: 7px;
+    width: 90%;
+  }
+
+  .edit-answer-container {
+    width: 50%;
   }
 }
 

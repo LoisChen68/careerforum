@@ -6,7 +6,7 @@ import style from './Login.module.scss'
 interface loginProps {
   onConfirm: (e: React.MouseEvent) => void
   onLoginSubmit: (e: React.MouseEvent) => void
-  onSingUpClick: (e: React.MouseEvent) => void
+  onSignUpClick: (e: React.MouseEvent) => void
   onInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void
   errorMessage: o
   email: string
@@ -65,7 +65,7 @@ export default function Login(props: loginProps) {
           </div>
           <p className={style['footer']}>
             尚未有帳號？
-            <a href="#" onClick={props.onSingUpClick}>
+            <a href="#" onClick={props.onSignUpClick}>
               註冊
             </a>
           </p>

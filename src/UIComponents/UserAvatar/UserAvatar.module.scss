@@ -1,19 +1,25 @@
 @use '../../variable' as color;
 @use '../../mixin' as func;
 
-.body-user-avatar {
-  @include func.avatar-style(46px);
-  border: 1.5px solid color.$primary-color;
-  overflow: hidden;
-}
-
 .header-user-avatar {
   @include func.avatar-style(40px);
   border: 1.5px solid color.$primary-color;
   cursor: pointer;
 }
 
+.body-user-avatar {
+  @include func.avatar-style(46px);
+  border: 1.5px solid color.$primary-color;
+  overflow: hidden;
+}
+
+.user-profile-avatar {
+  @include func.avatar-style(80px);
+  border: 1.5px solid color.$primary-color;
+  overflow: hidden;
+}
+
 img {
   display: block;
-  width: 100%;
+  object-fit: cover;
 }

@@ -1,5 +1,4 @@
-import React, { createContext, useContext, useState } from "react"
-
+import React, { createContext, useContext, useEffect, useState } from 'react'
 
 interface modalContextData {
   handleSetModal: (modal: string) => void
@@ -8,8 +7,20 @@ interface modalContextData {
 
 const modalContext = createContext<modalContextData | undefined>(undefined)
 
-export default function ModalContextProvider({ children }: { children: React.ReactNode }) {
-  const [modalStatus, setModalStatus] = useState('')
+export default function ModalContextProvider({
+  children,
+}: {
+  children: React.ReactNode
+}) {
+  const [modalStatus, setModalStatus] = useState('initial')
+
+  useEffect(() => {
+    if (modalStatus !== 'initial') {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = 'unset'
+    }
+  }, [modalStatus])
 
   function handleSetModal(modal: string) {
     setModalStatus(modal)
@@ -17,7 +28,7 @@ export default function ModalContextProvider({ children }: { children: React.Rea
 
   const modalContextData: modalContextData = {
     handleSetModal,
-    modalStatus: modalStatus
+    modalStatus: modalStatus,
   }
 
   return (

@@ -18,11 +18,15 @@ import { useHistory } from '../../utils/cookies'
 import ButtonLoader from '../../UIComponents/ButtonLoader/ButtonLoader'
 import { useModalStatus } from '../../Contexts/ModalContext'
 import { useRender } from '../../Contexts/RenderContext'
+import QuestionPage from '../QuestionPage/QuestionPage'
+import { useParams } from 'react-router-dom'
 
 export default function ForumHome() {
-  const [loading, setLoading] = useState(true)
-  const setModalStatus = useModalStatus()
+  const param = useParams()
   const getUser = useGetUser()
+  const [alert, setAlert] = useState(false)
+  const setModalStatus = useModalStatus()
+  const [loading, setLoading] = useState(true)
 
   // 這裡的 loading 是具有 Backdrop 的 LayoutLoader
   // 頁面渲染完成將 loading 設為 false
@@ -30,11 +34,28 @@ export default function ForumHome() {
     setLoading(false)
   }, [])
 
+  // 若抓取到網址列上有 id 時，載入 questionPage Modal
+  useEffect(() => {
+    const id = param.id
+    if (id) {
+      setModalStatus?.handleSetModal('questionPage')
+    }
+  }, [param.id])
+
   const onAskShow = () => {
     setModalStatus?.handleSetModal('ask')
   }
 
   const onAskClose = () => {
+    setAlert(true)
+  }
+
+  function handleOnCancel() {
+    setAlert(false)
+  }
+
+  function handleOnSure() {
+    setAlert(false)
     setModalStatus?.handleSetModal('initial')
   }
 
@@ -66,6 +87,7 @@ export default function ForumHome() {
         </div>
       </div>
 
+      <EditQuestion />
       {setModalStatus?.modalStatus === 'ask' && (
         <Modal
           title={'想問點什麼嗎？'}
@@ -80,8 +102,16 @@ export default function ForumHome() {
                 avatarStyle={'body-user-avatar'}
               />
               <div className={style['user']}>
-                <p className={style['name']}>{getUser?.user?.account || ''}</p>
-                <p className={style['role']}>{getUser?.user?.role || ''}</p>
+                <p className={style['name']}>{getUser?.user?.name || ''}</p>
+                {getUser?.user?.role === 'student' && (
+                  <p className={style['role']}>{'學期三'}</p>
+                )}
+                {getUser?.user?.role === 'graduate' && (
+                  <p className={style['role']}>{'畢業'}</p>
+                )}
+                {getUser?.user?.role === 'TA' && (
+                  <p className={style['role']}>{'助教'}</p>
+                )}
                 <p></p>
               </div>
             </div>
@@ -89,6 +119,23 @@ export default function ForumHome() {
           </>
         </Modal>
       )}
+      {alert && (
+        <>
+          <div className={style['back-drop']} onClick={handleOnCancel} />
+          <div className={style['alert-container']}>
+            <h3>{'確定要離開嗎？ 編輯內容將不被保存'}</h3>
+            <div className={style['buttons']}>
+              <button className={style['btn-cancel']} onClick={handleOnCancel}>
+                取消
+              </button>
+              <button className={style['btn-sure']} onClick={handleOnSure}>
+                確定
+              </button>
+            </div>
+          </div>
+        </>
+      )}
+      {setModalStatus?.modalStatus === 'questionPage' && <QuestionPage />}
     </>
   )
 }
@@ -108,7 +155,7 @@ interface question {
 interface user {
   id: number
   role: string
-  account: string
+  name: string
   avatar: string
 }
 
@@ -123,22 +170,22 @@ interface answer {
 }
 
 function DiscussionThread() {
-  const token = localStorage.getItem('token') || ''
-  const getUser = useGetUser()
+  const setModalStatus = useModalStatus()
   const { addToHistory } = useHistory()
+  const getUser = useGetUser()
+  const render = useRender()
   const [page, setPage] = useState(2)
   const [limit, setLimit] = useState(3)
   const [hasMore, setHasMore] = useState(true)
   const [loading, setLoading] = useState(true)
   const [questions, setQuestions] = useState([])
   const [questionStatus, setQuestionStatus] = useState('')
-  const render = useRender()
 
   // 這裡的 loading 是用在 Button 的小型 loader
   // 當 API 取得完成將 loading 設為 false
   useEffect(() => {
     questionsAPI
-      .getQuestions(token, 1, limit)
+      .getQuestions(1, limit)
       .then((res) => {
         const questionData = res.data.questions
         setQuestions(questionData)
@@ -157,7 +204,7 @@ function DiscussionThread() {
   // lazy loading for questions
   const changePage = () => {
     questionsAPI
-      .getQuestions(token, page, 3)
+      .getQuestions(page, 3)
       .then((res) => {
         const questionData = res.data.questions
         if (questionData.length === 0) setHasMore(false)
@@ -167,6 +214,7 @@ function DiscussionThread() {
       })
       .catch((err) => console.error(err))
   }
+
 
   return (
     <>
@@ -181,41 +229,51 @@ function DiscussionThread() {
             <div className={style['container']}>
               <Question
                 title={question.title}
-                userAccount={question.User.account}
+                userName={question.User.name}
                 userRole={question.User.role}
                 userId={question.User.id}
                 userAvatar={question.User.avatar}
-                questionDate={question.createdAt.slice(0, 10)}
+                questionCreateDate={question.createdAt}
+                questionUpdateDate={question.updatedAt}
+                questionTitle={question.title}
                 question={question.content}
+                questionUserId={question.User.id}
                 questionId={question.id}
                 hashTags={[{ id: 1, name: '求職' }]}
                 answerCount={question.answersCount}
                 onQuestionClick={() => {
-                  addToHistory(
-                    question.id,
-                    question.title,
-                    question.User.avatar,
-                    question.content
-                  )
+                  addToHistory({
+                    questionId: question.id,
+                    title: question.title,
+                    userId: question.User.id,
+                    avatarUrl: question.User.avatar,
+                    content: question.content,
+                  })
+                  setModalStatus?.handleSetModal('questionPage')
                 }}
               />
               <div className={style['hr']} />
               {question.Answers[0] ? (
                 <Answer
-                  userAccount={question.Answers[0]?.User.account}
+                  userId={question.Answers[0]?.User.id}
+                  userName={question.Answers[0]?.User.name}
                   userRole={question.Answers[0]?.User.role}
                   userAvatar={question.Answers[0]?.User.avatar}
-                  answerDate={question.Answers[0]?.createdAt}
+                  answerCreateDate={question.Answers[0]?.createdAt}
+                  answerUpdateDate={question.Answers[0]?.updatedAt}
+                  answerId={question.Answers[0]?.id}
                   answer={question.Answers[0]?.content}
                 />
               ) : (
                 <p>目前還沒有人回答</p>
               )}
               <form className={style['answer-form']}>
-                <UserAvatar
-                  userAvatar={getUser?.user?.avatar}
-                  avatarStyle={'body-user-avatar'}
-                />
+                <div className={style['user-avatar']}>
+                  <UserAvatar
+                    userAvatar={getUser?.user?.avatar}
+                    avatarStyle={'body-user-avatar'}
+                  />
+                </div>
                 <TextAreaAnswer
                   placeholder={'輸入你的回答...'}
                   scrollHeight={100}
@@ -227,6 +285,120 @@ function DiscussionThread() {
         ))}
       </InfiniteScroll>
       {questionStatus === 'noting' && <p>目前還沒有人問問題</p>}
+    </>
+  )
+}
+
+function EditQuestion() {
+  const getUser = useGetUser()
+  const setModalStatus = useModalStatus()
+  const questionId = Number(localStorage.getItem('questionId'))
+  const [question, setQuestion] = useState({ id: 0, title: '', content: '' })
+  const [alert, setAlert] = useState(false)
+  const [isLoad, setIsLoad] = useState(false)
+
+  useEffect(() => {
+    if (setModalStatus?.modalStatus === 'editAsk') {
+      setIsLoad(true)
+      questionsAPI
+        .getQuestion(questionId)
+        .then(res => {
+          setIsLoad(false)
+          setQuestion(res.data.question)
+        })
+        .catch(err => console.log(err))
+    }
+  }, [setModalStatus?.modalStatus])
+
+  function close() {
+    setAlert(true)
+  }
+
+  function handleOnCancel() {
+    setAlert(false)
+  }
+
+  function handleOnSure() {
+    setAlert(false)
+    setModalStatus?.handleSetModal('initial')
+  }
+
+  return (
+    <>
+      {/* TODO: 需要這樣設計，否則會造成資料為上一筆 */}
+      {isLoad && (
+        <Modal
+          title={'編輯問題'}
+          onConfirm={close}
+          modalStyle="ask-modal-container"
+          closeButtonStyle={'button-close-ask'}
+        >
+          <>
+            <div className={style['ask-modal-avatar']}>
+              <UserAvatar
+                userAvatar={getUser?.user?.avatar}
+                avatarStyle={'body-user-avatar'}
+              />
+              <div className={style['user']}>
+                <p className={style['name']}>{getUser?.user?.name || ''}</p>
+                <p className={style['role']}>{getUser?.user?.role || ''}</p>
+              </div>
+            </div>
+            <ButtonLoader />
+          </>
+        </Modal>
+      )}
+      {setModalStatus?.modalStatus === 'editAsk' && !isLoad && (
+        <Modal
+          title={'編輯問題'}
+          onConfirm={close}
+          modalStyle="ask-modal-container"
+          closeButtonStyle={'button-close-ask'}
+        >
+          <>
+            <div className={style['ask-modal-avatar']}>
+              <UserAvatar
+                userAvatar={getUser?.user?.avatar}
+                avatarStyle={'body-user-avatar'}
+              />
+              <div className={style['user']}>
+                <p className={style['name']}>{getUser?.user?.name || ''}</p>
+                {getUser?.user?.role === 'student' && (
+                  <p className={style['role']}>{'學期三'}</p>
+                )}
+                {getUser?.user?.role === 'graduate' && (
+                  <p className={style['role']}>{'畢業'}</p>
+                )}
+                {getUser?.user?.role === 'TA' && (
+                  <p className={style['role']}>{'助教'}</p>
+                )}
+                <p></p>
+              </div>
+            </div>
+            <TextAreaAsk
+              questionId={question.id}
+              title={question.title}
+              content={question.content}
+              placeholder={'請輸入你的問題...'} />
+          </>
+        </Modal>
+      )}
+      {alert && (
+        <>
+          <div className={style['back-drop']} onClick={handleOnCancel} />
+          <div className={style['alert-container']}>
+            <h3>{'確定要離開嗎？ 編輯內容將不被保存'}</h3>
+            <div className={style['buttons']}>
+              <button className={style['btn-cancel']} onClick={handleOnCancel}>
+                取消
+              </button>
+              <button className={style['btn-sure']} onClick={handleOnSure}>
+                確定
+              </button>
+            </div>
+          </div>
+        </>
+      )}
     </>
   )
 }

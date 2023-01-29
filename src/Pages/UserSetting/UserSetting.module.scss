@@ -1,4 +1,70 @@
+@use '../../variable' as style;
+@use '../../mixin' as func;
+
 .wrapper {
-  position: relative;
-  top: 120px;
+  height: 100vh;
+  width: 100vw;
+  background-color: #fff;
+  overflow-y: scroll;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 90%;
+}
+
+
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+.user-email {
+  @include func.font-setting(0.9375rem, 400, style.$primary-font);
+
+  p {
+    @include func.font-setting(0.9375rem, 400, rgb(158, 158, 158));
+  }
+}
+
+.name-length-number {
+  @include func.font-setting(0.9375rem, 400, rgb(158, 158, 158));
+}
+
+.scrollbar {
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border-radius: 3px;
+    background-color: rgba(0, 0, 0, 0.2);
+  }
+
+  &::-webkit-scrollbar:hover {
+    background-color: rgba(0, 0, 0, 0.2);
+  }
+}
+
+@media screen and (min-width: 570px) {
+  .wrapper {
+    margin: 0 auto;
+    position: relative;
+    top: 100px;
+    max-width: 600px;
+    height: 70vh;
+    border-radius: 5px;
+  }
+
+
+  .form {
+    position: relative;
+    top: 20px;
+    gap: 20px;
+  }
+
 }

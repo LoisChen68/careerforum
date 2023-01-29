@@ -3,7 +3,7 @@ import { api } from '../index'
 interface signUpData {
   role: string
   email: string
-  account: string
+  name: string
   password: string
   confirmPassword: string
 }
@@ -16,9 +16,9 @@ interface loginData {
 
 export default {
   signUp(data: signUpData) {
-    return api.post<signUpData>('/users/register', data)
+    return api.post<signUpData>('/register', data)
   },
   login(data: loginData) {
-    return api.post<loginData>('/users/login', data)
+    return api.post<loginData>('/login', data)
   },
 }

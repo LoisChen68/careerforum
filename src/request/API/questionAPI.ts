@@ -1,33 +1,25 @@
 import { api } from '../index'
 
 export default {
-  getQuestion(token: string, id: number | undefined) {
-    return api.get(`/questions/${id}`, {
-      headers: { Authorization: `Bearer ${token}` },
-    })
+  getQuestion(id: number | undefined) {
+    return api.get(`/questions/${id}`)
   },
-  getAnswers(token: string, id: number | undefined) {
-    return api.get(`/questions/${id}/answers`, {
-      headers: { Authorization: `Bearer ${token}` },
-    })
+  getAnswers(id: number | undefined, page: number, limit: number) {
+    return api.get(`/questions/${id}/answers?page=${page}&limit=${limit}`)
   },
-  postAnswers(token: string, id: number | undefined, content: string) {
-    return api.post(
-      `/questions/${id}/answers`,
-      { content },
-      {
-        headers: { Authorization: `Bearer ${token}` },
-      }
-    )
+  postAnswers(id: number | undefined, content: string) {
+    return api.post(`/questions/${id}/answers`, { content })
   },
-  getQuestions(token: string, page: number, limit: number) {
-    return api.get(`/questions?page=${page}&limit=${limit}`, {
-      headers: { Authorization: `Bearer ${token}` },
-    })
+  getQuestions(page: number, limit: number) {
+    return api.get(`/questions?page=${page}&limit=${limit}`)
   },
-  postQuestion(token: string | null, title: string, content: string) {
-    return api.post('/questions',
-      { title, content },
-      { headers: { Authorization: `Bearer ${token}` } })
+  postQuestion(title: string, content: string) {
+    return api.post('/questions', { title, content })
   },
+  putQuestion(id: number, title: string, content: string) {
+    return api.put(`/questions/${id}`, { title, content })
+  },
+  deleteQuestion(id: number | undefined) {
+    return api.delete(`/questions/${id}`)
+  }
 }
