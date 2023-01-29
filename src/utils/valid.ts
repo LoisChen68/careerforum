@@ -63,8 +63,6 @@ export function isSignUpValid(
       password: '密碼與確認密碼不符',
       confirmPassword: '密碼與確認密碼不符',
     }
-  } else {
-    props = { ...props, password: '', confirmPassword: '' }
   }
 
   // 驗證是否輸入密碼
@@ -91,10 +89,12 @@ export function isSignUpValid(
         ['password']: '密碼太簡單，請至少 8 碼並包含英文大小寫及特殊符號'
       }
     }
-    if (pwdStrength !== 'Weak' && pwdStrength !== 'Too weak') {
-      props = {
-        ...props,
-        ['password']: ''
+    if (data.password === data.confirmPassword) {
+      if (pwdStrength !== 'Weak' && pwdStrength !== 'Too weak') {
+        props = {
+          ...props,
+          ['password']: ''
+        }
       }
     }
   }
@@ -113,10 +113,12 @@ export function isSignUpValid(
         ['confirmPassword']: '密碼太簡單，請至少 8 碼並包含英文大小寫及特殊符號'
       }
     }
-    if (confirmPwdStrength !== 'Weak' && pwdStrength !== 'Too weak') {
-      props = {
-        ...props,
-        ['confirmPassword']: ''
+    if (data.confirmPassword === data.password) {
+      if (confirmPwdStrength !== 'Weak' && pwdStrength !== 'Too weak') {
+        props = {
+          ...props,
+          ['confirmPassword']: ''
+        }
       }
     }
   }
