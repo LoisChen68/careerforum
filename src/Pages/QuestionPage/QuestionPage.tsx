@@ -223,7 +223,14 @@ export default function QuestionPage() {
                             <p className={style['role']}>{'助教'}</p>
                           )}
                         </div>
-                        <p>{dayFormat(question.createdAt)}</p>
+                        {question.createdAt !== question.updatedAt ? (
+                          <>
+                            <span>{dayFormat(question.updatedAt)}</span>
+                            <span className={style['edited']}> (已編輯)</span>
+                          </>
+                        ) :
+                          <span>{dayFormat(question.createdAt)}</span>
+                        }
                       </div>
                     </div>
                     <div className={style['menu-close-button']}>
@@ -287,7 +294,8 @@ export default function QuestionPage() {
                       userAvatar={answer.User.avatar}
                       userRole={answer.User.role}
                       userName={answer.User.name}
-                      answerDate={answer.createdAt}
+                      answerCreateDate={answer.createdAt}
+                      answerUpdateDate={answer.updatedAt}
                       answerId={answer.id}
                       answer={answer.content}
                     />

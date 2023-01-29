@@ -17,7 +17,8 @@ interface questionProps {
   userRole: string
   userId: number
   userAvatar: string
-  questionDate: string
+  questionCreateDate: string
+  questionUpdateDate: string
   questionTitle: string
   question: string
   questionId: number
@@ -182,13 +183,20 @@ export default function Question(props: questionProps) {
               <p className={style['user-role']}>{'助教'}</p>
             )}
           </div>
-          <p className={style['user-post-date']}>{dayFormat(props.questionDate)}</p>
+          {props.questionCreateDate !== props.questionUpdateDate ? (
+            <div>
+              <span className={style['user-post-date']}>{dayFormat(props.questionUpdateDate)}</span>
+              <span className={style['edited']}> (已編輯)</span>
+            </div>
+          ) :
+            <span className={style['user-post-date']}>{dayFormat(props.questionCreateDate)}</span>
+          }
         </div>
       </div>
       <div className={style['content']}>{props.question}</div>
       <div className={style['hash-tags']}>{hashTag}</div>
       <Link to={`/careerforum/${props.questionId}`}>
-        <p className={style['answer-count']}>{`${props.answerCount} 則回答`}</p>
+        <span className={style['answer-count']}>{`${props.answerCount} 則回答`}</span>
       </Link>
     </div>
   )

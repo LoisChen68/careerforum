@@ -89,6 +89,10 @@
   border-radius: 5px;
 }
 
+.edited {
+  @include func.font-setting(0.75rem, 400, color.$gray-font);
+}
+
 .menu-close-button {
   position: relative;
   display: flex;

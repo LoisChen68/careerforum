@@ -19,7 +19,8 @@ interface answerProps {
   userAvatar: string
   userName: string
   userRole: string
-  answerDate: string
+  answerCreateDate: string
+  answerUpdateDate: string
   answerId: number
   answer: string
 }
@@ -90,8 +91,16 @@ export default function Answer(props: answerProps) {
               <p className={style['user-role']}>{'助教'}</p>
             )}
             <div>
-              <p className={style['user-post-date']}>{dayFormat(props.answerDate)
-              }</p>
+              {props.answerCreateDate !== props.answerUpdateDate ? (
+                <div>
+                  <span className={style['user-post-date']}>{dayFormat(props.answerUpdateDate)}</span>
+                  <span className={style['edited']}> (已編輯)</span>
+                </div>
+              ) :
+                <p className={style['user-post-date']}>{dayFormat(props.answerCreateDate)
+                }</p>
+              }
+
             </div>
           </div>
           {getUser?.user.id === props.userId && (

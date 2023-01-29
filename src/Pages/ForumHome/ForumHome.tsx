@@ -233,7 +233,8 @@ function DiscussionThread() {
                 userRole={question.User.role}
                 userId={question.User.id}
                 userAvatar={question.User.avatar}
-                questionDate={question.createdAt}
+                questionCreateDate={question.createdAt}
+                questionUpdateDate={question.updatedAt}
                 questionTitle={question.title}
                 question={question.content}
                 questionUserId={question.User.id}
@@ -258,7 +259,8 @@ function DiscussionThread() {
                   userName={question.Answers[0]?.User.name}
                   userRole={question.Answers[0]?.User.role}
                   userAvatar={question.Answers[0]?.User.avatar}
-                  answerDate={question.Answers[0]?.createdAt}
+                  answerCreateDate={question.Answers[0]?.createdAt}
+                  answerUpdateDate={question.Answers[0]?.updatedAt}
                   answerId={question.Answers[0]?.id}
                   answer={question.Answers[0]?.content}
                 />

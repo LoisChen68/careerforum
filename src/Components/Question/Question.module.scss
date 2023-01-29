@@ -176,3 +176,7 @@
 .answer-count {
   @include func.font-setting(0.75rem, 400, color.$gray-font);
 }
+
+.edited {
+  @include func.font-setting(0.75rem, 400, color.$gray-font);
+}
