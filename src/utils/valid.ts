@@ -82,13 +82,13 @@ export function isSignUpValid(
     if (pwdStrength === 'Too weak') {
       props = {
         ...props,
-        ['password']: '密碼太簡單，請至少 6 碼並包含英文大小寫及特殊符號'
+        ['password']: '密碼太簡單，請至少 8 碼並包含英文大小寫及特殊符號'
       }
     }
     if (pwdStrength === 'Weak') {
       props = {
         ...props,
-        ['password']: '密碼太簡單，請至少 6 碼並包含英文大小寫及特殊符號'
+        ['password']: '密碼太簡單，請至少 8 碼並包含英文大小寫及特殊符號'
       }
     }
     if (pwdStrength !== 'Weak' && pwdStrength !== 'Too weak') {
@@ -104,13 +104,13 @@ export function isSignUpValid(
     if (confirmPwdStrength === 'Too weak') {
       props = {
         ...props,
-        ['confirmPassword']: '密碼太簡單，請至少 6 碼並包含英文大小寫及特殊符號'
+        ['confirmPassword']: '密碼太簡單，請至少 8 碼並包含英文大小寫及特殊符號'
       }
     }
     if (confirmPwdStrength === 'Weak') {
       props = {
         ...props,
-        ['confirmPassword']: '密碼太簡單，請至少 6 碼並包含英文大小寫及特殊符號'
+        ['confirmPassword']: '密碼太簡單，請至少 8 碼並包含英文大小寫及特殊符號'
       }
     }
     if (confirmPwdStrength !== 'Weak' && pwdStrength !== 'Too weak') {
@@ -204,13 +204,13 @@ export function signUpValueValid(
       if (pwdStrength === 'Too weak') {
         props = {
           ...props,
-          ['password']: '密碼太簡單，請至少 6 碼並包含英文大小寫及特殊符號'
+          ['password']: '密碼太簡單，請至少 8 碼並包含英文大小寫及特殊符號'
         }
       }
       if (pwdStrength === 'Weak') {
         props = {
           ...props,
-          ['password']: '密碼太簡單，請至少 6 碼並包含英文大小寫及特殊符號'
+          ['password']: '密碼太簡單，請至少 8 碼並包含英文大小寫及特殊符號'
         }
       }
       if (pwdStrength !== 'Weak' && pwdStrength !== 'Too weak') {
@@ -234,15 +234,15 @@ export function signUpValueValid(
         if (pwdStrength === 'Too weak') {
           props = {
             ...props,
-            ['password']: '密碼太簡單，請至少 6 碼並包含英文大小寫及特殊符號',
-            ['confirmPassword']: '密碼太簡單，請至少 6 碼並包含英文大小寫及特殊符號'
+            ['password']: '密碼太簡單，請至少 8 碼並包含英文大小寫及特殊符號',
+            ['confirmPassword']: '密碼太簡單，請至少 8 碼並包含英文大小寫及特殊符號'
           }
         }
         if (pwdStrength === 'Weak') {
           props = {
             ...props,
-            ['password']: '密碼太簡單，請至少 6 碼並包含英文大小寫及特殊符號',
-            ['confirmPassword']: '密碼太簡單，請至少 6 碼並包含英文大小寫及特殊符號'
+            ['password']: '密碼太簡單，請至少 8 碼並包含英文大小寫及特殊符號',
+            ['confirmPassword']: '密碼太簡單，請至少 8 碼並包含英文大小寫及特殊符號'
           }
         }
         if (pwdStrength !== 'Weak' && pwdStrength !== 'Too weak') {
@@ -283,13 +283,13 @@ export function signUpValueValid(
       if (pwdStrength === 'Too weak') {
         props = {
           ...props,
-          ['confirmPassword']: '密碼太簡單，請至少 6 碼並包含英文大小寫及特殊符號'
+          ['confirmPassword']: '密碼太簡單，請至少 8 碼並包含英文大小寫及特殊符號'
         }
       }
       if (pwdStrength === 'Weak') {
         props = {
           ...props,
-          ['confirmPassword']: '密碼太簡單，請至少 6 碼並包含英文大小寫及特殊符號'
+          ['confirmPassword']: '密碼太簡單，請至少 8 碼並包含英文大小寫及特殊符號'
         }
       }
       if (pwdStrength !== 'Weak' && pwdStrength !== 'Too weak') {
@@ -313,15 +313,15 @@ export function signUpValueValid(
         if (pwdStrength === 'Too weak') {
           props = {
             ...props,
-            ['password']: '密碼太簡單，請至少 6 碼並包含英文大小寫及特殊符號',
-            ['confirmPassword']: '密碼太簡單，請至少 6 碼並包含英文大小寫及特殊符號'
+            ['password']: '密碼太簡單，請至少 8 碼並包含英文大小寫及特殊符號',
+            ['confirmPassword']: '密碼太簡單，請至少 8 碼並包含英文大小寫及特殊符號'
           }
         }
         if (pwdStrength === 'Weak') {
           props = {
             ...props,
-            ['password']: '密碼太簡單，請至少 6 碼並包含英文大小寫及特殊符號',
-            ['confirmPassword']: '密碼太簡單，請至少 6 碼並包含英文大小寫及特殊符號'
+            ['password']: '密碼太簡單，請至少 8 碼並包含英文大小寫及特殊符號',
+            ['confirmPassword']: '密碼太簡單，請至少 8 碼並包含英文大小寫及特殊符號'
           }
         }
         if (pwdStrength !== 'Weak' && pwdStrength !== 'Too weak') {
@@ -418,19 +418,20 @@ export function isPasswordValue(
   confirmPassword: string
 ) {
   const pwdStrength = passwordStrength(passwordValue).value
+  console.log(pwdStrength)
   //若密碼欄有值時
   if (passwordValue) {
 
     if (pwdStrength === 'Too weak') {
       props = {
         ...props,
-        password: '密碼太簡單，請至少 6 碼並包含英文大小寫及特殊符號'
+        password: '密碼太簡單，請至少 8 碼並包含英文大小寫及特殊符號'
       }
     }
     if (pwdStrength === 'Weak') {
       props = {
         ...props,
-        password: '密碼太簡單，請至少 6 碼並包含英文大小寫及特殊符號'
+        password: '密碼太簡單，請至少 8 碼並包含英文大小寫及特殊符號'
       }
     }
     if (pwdStrength !== 'Weak' && pwdStrength !== 'Too weak') {
@@ -454,15 +455,15 @@ export function isPasswordValue(
       if (pwdStrength === 'Too weak') {
         props = {
           ...props,
-          password: '密碼太簡單，請至少 6 碼並包含英文大小寫及特殊符號',
-          confirmPassword: '密碼太簡單，請至少 6 碼並包含英文大小寫及特殊符號'
+          password: '密碼太簡單，請至少 8 碼並包含英文大小寫及特殊符號',
+          confirmPassword: '密碼太簡單，請至少 8 碼並包含英文大小寫及特殊符號'
         }
       }
       if (pwdStrength === 'Weak') {
         props = {
           ...props,
-          password: '密碼太簡單，請至少 6 碼並包含英文大小寫及特殊符號',
-          confirmPassword: '密碼太簡單，請至少 6 碼並包含英文大小寫及特殊符號'
+          password: '密碼太簡單，請至少 8 碼並包含英文大小寫及特殊符號',
+          confirmPassword: '密碼太簡單，請至少 8 碼並包含英文大小寫及特殊符號'
         }
       }
       if (pwdStrength !== 'Weak' && pwdStrength !== 'Too weak') {
@@ -506,13 +507,13 @@ export function isConfirmPasswordValue(
     if (confirmPasswordStrength === 'Too weak') {
       props = {
         ...props,
-        confirmPassword: '密碼太簡單，請至少 6 碼並包含英文大小寫及特殊符號'
+        confirmPassword: '密碼太簡單，請至少 8 碼並包含英文大小寫及特殊符號'
       }
     }
     if (confirmPasswordStrength === 'Weak') {
       props = {
         ...props,
-        confirmPassword: '密碼太簡單，請至少 6 碼並包含英文大小寫及特殊符號'
+        confirmPassword: '密碼太簡單，請至少 8 碼並包含英文大小寫及特殊符號'
       }
     }
     if (confirmPasswordStrength !== 'Weak' && confirmPasswordStrength !== 'Too weak') {
@@ -536,15 +537,15 @@ export function isConfirmPasswordValue(
       if (confirmPasswordStrength === 'Too weak') {
         props = {
           ...props,
-          password: '密碼太簡單，請至少 6 碼並包含英文大小寫及特殊符號',
-          confirmPassword: '密碼太簡單，請至少 6 碼並包含英文大小寫及特殊符號'
+          password: '密碼太簡單，請至少 8 碼並包含英文大小寫及特殊符號',
+          confirmPassword: '密碼太簡單，請至少 8 碼並包含英文大小寫及特殊符號'
         }
       }
       if (confirmPasswordStrength === 'Weak') {
         props = {
           ...props,
-          password: '密碼太簡單，請至少 6 碼並包含英文大小寫及特殊符號',
-          confirmPassword: '密碼太簡單，請至少 6 碼並包含英文大小寫及特殊符號'
+          password: '密碼太簡單，請至少 8 碼並包含英文大小寫及特殊符號',
+          confirmPassword: '密碼太簡單，請至少 8 碼並包含英文大小寫及特殊符號'
         }
       }
       if (confirmPasswordStrength !== 'Weak' && confirmPasswordStrength !== 'Too weak') {
