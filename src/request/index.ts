@@ -1,9 +1,10 @@
 import axios, { AxiosRequestConfig } from 'axios'
 
 const baseURL = 'http://localhost:3000/api/v1'
+const awsURL = process.env.REACT_APP_AWS_URL
 
 export const api = axios.create({
-  baseURL: baseURL,
+  baseURL: awsURL,
 })
 
 // 發 req 前預先會做的事情

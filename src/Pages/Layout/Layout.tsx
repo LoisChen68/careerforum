@@ -274,6 +274,7 @@ export default function Layout() {
       password: '',
       confirmPassword: '',
     })
+    window.scrollTo(0, 0)
   }
 
   // 按下 Header 或 Login 表單中的 註冊
@@ -285,6 +286,7 @@ export default function Layout() {
       password: '',
       confirmPassword: '',
     })
+    window.scrollTo(0, 0)
   }
 
   // 按下登出
