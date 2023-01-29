@@ -100,6 +100,9 @@ export default function UserSetting() {
 
     if (
       form.name.length > 20 ||
+      form.name.includes(' ') ||
+      form.password.includes(' ') ||
+      form.confirmPassword.includes(' ') ||
       pwdStrength === 'Too weak' ||
       pwdStrength === 'Weak' ||
       confirmPwdStrength === 'Too weak' ||

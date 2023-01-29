@@ -399,14 +399,16 @@ interface settingData {
 }
 
 export function isNameValue(props: settingData, value: string) {
-  if (!value.trim()) {
+  if (value.includes(' ')) {
+    props = { ...props, name: '不得含有空白' }
+  }
+  if (!value) {
     props = { ...props, name: '欄位不得為空' }
-  } else {
-    props = { ...props, name: '' }
   }
   if (value.length > 20) {
     props = { ...props, name: 'Name 長度不得超過20字' }
-  } else {
+  }
+  if (value && value.length <= 20 && !value.includes(' ')) {
     props = { ...props, name: '' }
   }
   return props
@@ -418,7 +420,7 @@ export function isPasswordValue(
   confirmPassword: string
 ) {
   const pwdStrength = passwordStrength(passwordValue).value
-  console.log(pwdStrength)
+
   //若密碼欄有值時
   if (passwordValue) {
 
@@ -434,15 +436,23 @@ export function isPasswordValue(
         password: '密碼太簡單，請至少 8 碼並包含英文大小寫及特殊符號'
       }
     }
-    if (pwdStrength !== 'Weak' && pwdStrength !== 'Too weak') {
+    if (pwdStrength !== 'Weak' && pwdStrength !== 'Too weak' && !passwordValue.includes(' ')) {
       props = {
         ...props,
         password: ''
       }
     }
 
+    // 密碼中不得含有空白
+    if (passwordValue.includes(' ')) {
+      props = {
+        ...props,
+        password: '不得含有空白',
+      }
+    }
+
     // 密碼與確認密碼不符
-    if (confirmPassword && passwordValue !== confirmPassword) {
+    if (confirmPassword && passwordValue !== confirmPassword && !passwordValue.includes(' ')) {
       props = {
         ...props,
         password: '密碼與確認密碼不符',
@@ -466,7 +476,7 @@ export function isPasswordValue(
           confirmPassword: '密碼太簡單，請至少 8 碼並包含英文大小寫及特殊符號'
         }
       }
-      if (pwdStrength !== 'Weak' && pwdStrength !== 'Too weak') {
+      if (pwdStrength !== 'Weak' && pwdStrength !== 'Too weak' && !passwordValue.includes(' ')) {
         props = {
           ...props,
           password: '',
@@ -516,15 +526,23 @@ export function isConfirmPasswordValue(
         confirmPassword: '密碼太簡單，請至少 8 碼並包含英文大小寫及特殊符號'
       }
     }
-    if (confirmPasswordStrength !== 'Weak' && confirmPasswordStrength !== 'Too weak') {
+    if (confirmPasswordStrength !== 'Weak' && confirmPasswordStrength !== 'Too weak' && !confirmPasswordValue.includes(' ')) {
       props = {
         ...props,
         confirmPassword: ''
       }
     }
 
+    // 確認密碼中不得含有空白
+    if (confirmPasswordValue.includes(' ')) {
+      props = {
+        ...props,
+        confirmPassword: '不得含有空白',
+      }
+    }
+
     // 若密碼有值且確認密碼與密碼不符
-    if (password && confirmPasswordValue !== password) {
+    if (password && confirmPasswordValue !== password && !confirmPasswordValue.includes(' ')) {
       props = {
         ...props,
         password: '密碼與確認密碼不符',
@@ -548,7 +566,7 @@ export function isConfirmPasswordValue(
           confirmPassword: '密碼太簡單，請至少 8 碼並包含英文大小寫及特殊符號'
         }
       }
-      if (confirmPasswordStrength !== 'Weak' && confirmPasswordStrength !== 'Too weak') {
+      if (confirmPasswordStrength !== 'Weak' && confirmPasswordStrength !== 'Too weak' && !confirmPasswordValue.includes(' ')) {
         props = {
           ...props,
           password: '',
