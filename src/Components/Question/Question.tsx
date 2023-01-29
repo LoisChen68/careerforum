@@ -10,13 +10,15 @@ import Backdrop from '../../UIComponents/Backdrop/Backdrop'
 import { useRender } from '../../Contexts/RenderContext'
 import { toast } from 'react-toastify'
 import { dayFormat } from '../../utils/dayFormat'
+import { useHistory } from '../../utils/cookies'
 
 interface questionProps {
   userName: string
   userRole: string
   userId: number
   userAvatar: string
-  questionDate: string
+  questionCreateDate: string
+  questionUpdateDate: string
   questionTitle: string
   question: string
   questionId: number
@@ -35,9 +37,11 @@ interface value {
 export default function Question(props: questionProps) {
   const render = useRender()
   const getUser = useGetUser()
+  const { removeHistory } = useHistory()
   const setModalStatus = useModalStatus()
   const checkboxRef = useRef<HTMLInputElement>(null)
   const [alert, setAlert] = useState(false)
+  const [submitLoad, setSubmitLoad] = useState(false)
   const questionId = localStorage.getItem('questionId')
   const origin = window.location.origin
 
@@ -63,11 +67,11 @@ export default function Question(props: questionProps) {
   }
 
   function handleOnSure() {
+    setSubmitLoad(true)
     questionAPI
       .deleteQuestion(Number(questionId))
-      .then(() => {
-        setAlert(false)
-        render?.handleRerender(true)
+      .then((res) => {
+        const question = res.data.question
         toast.success('刪除成功', {
           position: 'top-right',
           autoClose: 3000,
@@ -78,6 +82,10 @@ export default function Question(props: questionProps) {
           progress: undefined,
           theme: 'light',
         })
+        setAlert(false)
+        setSubmitLoad(false)
+        render?.handleRerender(true)
+        removeHistory(question.id)
       })
       .catch(err => console.log(err))
   }
@@ -140,7 +148,11 @@ export default function Question(props: questionProps) {
                   <button className={style['btn-cancel']} onClick={handleOnCancel}>
                     取消
                   </button>
-                  <button className={style['btn-sure']} onClick={handleOnSure}>
+                  <button
+                    className={style['btn-sure']}
+                    onClick={handleOnSure}
+                    disabled={submitLoad}
+                  >
                     確定
                   </button>
                 </div>
@@ -171,13 +183,20 @@ export default function Question(props: questionProps) {
               <p className={style['user-role']}>{'助教'}</p>
             )}
           </div>
-          <p className={style['user-post-date']}>{dayFormat(props.questionDate)}</p>
+          {props.questionCreateDate !== props.questionUpdateDate ? (
+            <div>
+              <span className={style['user-post-date']}>{dayFormat(props.questionUpdateDate)}</span>
+              <span className={style['edited']}> (已編輯)</span>
+            </div>
+          ) :
+            <span className={style['user-post-date']}>{dayFormat(props.questionCreateDate)}</span>
+          }
         </div>
       </div>
       <div className={style['content']}>{props.question}</div>
       <div className={style['hash-tags']}>{hashTag}</div>
       <Link to={`/careerforum/${props.questionId}`}>
-        <p className={style['answer-count']}>{`${props.answerCount} 則回答`}</p>
+        <span className={style['answer-count']}>{`${props.answerCount} 則回答`}</span>
       </Link>
     </div>
   )

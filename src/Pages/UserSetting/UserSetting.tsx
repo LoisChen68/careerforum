@@ -11,6 +11,7 @@ import { useRender } from '../../Contexts/RenderContext'
 import { toast } from 'react-toastify'
 import { isConfirmPasswordValue, isNameValue, isPasswordValue } from '../../utils/valid'
 import { passwordStrength } from 'check-password-strength'
+import { useHistory } from '../../utils/cookies'
 
 const formData = {
   avatar: '',
@@ -29,6 +30,7 @@ export default function UserSetting() {
   const render = useRender()
   const getUser = useGetUser()
   const navigate = useNavigate()
+  const { modifyHistoryAvatar } = useHistory()
   const [form, setForm] = useState(formData)
   const [errorMessage, setErrorMessage] = useState(formData)
   const [disable, setDisable] = useState(false)
@@ -37,13 +39,15 @@ export default function UserSetting() {
   useEffect(() => {
     userAPI
       .getCurrentUser()
-      .then(res =>
+      .then(res => {
+        const user = res.data.user
         setForm({
           ...form,
-          avatar: res.data.avatar,
-          role: res.data.role,
-          name: res.data.name
-        }))
+          avatar: user.avatar,
+          role: user.role,
+          name: user.name
+        })
+      })
       .catch(err => console.log(err))
   }, [])
 
@@ -96,6 +100,9 @@ export default function UserSetting() {
 
     if (
       form.name.length > 20 ||
+      form.name.includes(' ') ||
+      form.password.includes(' ') ||
+      form.confirmPassword.includes(' ') ||
       pwdStrength === 'Too weak' ||
       pwdStrength === 'Weak' ||
       confirmPwdStrength === 'Too weak' ||
@@ -109,7 +116,8 @@ export default function UserSetting() {
       const bodyFormData = new FormData(e.target as HTMLFormElement)
       userAPI
         .putUser(userId, bodyFormData)
-        .then(() => {
+        .then(res => {
+          const user = res.data.user
           toast.success('成功修改個人資料', {
             position: 'top-right',
             autoClose: 3000,
@@ -122,6 +130,7 @@ export default function UserSetting() {
           })
           setDisable(false)
           render?.handleRerender(true)
+          modifyHistoryAvatar(user.id, user.avatar)
           navigate(`/careerforum/users/${userId}`)
         })
         .catch(err => console.log(err))
@@ -145,35 +154,57 @@ export default function UserSetting() {
             id="avatar"
             type="file"
             name="avatar"
-            accept="image/*"
+            accept=".jpg,.png"
             onChange={handleAvatarFileChange} />
-          <Selector
-            htmlFor="role"
-            label="Role"
-            id="role"
-            name="role"
-            value={options}
-            selectedValue={form.role}
-            errorMessage={errorMessage.role}
-            required={true}
-            onChange={handleRoleChange}
-          />
+          <div>
+            <label htmlFor='role'>Role</label>
+            {form.role === 'TA' && (
+              <Selector
+                htmlFor="role"
+                label="Role"
+                id="role"
+                name="role"
+                value={[{ value: 'TA', name: '助教', disable: false }]}
+                selectedValue={'TA'}
+                errorMessage={errorMessage.role}
+                required={true}
+                onChange={handleRoleChange}
+              />
+            )}
+            {form.role !== 'TA' && (
+              <Selector
+                htmlFor="role"
+                label="Role"
+                id="role"
+                name="role"
+                value={options}
+                selectedValue={form.role}
+                errorMessage={errorMessage.role}
+                required={true}
+                onChange={handleRoleChange}
+              />
+            )}
+          </div>
           <div className={style['user-email']}>
             <label>Email</label>
             <p>{getUser?.user?.email}</p>
           </div>
-          <Input
-            htmlFor="name"
-            label="Name"
-            id="name"
-            name="name"
-            type="text"
-            placeholder=" "
-            value={form.name}
-            required={true}
-            errorMessage={errorMessage.name}
-            onChange={handleInputChange}
-          />
+          <div>
+            <Input
+              htmlFor="name"
+              label='Name'
+              id="name"
+              name="name"
+              type="text"
+              placeholder=" "
+              value={form.name}
+              maxLength={20}
+              required={true}
+              errorMessage={errorMessage.name}
+              onChange={handleInputChange}
+            />
+            <span className={style['name-length-number']}>{form.name.length}/20</span>
+          </div>
           <Input
             htmlFor="password"
             label="Password"

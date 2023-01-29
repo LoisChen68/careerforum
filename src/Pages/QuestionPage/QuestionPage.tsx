@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import Answer from '../../Components/Answer/Answer'
 import UserAvatar from '../../UIComponents/UserAvatar/UserAvatar'
 import style from './QuestionPage.module.scss'
@@ -13,6 +13,11 @@ import { useRender } from '../../Contexts/RenderContext'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import ButtonLoader from '../../UIComponents/ButtonLoader/ButtonLoader'
 import { dayFormat } from '../../utils/dayFormat'
+import { BiDotsVerticalRounded } from 'react-icons/bi'
+import { useGetUser } from '../../Contexts/UserContext'
+import { toast } from 'react-toastify'
+import Backdrop from '../../UIComponents/Backdrop/Backdrop'
+import { useHistory } from '../../utils/cookies'
 
 const questionData = {
   id: 0,
@@ -47,13 +52,18 @@ interface user {
 }
 
 export default function QuestionPage() {
-  const setModalStatus = useModalStatus()
   const param = useParams()
   const render = useRender()
+  const getUser = useGetUser()
+  const setModalStatus = useModalStatus()
+  const { removeHistory } = useHistory()
+  const checkboxRef = useRef<HTMLInputElement>(null)
   const [page, setPage] = useState(2)
   const [limit, setLimit] = useState(10)
   const [loading, setLoading] = useState(true)
   const [hasMore, setHasMore] = useState(true)
+  const [alert, setAlert] = useState(false)
+  const [submitLoad, setSubmitLoad] = useState(false)
   const [answers, setAnswers] = useState([])
   const [answerStatus, setAnswerStatus] = useState('')
   const [question, setQuestion] = useState(questionData)
@@ -65,7 +75,7 @@ export default function QuestionPage() {
         .getQuestion(Number(param.id))
         .then((res) => {
           setLoading(false)
-          setQuestion(res.data)
+          setQuestion(res.data.question)
         })
         .catch((err) => console.log(err))
     }
@@ -108,10 +118,63 @@ export default function QuestionPage() {
       .catch((err) => console.error(err))
   }
 
+  function handleEditClick(id: number) {
+    setModalStatus?.handleSetModal('editAsk')
+    localStorage.setItem('questionId', id.toString())
+  }
+
+  function handleDeleteClick(id: number) {
+    setAlert(true)
+    localStorage.setItem('questionId', id.toString())
+  }
+
+  function handleOnSure() {
+    setSubmitLoad(true)
+    questionAPI
+      .deleteQuestion(Number(question.id))
+      .then((res) => {
+        const question = res.data.question
+        toast.success('刪除成功', {
+          position: 'top-right',
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+          theme: 'light',
+        })
+        setAlert(false)
+        setSubmitLoad(false)
+        render?.handleRerender(true)
+        removeHistory(question.id)
+        setModalStatus?.handleSetModal('initial')
+      })
+      .catch(err => console.log(err))
+  }
+
+
+  function handleOnCancel() {
+    setAlert(false)
+  }
+
   function close() {
     setModalStatus?.handleSetModal('initial')
   }
 
+  function copyURL() {
+    navigator.clipboard.writeText(`${origin}/careerforum/${question.id}`)
+    toast.success('複製分享網址成功', {
+      position: 'top-right',
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: false,
+      draggable: true,
+      progress: undefined,
+      theme: 'light',
+    })
+  }
 
 
   return (
@@ -160,21 +223,56 @@ export default function QuestionPage() {
                             <p className={style['role']}>{'助教'}</p>
                           )}
                         </div>
-                        <p>{dayFormat(question.createdAt)}</p>
+                        {question.createdAt !== question.updatedAt ? (
+                          <>
+                            <span>{dayFormat(question.updatedAt)}</span>
+                            <span className={style['edited']}> (已編輯)</span>
+                          </>
+                        ) :
+                          <span>{dayFormat(question.createdAt)}</span>
+                        }
                       </div>
                     </div>
-                    <Link to='/careerforum/home'>
-                      <Button
-                        type="button"
-                        style={'button-close-question'}
-                        onClick={close}
-                        disabled={false}
-                      >
-                        <p className={style['icon']} role="close">
-                          <HiOutlineX />
-                        </p>
-                      </Button>
-                    </Link>
+                    <div className={style['menu-close-button']}>
+                      <label htmlFor={'dot-icon'}>
+                        <p><BiDotsVerticalRounded /></p>
+                      </label>
+                      <input
+                        ref={checkboxRef}
+                        id={'dot-icon'}
+                        type="checkbox"
+                        className={style['menu-toggle']}
+                      />
+                      <div className={style['menu']} onClick={() => checkboxRef.current && (checkboxRef.current.checked = false)}>
+                        <ul className={style['menu-list']}>
+                          {getUser?.user?.id === question.User.id && (
+                            <>
+                              <li className={style['menu-item']}>
+                                <p onClick={() => handleEditClick(question.id)}>編輯</p>
+                              </li>
+                              <li className={style['menu-item']}>
+                                <p onClick={() => handleDeleteClick(question.id)}>刪除</p>
+                              </li>
+                            </>
+                          )}
+                          <li className={style['menu-item']}>
+                            <p onClick={copyURL}>分享</p>
+                          </li>
+                        </ul>
+                      </div>
+                      <Link to='/careerforum/home'>
+                        <Button
+                          type="button"
+                          style={'button-close-question'}
+                          onClick={close}
+                          disabled={false}
+                        >
+                          <p className={style['icon']} role="close">
+                            <HiOutlineX />
+                          </p>
+                        </Button>
+                      </Link>
+                    </div>
                   </div>
                   <h3 className={style['title']}>
                     {question.title}
@@ -196,11 +294,31 @@ export default function QuestionPage() {
                       userAvatar={answer.User.avatar}
                       userRole={answer.User.role}
                       userName={answer.User.name}
-                      answerDate={answer.createdAt}
+                      answerCreateDate={answer.createdAt}
+                      answerUpdateDate={answer.updatedAt}
                       answerId={answer.id}
                       answer={answer.content}
                     />
                   ))}
+                  {alert && (
+                    <>
+                      <Backdrop onConfirm={handleOnCancel} />
+                      <div className={style['alert-container']}>
+                        <h3>{`確定要刪除 ${question.title} 這則問題嗎？`}</h3>
+                        <div className={style['buttons']}>
+                          <button className={style['btn-cancel']} onClick={handleOnCancel}>
+                            取消
+                          </button>
+                          <button
+                            className={style['btn-sure']}
+                            onClick={handleOnSure}
+                            disabled={submitLoad}>
+                            確定
+                          </button>
+                        </div>
+                      </div>
+                    </>
+                  )}
                 </div>
               </div>
             </div>

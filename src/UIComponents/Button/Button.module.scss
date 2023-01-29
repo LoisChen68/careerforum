@@ -126,6 +126,7 @@
 
 .button-ask-submit {
   @extend %button;
+  margin-top: 5px;
   width: 50%;
   height: 40px;
   background-color: #2771a5;

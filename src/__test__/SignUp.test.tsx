@@ -113,8 +113,8 @@ test('Should display the "密碼與確認密碼不相符" when the password does
   const confirmPasswordElement = screen.getByLabelText(/Confirm Password/i)
 
   // 模擬使用者輸入密碼與確認密碼不相符
-  fireEvent.change(passwordInputElement, { target: { value: '123' } })
-  fireEvent.change(confirmPasswordElement, { target: { value: '321' } })
+  fireEvent.change(passwordInputElement, { target: { value: 'As123456!' } })
+  fireEvent.change(confirmPasswordElement, { target: { value: 'As654321!' } })
 
   // 定義註冊表單上送出按鈕及模擬使用者點擊送出
   const signUpSubmitElement = screen.getAllByRole('button', { name: /註冊/i })
@@ -184,8 +184,8 @@ test('Should display "Loading..." and button is disabled when signUp submit.', (
   fireEvent.change(roleSelectorElement, { target: { value: 'test' } })
   fireEvent.change(emailInputElement, { target: { value: 'test@test.com' } })
   fireEvent.change(nameInputElement, { target: { value: 'test' } })
-  fireEvent.change(passwordInputElement, { target: { value: '123' } })
-  fireEvent.change(confirmPasswordElement, { target: { value: '123' } })
+  fireEvent.change(passwordInputElement, { target: { value: 'As123456!' } })
+  fireEvent.change(confirmPasswordElement, { target: { value: 'As123456!' } })
 
   // 定義註冊表單上註冊按鈕及模擬使用者點擊送出
   const signUpSubmitElement = screen.getAllByRole('button', { name: /註冊/i })

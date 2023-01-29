@@ -79,7 +79,7 @@ export default function Layout() {
             progress: undefined,
             theme: 'light',
           })
-          getUser?.logout(true)
+          getUser?.auth(true)
           setModalStatus?.handleSetModal('initial')
           setLoginData({
             ...loginData,
@@ -93,7 +93,9 @@ export default function Layout() {
           getUser?.getUser()
         })
         .catch((err) => {
-          if (err.response.data.title === 'Incorrect email or password') {
+          setSubmit(false)
+          const errStatus = err.response.status
+          if (errStatus === 401) {
             toast.error('Email或密碼錯誤', {
               position: 'top-right',
               autoClose: 3000,
@@ -105,7 +107,7 @@ export default function Layout() {
               theme: 'light',
             })
           }
-          if (err.response.data.title === 'Unapproved user') {
+          if (errStatus === 403) {
             toast.error('尚未通過審核', {
               position: 'top-right',
               autoClose: 3000,
@@ -117,11 +119,7 @@ export default function Layout() {
               theme: 'light',
             })
           }
-          if (
-            err.response.status !== 200 &&
-            err.response.data.title !== 'Incorrect email or password' &&
-            err.response.data.title !== 'Unapproved user'
-          ) {
+          if (errStatus === 500) {
             toast.error('請重新再試', {
               position: 'top-right',
               autoClose: 3000,
@@ -133,13 +131,12 @@ export default function Layout() {
               theme: 'light',
             })
           }
-          setSubmit(false)
         })
     }
   }
 
   //送出註冊表單
-  function handleSingUpSubmit(e: React.MouseEvent) {
+  function handleSignUpSubmit(e: React.MouseEvent) {
     e.preventDefault()
     const pwdStrength = passwordStrength(signUpData.password).value
     const confirmPwdStrength = passwordStrength(signUpData.confirmPassword).value
@@ -184,7 +181,9 @@ export default function Layout() {
           setSignUpData(formData)
         })
         .catch((err) => {
-          if (err.response.data.field_errors.email === 'used') {
+          setSubmit(false)
+          const errStatus = err.response.data.status
+          if (errStatus === '400FD') {
             toast.error('信箱已被註冊', {
               position: 'top-right',
               autoClose: 3000,
@@ -196,10 +195,7 @@ export default function Layout() {
               theme: 'light',
             })
           }
-          if (
-            err.response.status !== 200 &&
-            err.response.data.field_errors.email !== 'used'
-          ) {
+          if (err.response.status === 500) {
             toast.error('請重新再試', {
               position: 'top-right',
               autoClose: 3000,
@@ -211,7 +207,6 @@ export default function Layout() {
               theme: 'light',
             })
           }
-          setSubmit(false)
         })
     }
   }
@@ -237,7 +232,7 @@ export default function Layout() {
   }
 
   // 輸入註冊表單
-  function handleSingUpInputChange(e: React.ChangeEvent<HTMLInputElement>) {
+  function handleSignUpInputChange(e: React.ChangeEvent<HTMLInputElement>) {
     if (e.target.name === 'password') {
       setSignUpData({
         ...signUpData,
@@ -274,23 +269,25 @@ export default function Layout() {
       password: '',
       confirmPassword: '',
     })
+    window.scrollTo(0, 0)
   }
 
   // 按下 Header 或 Login 表單中的 註冊
   function onSignUpClick() {
-    setModalStatus?.handleSetModal('singUp')
+    setModalStatus?.handleSetModal('signUp')
     setErrorMessage(formData)
     setSignUpData({
       ...signUpData,
       password: '',
       confirmPassword: '',
     })
+    window.scrollTo(0, 0)
   }
 
   // 按下登出
   function onLogoutClick() {
     localStorage.removeItem('token')
-    getUser?.logout(false)
+    getUser?.auth(false)
     navigate('/careerforum')
   }
 
@@ -329,19 +326,19 @@ export default function Layout() {
           onConfirm={onLoginConfirm}
           onInputChange={handleLoginInputChange}
           onLoginSubmit={handleLoginSubmit}
-          onSingUpClick={onSignUpClick}
+          onSignUpClick={onSignUpClick}
           email={loginData.email}
           password={loginData.password}
           errorMessage={errorMessage}
           disabled={submit}
         />
       )}
-      {setModalStatus?.modalStatus === 'singUp' && (
+      {setModalStatus?.modalStatus === 'signUp' && (
         <SignUp
           onConfirm={onSignUpConfirm}
           onRoleChange={handleRoleChange}
-          onSingUpSubmit={handleSingUpSubmit}
-          onInputChange={handleSingUpInputChange}
+          onSignUpSubmit={handleSignUpSubmit}
+          onInputChange={handleSignUpInputChange}
           onLoginClick={onLoginClick}
           role={signUpData.role}
           email={signUpData.email}

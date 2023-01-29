@@ -45,6 +45,10 @@
   @include func.font-setting(0.75rem, 400, color.$primary-font);
 }
 
+.edited {
+  @include func.font-setting(0.75rem, 400, color.$gray-font);
+}
+
 .menu-icon {
   p {
     cursor: pointer;

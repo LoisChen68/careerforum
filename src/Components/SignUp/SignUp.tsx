@@ -6,7 +6,7 @@ import style from './SignUp.module.scss'
 
 interface signUpProps {
   onConfirm: (e: React.MouseEvent) => void
-  onSingUpSubmit: (e: React.MouseEvent) => void
+  onSignUpSubmit: (e: React.MouseEvent) => void
   onLoginClick: (e: React.MouseEvent) => void
   onRoleChange: React.ChangeEventHandler<HTMLSelectElement>
   onInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void
@@ -99,7 +99,7 @@ export default function SignUp(props: signUpProps) {
           <Button
             type="submit"
             style="button-submit"
-            onClick={props.onSingUpSubmit}
+            onClick={props.onSignUpSubmit}
             disabled={props.disabled}
           >
             <p>註冊</p>
