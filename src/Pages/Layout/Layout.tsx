@@ -93,7 +93,9 @@ export default function Layout() {
           getUser?.getUser()
         })
         .catch((err) => {
-          if (err.response.data.title === 'Incorrect email or password') {
+          setSubmit(false)
+          const errStatus = err.response.status
+          if (errStatus === 401) {
             toast.error('Email或密碼錯誤', {
               position: 'top-right',
               autoClose: 3000,
@@ -105,7 +107,7 @@ export default function Layout() {
               theme: 'light',
             })
           }
-          if (err.response.data.title === 'Unapproved user') {
+          if (errStatus === 403) {
             toast.error('尚未通過審核', {
               position: 'top-right',
               autoClose: 3000,
@@ -117,11 +119,7 @@ export default function Layout() {
               theme: 'light',
             })
           }
-          if (
-            err.response.status !== 200 &&
-            err.response.data.title !== 'Incorrect email or password' &&
-            err.response.data.title !== 'Unapproved user'
-          ) {
+          if (errStatus === 500) {
             toast.error('請重新再試', {
               position: 'top-right',
               autoClose: 3000,
@@ -133,7 +131,6 @@ export default function Layout() {
               theme: 'light',
             })
           }
-          setSubmit(false)
         })
     }
   }
@@ -184,7 +181,9 @@ export default function Layout() {
           setSignUpData(formData)
         })
         .catch((err) => {
-          if (err.response.data.field_errors.email === 'used') {
+          setSubmit(false)
+          const errStatus = err.response.data.status
+          if (errStatus === '400FD') {
             toast.error('信箱已被註冊', {
               position: 'top-right',
               autoClose: 3000,
@@ -196,10 +195,7 @@ export default function Layout() {
               theme: 'light',
             })
           }
-          if (
-            err.response.status !== 200 &&
-            err.response.data.field_errors.email !== 'used'
-          ) {
+          if (err.response.status === 500) {
             toast.error('請重新再試', {
               position: 'top-right',
               autoClose: 3000,
@@ -211,7 +207,6 @@ export default function Layout() {
               theme: 'light',
             })
           }
-          setSubmit(false)
         })
     }
   }
