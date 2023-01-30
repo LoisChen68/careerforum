@@ -163,11 +163,13 @@
 }
 
 .answer-form {
-  position: relative;
-  right: 4px;
+  padding: 10px 0px;
+  position: fixed;
+  bottom: 0px;
   display: flex;
   gap: 5px;
   width: 90%;
+  background-color: #fff;
   align-items: flex-end;
 }
 
@@ -181,11 +183,13 @@
 
   .question-modal-container {
     width: 90vw;
+    max-width: 1000px;
     height: 90vh;
     border-radius: style.$border-radius-5;
   }
 
   .answer-form {
+    position: relative;
     right: 7px;
     width: 90%;
   }
