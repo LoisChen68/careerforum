@@ -55,18 +55,19 @@ export default function UserProfile() {
             </div>
             <div>
               {getUser?.user.id === Number(param.id) && (
-                <Link to={'/careerforum/users/setting'} >
+                <Link to={'/careerforum/users/setting'}>
                   <Button
                     type="submit"
                     style="user-setting-button"
-                    onClick={(e) => { e }}
+                    onClick={(e) => {
+                      e
+                    }}
                     disabled={false}
                   >
                     <p>編輯個人檔案</p>
                   </Button>
                 </Link>
               )}
-
             </div>
           </div>
         </div>

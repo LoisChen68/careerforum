@@ -139,7 +139,9 @@ export default function Layout() {
   function handleSignUpSubmit(e: React.MouseEvent) {
     e.preventDefault()
     const pwdStrength = passwordStrength(signUpData.password).value
-    const confirmPwdStrength = passwordStrength(signUpData.confirmPassword).value
+    const confirmPwdStrength = passwordStrength(
+      signUpData.confirmPassword
+    ).value
     setErrorMessage(isSignUpValid(errorMessage, signUpData, emailRule))
 
     if (

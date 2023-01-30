@@ -36,7 +36,6 @@ export default function AdminUser() {
   const [usersStatus, setUsersStatus] = useState('')
   const [userIdIsClicked, setUserIdIsClicked] = useState(0)
 
-
   useEffect(() => {
     if (getUser?.user.permissionRole === 'admin') {
       adminAPI
@@ -124,9 +123,13 @@ export default function AdminUser() {
                     <p>{`Email： ${user.email}`}</p>
                     <div className={style['role']}>
                       <p>{`Role： ${user.role}`}</p>
-                      <button className={style['btn']}>TA</button>
-                      <button className={style['btn']}>Student</button>
-                      <button className={style['btn']}>Graduate</button>
+                      <button className={style['btn-displaynone']}>TA</button>
+                      <button className={style['btn-displaynone']}>
+                        Student
+                      </button>
+                      <button className={style['btn-displaynone']}>
+                        Graduate
+                      </button>
                     </div>
                     <div className={style['approvalStatus']}>
                       <p>{`審查狀態：${user.approvalStatus}`}</p>
@@ -155,7 +158,10 @@ export default function AdminUser() {
               <div className={style['alert-container']}>
                 <h3>{`確定要更改使用者狀態為 ${approval}？`}</h3>
                 <div className={style['buttons']}>
-                  <button className={style['btn-cancel']} onClick={handleOnCancel}>
+                  <button
+                    className={style['btn-cancel']}
+                    onClick={handleOnCancel}
+                  >
                     取消
                   </button>
                   <button className={style['btn-sure']} onClick={handleOnSure}>

@@ -9,5 +9,5 @@ export default {
   },
   putUser(id: number | undefined, data: object) {
     return api.put(`/users/${id}`, data)
-  }
+  },
 }
