@@ -2,7 +2,7 @@
 <img src="./public/icon@128.png">
 <h1><b>職涯論壇 Career Forum</b></h1>
 <h3>人生沒有明確的答案，<br/>
-但你可以透過問答探尋自己的職涯方向</h3>
+但你可以透過問答探尋你的職涯方向</h3>
 <br/>
 <h3><a href="https://careerforum-git-main-loischen68.vercel.app/careerforum" target="_blank">前往我們的職涯論壇</a></h3>
 <table>
@@ -164,10 +164,11 @@ npm run start
 ### 後端
 
 ### [AdrieneTZ](https://github.com/AdrieneTZ)
+- 專案發想人之一
+- Github項目創建和分支管理
 - 製作 ERD、API 文檔
 - 共同部署 AWS 雲端伺服器
 - 建立 Answers、Admins 相關路由
-- Github項目創建和分支管理
 - 建立註冊登入功能
 - 與前後端隊友合作，參與專案排程討論共同打造完整論壇專案
 - 隊友代碼審查
