@@ -46,7 +46,7 @@
 }
 
 .second {
-  @include func.font-setting(1rem, 700, style.$primary-color);
+  @include func.font-setting(1.5rem, 700, style.$primary-color);
   margin-top: -2px;
   padding-top: 20px;
   display: flex;
@@ -55,11 +55,18 @@
   justify-content: center;
   width: 100%;
   background-color: rgba(91, 177, 238, 0.4);
+
+
+  .subtitle {
+    @include func.font-setting(1rem, 700, style.$primary-color);
+  }
+
 }
 
-.title {
+.card-title {
   @include func.font-setting(1rem, 700, style.$primary-color);
 }
+
 
 .card-group {
   margin: 20px 0px;
