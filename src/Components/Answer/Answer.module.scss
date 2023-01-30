@@ -124,7 +124,7 @@
   width: 100vw;
   height: 100vh;
   background-color: rgba(88, 88, 88, 0.405);
-  z-index: 20;
+  z-index: 25;
 }
 
 .alert-container {
@@ -136,7 +136,7 @@
   transform: translate(-50%, -50%);
   border-radius: style.$border-radius-5;
   background-color: #fff;
-  z-index: 20;
+  z-index: 25;
 
   h3 {
     text-align: center;

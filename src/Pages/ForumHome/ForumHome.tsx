@@ -39,6 +39,8 @@ export default function ForumHome() {
     const id = param.id
     if (id) {
       setModalStatus?.handleSetModal('questionPage')
+    } else {
+      setModalStatus?.handleSetModal('initial')
     }
   }, [param.id])
 
