@@ -87,7 +87,7 @@ export default function Question(props: questionProps) {
         render?.handleRerender(true)
         removeHistory(question.id)
       })
-      .catch(err => console.log(err))
+      .catch((err) => console.log(err))
   }
 
   function copyURL() {
@@ -108,13 +108,18 @@ export default function Question(props: questionProps) {
     <div className={style['question-container']}>
       <div className={style['title-container']}>
         <Link to={`/careerforum/${props.questionId}`}>
-          <h3 className={style['question-title']} onClick={props.onQuestionClick}>
+          <h3
+            className={style['question-title']}
+            onClick={props.onQuestionClick}
+          >
             {props.title}
           </h3>
         </Link>
         <div>
           <label htmlFor={`dot-icon-question-${props.questionId}`}>
-            <p><BiDotsVerticalRounded /></p>
+            <p>
+              <BiDotsVerticalRounded />
+            </p>
           </label>
           <input
             ref={checkboxRef}
@@ -122,15 +127,24 @@ export default function Question(props: questionProps) {
             type="checkbox"
             className={style['menu-toggle']}
           />
-          <div className={style['menu']} onClick={() => checkboxRef.current && (checkboxRef.current.checked = false)}>
+          <div
+            className={style['menu']}
+            onClick={() =>
+              checkboxRef.current && (checkboxRef.current.checked = false)
+            }
+          >
             <ul className={style['menu-list']}>
               {getUser?.user?.id === props.questionUserId && (
                 <>
                   <li className={style['menu-item']}>
-                    <p onClick={() => handleEditClick(props.questionId)}>編輯</p>
+                    <p onClick={() => handleEditClick(props.questionId)}>
+                      編輯
+                    </p>
                   </li>
                   <li className={style['menu-item']}>
-                    <p onClick={() => handleDeleteClick(props.questionId)}>刪除</p>
+                    <p onClick={() => handleDeleteClick(props.questionId)}>
+                      刪除
+                    </p>
                   </li>
                 </>
               )}
@@ -145,7 +159,10 @@ export default function Question(props: questionProps) {
               <div className={style['alert-container']}>
                 <h3>{`確定要刪除 ${props.questionTitle} 這則問題嗎？`}</h3>
                 <div className={style['buttons']}>
-                  <button className={style['btn-cancel']} onClick={handleOnCancel}>
+                  <button
+                    className={style['btn-cancel']}
+                    onClick={handleOnCancel}
+                  >
                     取消
                   </button>
                   <button
@@ -185,18 +202,24 @@ export default function Question(props: questionProps) {
           </div>
           {props.questionCreateDate !== props.questionUpdateDate ? (
             <div>
-              <span className={style['user-post-date']}>{dayFormat(props.questionUpdateDate)}</span>
+              <span className={style['user-post-date']}>
+                {dayFormat(props.questionUpdateDate)}
+              </span>
               <span className={style['edited']}> (已編輯)</span>
             </div>
-          ) :
-            <span className={style['user-post-date']}>{dayFormat(props.questionCreateDate)}</span>
-          }
+          ) : (
+            <span className={style['user-post-date']}>
+              {dayFormat(props.questionCreateDate)}
+            </span>
+          )}
         </div>
       </div>
       <div className={style['content']}>{props.question}</div>
       <div className={style['hash-tags']}>{hashTag}</div>
       <Link to={`/careerforum/${props.questionId}`}>
-        <span className={style['answer-count']}>{`${props.answerCount} 則回答`}</span>
+        <span
+          className={style['answer-count']}
+        >{`${props.answerCount} 則回答`}</span>
       </Link>
     </div>
   )

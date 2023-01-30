@@ -215,7 +215,6 @@ function DiscussionThread() {
       .catch((err) => console.error(err))
   }
 
-
   return (
     <>
       <InfiniteScroll
@@ -302,11 +301,11 @@ function EditQuestion() {
       setIsLoad(true)
       questionsAPI
         .getQuestion(questionId)
-        .then(res => {
+        .then((res) => {
           setIsLoad(false)
           setQuestion(res.data.question)
         })
-        .catch(err => console.log(err))
+        .catch((err) => console.log(err))
     }
   }, [setModalStatus?.modalStatus])
 
@@ -379,7 +378,8 @@ function EditQuestion() {
               questionId={question.id}
               title={question.title}
               content={question.content}
-              placeholder={'請輸入你的問題...'} />
+              placeholder={'請輸入你的問題...'}
+            />
           </>
         </Modal>
       )}

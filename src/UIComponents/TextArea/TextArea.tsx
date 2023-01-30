@@ -97,7 +97,11 @@ export function TextAreaAnswer(props: textAreaProps) {
       {content && (
         <Button
           type="button"
-          style={content && content !== props.content ? 'button-answer-submit' : 'button-answer-submit-disable'}
+          style={
+            content && content !== props.content
+              ? 'button-answer-submit'
+              : 'button-answer-submit-disable'
+          }
           onClick={onSubmitClick}
           disabled={false}
         >
@@ -162,9 +166,7 @@ export function TextAreaAsk(props: textAreaProps) {
       return setErrorMessage({ ...errorMessage, content: '內容長度超過限制' })
     }
 
-    if (
-      title === props.title && content === props.content
-    ) {
+    if (title === props.title && content === props.content) {
       return
     }
 
@@ -245,7 +247,11 @@ export function TextAreaAsk(props: textAreaProps) {
       <Button
         type="button"
         style={
-          title && content && (title !== props.title || content !== props.content) ? 'button-ask-submit' : 'button-ask-submit-disable'
+          title &&
+          content &&
+          (title !== props.title || content !== props.content)
+            ? 'button-ask-submit'
+            : 'button-ask-submit-disable'
         }
         onClick={onSubmitClick}
         disabled={submitLoad}
