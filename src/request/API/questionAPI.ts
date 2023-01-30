@@ -21,5 +21,5 @@ export default {
   },
   deleteQuestion(id: number | undefined) {
     return api.delete(`/questions/${id}`)
-  }
+  },
 }

@@ -9,7 +9,11 @@ import userAPI from '../../request/API/userAPI'
 import { Link, useNavigate } from 'react-router-dom'
 import { useRender } from '../../Contexts/RenderContext'
 import { toast } from 'react-toastify'
-import { isConfirmPasswordValue, isNameValue, isPasswordValue } from '../../utils/valid'
+import {
+  isConfirmPasswordValue,
+  isNameValue,
+  isPasswordValue,
+} from '../../utils/valid'
 import { passwordStrength } from 'check-password-strength'
 import { useHistory } from '../../utils/cookies'
 
@@ -39,16 +43,16 @@ export default function UserSetting() {
   useEffect(() => {
     userAPI
       .getCurrentUser()
-      .then(res => {
+      .then((res) => {
         const user = res.data.user
         setForm({
           ...form,
           avatar: user.avatar,
           role: user.role,
-          name: user.name
+          name: user.name,
         })
       })
-      .catch(err => console.log(err))
+      .catch((err) => console.log(err))
   }, [])
 
   // 上傳大頭貼
@@ -79,11 +83,15 @@ export default function UserSetting() {
     }
     if (name === 'password') {
       setForm({ ...form, password: value })
-      setErrorMessage(isPasswordValue(errorMessage, value, form.confirmPassword))
+      setErrorMessage(
+        isPasswordValue(errorMessage, value, form.confirmPassword)
+      )
     }
     if (name === 'confirmPassword') {
       setForm({ ...form, confirmPassword: value })
-      setErrorMessage(isConfirmPasswordValue(errorMessage, value, form.password))
+      setErrorMessage(
+        isConfirmPasswordValue(errorMessage, value, form.password)
+      )
     }
   }
 
@@ -94,9 +102,12 @@ export default function UserSetting() {
     const pwdStrength = passwordStrength(form.password).value
     const confirmPwdStrength = passwordStrength(form.confirmPassword).value
     setErrorMessage(isNameValue(errorMessage, form.name))
-    setErrorMessage(isPasswordValue(errorMessage, form.password, form.confirmPassword))
-    setErrorMessage(isConfirmPasswordValue(errorMessage, form.confirmPassword, form.password))
-
+    setErrorMessage(
+      isPasswordValue(errorMessage, form.password, form.confirmPassword)
+    )
+    setErrorMessage(
+      isConfirmPasswordValue(errorMessage, form.confirmPassword, form.password)
+    )
 
     if (
       form.name.length > 20 ||
@@ -107,16 +118,21 @@ export default function UserSetting() {
       pwdStrength === 'Weak' ||
       confirmPwdStrength === 'Too weak' ||
       confirmPwdStrength === 'Weak'
-    ) return
+    )
+      return
 
     setDisable(true)
-    if (form.name && form.name.length <= 20 &&
-      form.password && form.confirmPassword &&
-      form.password === form.confirmPassword) {
+    if (
+      form.name &&
+      form.name.length <= 20 &&
+      form.password &&
+      form.confirmPassword &&
+      form.password === form.confirmPassword
+    ) {
       const bodyFormData = new FormData(e.target as HTMLFormElement)
       userAPI
         .putUser(userId, bodyFormData)
-        .then(res => {
+        .then((res) => {
           const user = res.data.user
           toast.success('成功修改個人資料', {
             position: 'top-right',
@@ -133,16 +149,14 @@ export default function UserSetting() {
           modifyHistoryAvatar(user.id, user.avatar)
           navigate(`/careerforum/users/${userId}`)
         })
-        .catch(err => console.log(err))
+        .catch((err) => console.log(err))
     }
   }
 
   return (
     <div className={`${style['wrapper']} ${style['scrollbar']}`}>
       <div className={style['container']}>
-        <form
-          className={style['form']}
-          onSubmit={handleSubmit}>
+        <form className={style['form']} onSubmit={handleSubmit}>
           <Link to={`/careerForum/users/${getUser?.user?.id}`}>
             <p>返回個人資料</p>
           </Link>
@@ -155,9 +169,10 @@ export default function UserSetting() {
             type="file"
             name="avatar"
             accept=".jpg,.png"
-            onChange={handleAvatarFileChange} />
+            onChange={handleAvatarFileChange}
+          />
           <div>
-            <label htmlFor='role'>Role</label>
+            <label htmlFor="role">Role</label>
             {form.role === 'TA' && (
               <Selector
                 htmlFor="role"
@@ -192,7 +207,7 @@ export default function UserSetting() {
           <div>
             <Input
               htmlFor="name"
-              label='Name'
+              label="Name"
               id="name"
               name="name"
               type="text"
@@ -203,7 +218,9 @@ export default function UserSetting() {
               errorMessage={errorMessage.name}
               onChange={handleInputChange}
             />
-            <span className={style['name-length-number']}>{form.name.length}/20</span>
+            <span className={style['name-length-number']}>
+              {form.name.length}/20
+            </span>
           </div>
           <Input
             htmlFor="password"
@@ -232,7 +249,9 @@ export default function UserSetting() {
           <Button
             type="submit"
             style="button-submit"
-            onClick={(e) => { e }}
+            onClick={(e) => {
+              e
+            }}
             disabled={disable}
           >
             <p>送出</p>

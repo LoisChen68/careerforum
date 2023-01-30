@@ -37,45 +37,47 @@ export function useHistory() {
 
   function removeHistory(questionId: number) {
     let history = cookies.history ? cookies.history : []
-    history = history.filter((historyItem: historyData) => historyItem.questionId !== questionId)
+    history = history.filter(
+      (historyItem: historyData) => historyItem.questionId !== questionId
+    )
     setCookie('history', history, { path: '/', sameSite: 'lax' })
     render?.handleRerender(true)
   }
 
   function modifyHistoryAvatar(userId: number, avatarUrl: string) {
     let history = cookies.history ? cookies.history : []
-    history = history
-      .map((historyItem: historyData) => {
-        if (historyItem.userId === userId) {
-          historyItem.avatarUrl = avatarUrl
-        }
-        return historyItem
-      })
+    history = history.map((historyItem: historyData) => {
+      if (historyItem.userId === userId) {
+        historyItem.avatarUrl = avatarUrl
+      }
+      return historyItem
+    })
     setCookie('history', history, { path: '/', sameSite: 'lax' })
     render?.handleRerender(true)
   }
 
-
-  function modifyHistoryQuestion(questionId: number, questionTitle: string, questionContent: string) {
+  function modifyHistoryQuestion(
+    questionId: number,
+    questionTitle: string,
+    questionContent: string
+  ) {
     let history = cookies.history ? cookies.history : []
-    history = history
-      .map((historyItem: historyData) => {
-        if (historyItem.questionId === questionId) {
-          historyItem.title = questionTitle,
-            historyItem.content = questionContent
-        }
-        return historyItem
-      })
+    history = history.map((historyItem: historyData) => {
+      if (historyItem.questionId === questionId) {
+        ;(historyItem.title = questionTitle),
+          (historyItem.content = questionContent)
+      }
+      return historyItem
+    })
     setCookie('history', history, { path: '/', sameSite: 'lax' })
     render?.handleRerender(true)
   }
-
 
   return {
     addToHistory,
     getHistory,
     removeHistory,
     modifyHistoryAvatar,
-    modifyHistoryQuestion
+    modifyHistoryQuestion,
   }
 }

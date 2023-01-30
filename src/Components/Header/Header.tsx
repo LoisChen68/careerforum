@@ -67,7 +67,12 @@ export default function Header(props: headerProps) {
                 type="checkbox"
                 className={style['menu-toggle']}
               />
-              <div className={style['avatar-menu']} onClick={() => checkboxRef.current && (checkboxRef.current.checked = false)}>
+              <div
+                className={style['avatar-menu']}
+                onClick={() =>
+                  checkboxRef.current && (checkboxRef.current.checked = false)
+                }
+              >
                 <ul className={style['avatar-list']}>
                   {getUser?.user.permissionRole === 'admin' && (
                     <li className={style['avatar-item']}>
@@ -75,7 +80,9 @@ export default function Header(props: headerProps) {
                     </li>
                   )}
                   <li className={style['avatar-item']}>
-                    <Link to={`/careerforum/users/${getUser?.user?.id}`}>個人資料</Link>
+                    <Link to={`/careerforum/users/${getUser?.user?.id}`}>
+                      個人資料
+                    </Link>
                   </li>
                   <li className={style['avatar-item']}>
                     <Link to={'/careerforum/users/setting'}>帳號設定</Link>
