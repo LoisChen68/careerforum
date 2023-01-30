@@ -36,6 +36,10 @@ export function TextAreaAnswer(props: textAreaProps) {
   function onSubmitClick(e: React.MouseEvent) {
     e.preventDefault()
 
+    if (content === props.content) {
+      return
+    }
+
     if (props.answerId) {
       answerAPI
         .putAnswer(props.answerId, content)
@@ -53,7 +57,7 @@ export function TextAreaAnswer(props: textAreaProps) {
           reRender?.handleRerender(true)
           useSetModal?.handleSetModal('initial')
         })
-        .catch(err => console.log(err))
+        .catch((err) => console.log(err))
     }
 
     if (!content.trim()) {
@@ -93,7 +97,7 @@ export function TextAreaAnswer(props: textAreaProps) {
       {content && (
         <Button
           type="button"
-          style="button-answer-submit"
+          style={content && content !== props.content ? 'button-answer-submit' : 'button-answer-submit-disable'}
           onClick={onSubmitClick}
           disabled={false}
         >
@@ -151,8 +155,17 @@ export function TextAreaAsk(props: textAreaProps) {
       setErrorMessage({ ...errorMessage, content: '內容不得為空' })
     }
 
-    if (title.length > titleLengthLimit || content.length > contentLengthLimit) {
+    if (
+      title.length > titleLengthLimit ||
+      content.length > contentLengthLimit
+    ) {
       return setErrorMessage({ ...errorMessage, content: '內容長度超過限制' })
+    }
+
+    if (
+      title === props.title && content === props.content
+    ) {
+      return
     }
 
     // 如果父層有 questionId 則修改問題
@@ -160,7 +173,7 @@ export function TextAreaAsk(props: textAreaProps) {
       setSubmitLoad(true)
       questionAPI
         .putQuestion(props.questionId, title, content)
-        .then(res => {
+        .then((res) => {
           const question = res.data.question
           toast.success('編輯成功', {
             position: 'top-right',
@@ -177,7 +190,7 @@ export function TextAreaAsk(props: textAreaProps) {
           useSetModal?.handleSetModal('initial')
           modifyHistoryQuestion(question.id, question.title, question.content)
         })
-        .catch(err => console.log(err))
+        .catch((err) => console.log(err))
     }
     // 新增問題
     if (!props.questionId && title && content) {
@@ -226,15 +239,13 @@ export function TextAreaAsk(props: textAreaProps) {
       <div className={style['message']}>
         <span>{content.length}/500</span>
         {errorMessage.content && (
-          <div className={style['content-error']}>
-            {errorMessage.content}
-          </div>
+          <div className={style['content-error']}>{errorMessage.content}</div>
         )}
       </div>
       <Button
         type="button"
         style={
-          title && content ? 'button-ask-submit' : 'button-ask-submit-disable'
+          title && content && (title !== props.title || content !== props.content) ? 'button-ask-submit' : 'button-ask-submit-disable'
         }
         onClick={onSubmitClick}
         disabled={submitLoad}
