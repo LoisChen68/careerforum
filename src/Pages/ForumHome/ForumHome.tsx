@@ -118,24 +118,24 @@ export default function ForumHome() {
               </div>
             </div>
             <TextAreaAsk placeholder={'請輸入你的問題...'} />
+            {alert && (
+              <>
+                <div className={style['back-drop']} onClick={handleOnCancel} />
+                <div className={style['alert-container']}>
+                  <h3>{'確定要離開嗎？ 編輯內容將不被保存'}</h3>
+                  <div className={style['buttons']}>
+                    <button className={style['btn-cancel']} onClick={handleOnCancel}>
+                      取消
+                    </button>
+                    <button className={style['btn-sure']} onClick={handleOnSure}>
+                      確定
+                    </button>
+                  </div>
+                </div>
+              </>
+            )}
           </>
         </Modal>
-      )}
-      {alert && (
-        <>
-          <div className={style['back-drop']} onClick={handleOnCancel} />
-          <div className={style['alert-container']}>
-            <h3>{'確定要離開嗎？ 編輯內容將不被保存'}</h3>
-            <div className={style['buttons']}>
-              <button className={style['btn-cancel']} onClick={handleOnCancel}>
-                取消
-              </button>
-              <button className={style['btn-sure']} onClick={handleOnSure}>
-                確定
-              </button>
-            </div>
-          </div>
-        </>
       )}
       {setModalStatus?.modalStatus === 'questionPage' && <QuestionPage />}
     </>
@@ -382,24 +382,24 @@ function EditQuestion() {
               title={question.title}
               content={question.content}
               placeholder={'請輸入你的問題...'} />
+            {alert && (
+              <>
+                <div className={style['back-drop']} onClick={handleOnCancel} />
+                <div className={style['alert-container']}>
+                  <h3>{'確定要離開嗎？ 編輯內容將不被保存'}</h3>
+                  <div className={style['buttons']}>
+                    <button className={style['btn-cancel']} onClick={handleOnCancel}>
+                      取消
+                    </button>
+                    <button className={style['btn-sure']} onClick={handleOnSure}>
+                      確定
+                    </button>
+                  </div>
+                </div>
+              </>
+            )}
           </>
         </Modal>
-      )}
-      {alert && (
-        <>
-          <div className={style['back-drop']} onClick={handleOnCancel} />
-          <div className={style['alert-container']}>
-            <h3>{'確定要離開嗎？ 編輯內容將不被保存'}</h3>
-            <div className={style['buttons']}>
-              <button className={style['btn-cancel']} onClick={handleOnCancel}>
-                取消
-              </button>
-              <button className={style['btn-sure']} onClick={handleOnSure}>
-                確定
-              </button>
-            </div>
-          </div>
-        </>
       )}
     </>
   )
