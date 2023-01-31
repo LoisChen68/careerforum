@@ -101,6 +101,15 @@
   .container {
     width: 90%;
   }
+
+  .banner-container {
+    margin-top: 10px;
+  }
+
+  .second {
+    margin: 20px 0;
+    box-shadow: 3px 5px 8px -3px rgba(90, 89, 89, 0.76);
+  }
 }
 
 @media screen and (min-width: 990px) {
