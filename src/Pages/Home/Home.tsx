@@ -15,10 +15,9 @@ export default function Home() {
   }
 
   const dots = []
-  for (let i = 0; i < banner.length; i++) {
-    const dotClass = `${style['dot']} ${
-      i === currentBanner ? style['active'] : ''
-    }`
+  for (let i = 0;i < banner.length;i++) {
+    const dotClass = `${style['dot']} ${i === currentBanner ? style['active'] : ''
+      }`
     dots.push(
       <li key={i}>
         <div className={dotClass} onClick={() => handleDotClick(i)} />
@@ -45,10 +44,11 @@ export default function Home() {
           </section>
           <section className={style['second']}>
             <p>使用職涯論壇的三個理由</p>
-            <p>人生沒有明確的答案，但你可以參考問答調整自己的職涯方向</p>
+            <p className={style['subtitle']}>人生沒有明確的答案，</p>
+            <p className={style['subtitle']}>但你可以透過問答探尋你的職涯方向</p>
             <ul className={style['card-group']}>
               <div className={style['card']}>
-                <li className={style['title']}>互助</li>
+                <li className={style['card-title']}>互助</li>
                 <span>
                   剛畢業的你一定感到很迷茫，
                   <br />
@@ -58,7 +58,7 @@ export default function Home() {
                 </span>
               </div>
               <div className={style['card']}>
-                <li className={style['title']}>聚集</li>
+                <li className={style['card-title']}>聚集</li>
                 <span>
                   現有的資源都過於分散，
                   <br />
@@ -68,7 +68,7 @@ export default function Home() {
                 </span>
               </div>
               <div className={style['card']}>
-                <li className={style['title']}>綜合</li>
+                <li className={style['card-title']}>綜合</li>
                 <span>
                   過往學長姐大多會收到至少一位助教的指點，
                   <br />
