@@ -37,7 +37,7 @@ export default function AdminUser() {
   const [userIdIsClicked, setUserIdIsClicked] = useState(0)
 
   useEffect(() => {
-    if (getUser?.user.permissionRole === 'admin') {
+    if (getUser?.user?.permissionRole === 'admin') {
       adminAPI
         .getUsers(1, limit)
         .then((res) => {
@@ -96,7 +96,7 @@ export default function AdminUser() {
 
   return (
     <div className={style['container']}>
-      {getUser?.user.permissionRole === 'admin' && (
+      {getUser?.user?.permissionRole === 'admin' && (
         <div className={style['users-container']}>
           <h3>使用者列表</h3>
           <div className={style['users']}>
