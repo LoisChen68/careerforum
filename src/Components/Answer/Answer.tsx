@@ -30,6 +30,7 @@ export default function Answer(props: answerProps) {
   const getUser = useGetUser()
   const checkboxRef = useRef<HTMLInputElement>(null)
   const [alert, setAlert] = useState(false)
+  const [submitLoad, setSubmitLoad] = useState(false)
   const setModalStatus = useModalStatus()
   const answerId = Number(localStorage.getItem('answerId'))
 
@@ -48,10 +49,12 @@ export default function Answer(props: answerProps) {
   }
 
   function handleOnSure() {
+    setSubmitLoad(true)
     answerAPI
       .deleteAnswer(answerId)
       .then(() => {
         setAlert(false)
+        setSubmitLoad(false)
         render?.handleRerender(true)
         toast.success('刪除成功', {
           position: 'top-right',
@@ -64,7 +67,7 @@ export default function Answer(props: answerProps) {
           theme: 'light',
         })
       })
-      .catch(err => console.log(err))
+      .catch((err) => console.log(err))
   }
 
   return (
@@ -93,20 +96,24 @@ export default function Answer(props: answerProps) {
             <div>
               {props.answerCreateDate !== props.answerUpdateDate ? (
                 <div>
-                  <span className={style['user-post-date']}>{dayFormat(props.answerUpdateDate)}</span>
+                  <span className={style['user-post-date']}>
+                    {dayFormat(props.answerUpdateDate)}
+                  </span>
                   <span className={style['edited']}> (已編輯)</span>
                 </div>
-              ) :
-                <p className={style['user-post-date']}>{dayFormat(props.answerCreateDate)
-                }</p>
-              }
-
+              ) : (
+                <p className={style['user-post-date']}>
+                  {dayFormat(props.answerCreateDate)}
+                </p>
+              )}
             </div>
           </div>
           {getUser?.user.id === props.userId && (
             <div className={style['menu-icon']}>
               <label htmlFor={`dot-icon-answer-${props.answerId}`}>
-                <p><BiDotsVerticalRounded /></p>
+                <p>
+                  <BiDotsVerticalRounded />
+                </p>
               </label>
               <input
                 ref={checkboxRef}
@@ -114,22 +121,30 @@ export default function Answer(props: answerProps) {
                 type="checkbox"
                 className={style['menu-toggle']}
               />
-              <div className={style['menu']} onClick={() => checkboxRef.current && (checkboxRef.current.checked = false)}>
+              <div
+                className={style['menu']}
+                onClick={() =>
+                  checkboxRef.current && (checkboxRef.current.checked = false)
+                }
+              >
                 <ul className={style['menu-list']}>
                   {getUser?.user?.id === props.userId && (
                     <>
                       <li className={style['menu-item']}>
-                        <p onClick={() => handleEditClick(props.answerId)}>編輯</p>
+                        <p onClick={() => handleEditClick(props.answerId)}>
+                          編輯
+                        </p>
                       </li>
                       <li className={style['menu-item']}>
-                        <p onClick={() => handleDeleteClick(props.answerId)}>刪除</p>
+                        <p onClick={() => handleDeleteClick(props.answerId)}>
+                          刪除
+                        </p>
                       </li>
                     </>
                   )}
                 </ul>
               </div>
             </div>
-
           )}
         </div>
         <p className={style['content']}>{props.answer}</p>
@@ -144,7 +159,11 @@ export default function Answer(props: answerProps) {
               <button className={style['btn-cancel']} onClick={handleOnCancel}>
                 取消
               </button>
-              <button className={style['btn-sure']} onClick={handleOnSure}>
+              <button
+                className={style['btn-sure']}
+                onClick={handleOnSure}
+                disabled={submitLoad}
+              >
                 確定
               </button>
             </div>
@@ -155,7 +174,6 @@ export default function Answer(props: answerProps) {
   )
 }
 
-
 function EditAnswer() {
   const getUser = useGetUser()
   const setModalStatus = useModalStatus()
@@ -164,16 +182,16 @@ function EditAnswer() {
   const [isLoad, setIsLoad] = useState(false)
   const [alert, setAlert] = useState(false)
 
-
   useEffect(() => {
     if (setModalStatus?.modalStatus === 'editAnswer') {
       setIsLoad(true)
-      answerAPI.getAnswer(answerId)
-        .then(res => {
+      answerAPI
+        .getAnswer(answerId)
+        .then((res) => {
           setIsLoad(isLoad)
           setContent(res.data.answer.content)
         })
-        .catch(err => console.log(err))
+        .catch((err) => console.log(err))
     }
   }, [setModalStatus?.modalStatus])
 
@@ -228,24 +246,24 @@ function EditAnswer() {
               answerId={answerId}
               content={content}
             />
+            {alert && (
+              <>
+                <div className={style['back-drop']} onClick={handleOnCancel} />
+                <div className={style['alert-container']}>
+                  <h3>{'確定要離開嗎？ 編輯內容將不被保存'}</h3>
+                  <div className={style['buttons']}>
+                    <button className={style['btn-cancel']} onClick={handleOnCancel}>
+                      取消
+                    </button>
+                    <button className={style['btn-sure']} onClick={handleOnSure}>
+                      確定
+                    </button>
+                  </div>
+                </div>
+              </>
+            )}
           </div>
         </Modal>
-      )}
-      {alert && (
-        <>
-          <div className={style['back-drop']} onClick={handleOnCancel} />
-          <div className={style['alert-container']}>
-            <h3>{'確定要離開嗎？ 編輯內容將不被保存'}</h3>
-            <div className={style['buttons']}>
-              <button className={style['btn-cancel']} onClick={handleOnCancel}>
-                取消
-              </button>
-              <button className={style['btn-sure']} onClick={handleOnSure}>
-                確定
-              </button>
-            </div>
-          </div>
-        </>
       )}
     </>
   )

@@ -29,7 +29,7 @@
 .menu-toggle {
   display: none;
 
-  &:checked~.avatar-menu {
+  &:checked ~ .avatar-menu {
     transition: opacity 0.2s ease-out 0.15s;
     opacity: 1;
     visibility: visible;

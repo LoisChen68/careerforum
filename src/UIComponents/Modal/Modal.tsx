@@ -56,7 +56,7 @@ export function QuestionModal(props: questionModalProps) {
   return createPortal(
     <>
       <div className={style['modal-outer']}>
-        <Link to='/careerforum/home'>
+        <Link to="/careerforum/home">
           <Backdrop onConfirm={props.onConfirm} />
         </Link>
         <div

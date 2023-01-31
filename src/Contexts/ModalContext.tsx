@@ -13,12 +13,15 @@ export default function ModalContextProvider({
   children: React.ReactNode
 }) {
   const [modalStatus, setModalStatus] = useState('initial')
+  const [currentScroll, setCurrentScroll] = useState(0)
 
   useEffect(() => {
     if (modalStatus !== 'initial') {
-      document.body.style.overflow = 'hidden'
+      setCurrentScroll(window.pageYOffset)
+      document.body.style.position = 'fixed'
     } else {
-      document.body.style.overflow = 'unset'
+      document.body.style.position = ''
+      window.scrollTo(0, currentScroll)
     }
   }, [modalStatus])
 

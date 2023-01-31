@@ -85,10 +85,11 @@
   }
 
   .role {
+    @include func.font-setting(0.75rem, 400, #fff);
+    width: fit-content;
     padding: 0 5px;
     background-color: color.$primary-color;
     border-radius: 5px;
-    @include func.font-setting(0.75rem, 400, #fff);
   }
 }
 

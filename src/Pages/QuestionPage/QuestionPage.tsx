@@ -150,9 +150,8 @@ export default function QuestionPage() {
         removeHistory(question.id)
         setModalStatus?.handleSetModal('initial')
       })
-      .catch(err => console.log(err))
+      .catch((err) => console.log(err))
   }
-
 
   function handleOnCancel() {
     setAlert(false)
@@ -175,7 +174,6 @@ export default function QuestionPage() {
       theme: 'light',
     })
   }
-
 
   return (
     <>
@@ -228,14 +226,16 @@ export default function QuestionPage() {
                             <span>{dayFormat(question.updatedAt)}</span>
                             <span className={style['edited']}> (已編輯)</span>
                           </>
-                        ) :
+                        ) : (
                           <span>{dayFormat(question.createdAt)}</span>
-                        }
+                        )}
                       </div>
                     </div>
                     <div className={style['menu-close-button']}>
                       <label htmlFor={'dot-icon'}>
-                        <p><BiDotsVerticalRounded /></p>
+                        <p>
+                          <BiDotsVerticalRounded />
+                        </p>
                       </label>
                       <input
                         ref={checkboxRef}
@@ -243,15 +243,27 @@ export default function QuestionPage() {
                         type="checkbox"
                         className={style['menu-toggle']}
                       />
-                      <div className={style['menu']} onClick={() => checkboxRef.current && (checkboxRef.current.checked = false)}>
+                      <div
+                        className={style['menu']}
+                        onClick={() =>
+                          checkboxRef.current &&
+                          (checkboxRef.current.checked = false)
+                        }
+                      >
                         <ul className={style['menu-list']}>
                           {getUser?.user?.id === question.User.id && (
                             <>
                               <li className={style['menu-item']}>
-                                <p onClick={() => handleEditClick(question.id)}>編輯</p>
+                                <p onClick={() => handleEditClick(question.id)}>
+                                  編輯
+                                </p>
                               </li>
                               <li className={style['menu-item']}>
-                                <p onClick={() => handleDeleteClick(question.id)}>刪除</p>
+                                <p
+                                  onClick={() => handleDeleteClick(question.id)}
+                                >
+                                  刪除
+                                </p>
                               </li>
                             </>
                           )}
@@ -260,7 +272,7 @@ export default function QuestionPage() {
                           </li>
                         </ul>
                       </div>
-                      <Link to='/careerforum/home'>
+                      <Link to="/careerforum/home">
                         <Button
                           type="button"
                           style={'button-close-question'}
@@ -274,18 +286,14 @@ export default function QuestionPage() {
                       </Link>
                     </div>
                   </div>
-                  <h3 className={style['title']}>
-                    {question.title}
-                  </h3>
+                  <h3 className={style['title']}>{question.title}</h3>
                 </section>
                 <section className={style['content-container']}>
-                  {loading && (
-                    <ButtonLoader />
-                  )}
+                  {loading && <ButtonLoader />}
                   <p className={style['content']}>{question.content}</p>
                 </section>
-                <div className={style['answer-container']} >
-                  {loading && (<ButtonLoader />)}
+                <div className={style['answer-container']}>
+                  {loading && <ButtonLoader />}
                   {answerStatus === 'noting' && <p>目前還沒有人回答</p>}
                   {answers.map((answer: answer) => (
                     <Answer
@@ -306,13 +314,17 @@ export default function QuestionPage() {
                       <div className={style['alert-container']}>
                         <h3>{`確定要刪除 ${question.title} 這則問題嗎？`}</h3>
                         <div className={style['buttons']}>
-                          <button className={style['btn-cancel']} onClick={handleOnCancel}>
+                          <button
+                            className={style['btn-cancel']}
+                            onClick={handleOnCancel}
+                          >
                             取消
                           </button>
                           <button
                             className={style['btn-sure']}
                             onClick={handleOnSure}
-                            disabled={submitLoad}>
+                            disabled={submitLoad}
+                          >
                             確定
                           </button>
                         </div>

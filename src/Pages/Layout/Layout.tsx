@@ -139,7 +139,9 @@ export default function Layout() {
   function handleSignUpSubmit(e: React.MouseEvent) {
     e.preventDefault()
     const pwdStrength = passwordStrength(signUpData.password).value
-    const confirmPwdStrength = passwordStrength(signUpData.confirmPassword).value
+    const confirmPwdStrength = passwordStrength(
+      signUpData.confirmPassword
+    ).value
     setErrorMessage(isSignUpValid(errorMessage, signUpData, emailRule))
 
     if (
@@ -269,7 +271,6 @@ export default function Layout() {
       password: '',
       confirmPassword: '',
     })
-    window.scrollTo(0, 0)
   }
 
   // 按下 Header 或 Login 表單中的 註冊
@@ -281,7 +282,6 @@ export default function Layout() {
       password: '',
       confirmPassword: '',
     })
-    window.scrollTo(0, 0)
   }
 
   // 按下登出

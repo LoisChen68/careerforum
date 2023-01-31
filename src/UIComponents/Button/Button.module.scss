@@ -122,6 +122,13 @@
     margin-bottom: 3px;
     line-height: 16px;
   }
+
+  &-disable {
+    @include func.font-setting(0.75rem, 400, color.$gray-font);
+    margin-bottom: 3px;
+    line-height: 16px;
+    pointer-events: none;
+  }
 }
 
 .button-ask-submit {

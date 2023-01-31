@@ -15,7 +15,6 @@ export default function AdminLayout() {
     }
   }, [getUser?.user.permissionRole])
 
-
   const handleToggleMenu = () => {
     if (menuIsShow === 'hidden') {
       setMenuIsShow('show')
@@ -33,6 +32,7 @@ export default function AdminLayout() {
             id="toggleMenu"
             className={style['toggle-menu-checkbox']}
             checked={menuIsShow === 'show' ? true : false}
+            readOnly={true}
           />
           <div className={style['menu']}>
             {menuIsShow === 'show' ? (
@@ -47,7 +47,8 @@ export default function AdminLayout() {
             {menuIsShow === 'show' && (
               <ul className={style['menu-lists']}>
                 <li>使用者列表</li>
-                <li>問題列表</li>
+                {/* TODO:未來新增問題列表 */}
+                {/* <li>問題列表</li> */}
               </ul>
             )}
           </div>

@@ -11,7 +11,7 @@ interface userDataProps {
   email: string
   avatar: string
   cover: string
-  permissionRole: string,
+  permissionRole: string
   deletedAt: string
   approvalStatus: string
   isAdmin: boolean
@@ -55,9 +55,7 @@ export default function UserContextProvider({
     userAPI
       .getCurrentUser()
       .then((res) => {
-        setUser(res.data.user),
-          setAuthPass(true),
-          render?.handleRerender(false)
+        setUser(res.data.user), setAuthPass(true), render?.handleRerender(false)
       })
       .catch(() => {
         setAuthPass(false), navigate('/careerforum')
