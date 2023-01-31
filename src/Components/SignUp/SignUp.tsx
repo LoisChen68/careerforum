@@ -59,18 +59,24 @@ export default function SignUp(props: signUpProps) {
           errorMessage={props.errorMessage.email}
           onChange={props.onInputChange}
         />
-        <Input
-          htmlFor="name"
-          label="Name"
-          id="name"
-          name="name"
-          type="text"
-          placeholder=" "
-          value={props.name}
-          required={true}
-          errorMessage={props.errorMessage.name}
-          onChange={props.onInputChange}
-        />
+        <div className={style['name-input']}>
+          <Input
+            htmlFor="name"
+            label="Name"
+            id="name"
+            name="name"
+            type="text"
+            placeholder=" "
+            value={props.name}
+            maxLength={20}
+            required={true}
+            errorMessage={props.errorMessage.name}
+            onChange={props.onInputChange}
+          />
+          <span className={style['name-length-number']}>
+            ({props.name.length}/20)
+          </span>
+        </div>
         <Input
           htmlFor="password"
           label="Password"

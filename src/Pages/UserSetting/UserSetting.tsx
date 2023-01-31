@@ -204,7 +204,7 @@ export default function UserSetting() {
             <label>Email</label>
             <p>{getUser?.user?.email}</p>
           </div>
-          <div>
+          <div className={style['name-input']}>
             <Input
               htmlFor="name"
               label="Name"
@@ -219,7 +219,7 @@ export default function UserSetting() {
               onChange={handleInputChange}
             />
             <span className={style['name-length-number']}>
-              {form.name.length}/20
+              ({form.name.length}/20)
             </span>
           </div>
           <Input

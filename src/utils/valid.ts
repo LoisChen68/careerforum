@@ -181,19 +181,34 @@ export function signUpValueValid(
   inputName: string,
   value: string,
   password: string,
-  confirmPassword: string
+  confirmPassword: string,
+  emailRule: RegExp
 ) {
   const pwdStrength = passwordStrength(value).value
 
+  // 驗證 Email 格式是否合法
+  if (inputName === 'email' && !emailRule.test(value)) {
+    props = { ...props, ['email']: 'Email 格式不合法' }
+  } else {
+    props = { ...props, ['email']: '' }
+  }
+
+  // 驗證欄位是否為空值
   if (!value.trim()) {
     props = {
       ...props,
       [inputName]: '欄位不得為空',
     }
-  } else {
-    props = { ...props, [inputName]: '' }
   }
 
+  if (inputName !== 'email' && value.trim()) {
+    props = {
+      ...props,
+      [inputName]: ''
+    }
+  }
+
+  // 輸入 name 欄位時
   if (inputName === 'name' && value.trim().length > 20) {
     props = { ...props, ['name']: 'Name 長度不得超過20字' }
   }
