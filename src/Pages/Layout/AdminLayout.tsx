@@ -10,7 +10,7 @@ export default function AdminLayout() {
   const [menuIsShow, setMenuIsShow] = useState('hidden')
 
   useEffect(() => {
-    if (getUser?.user.permissionRole !== 'admin') {
+    if (getUser?.user?.permissionRole !== 'admin') {
       navigate('/careerforum/home')
     }
   }, [getUser?.user.permissionRole])
@@ -25,7 +25,7 @@ export default function AdminLayout() {
 
   return (
     <>
-      {getUser?.user.permissionRole === 'admin' && (
+      {getUser?.user?.permissionRole === 'admin' && (
         <>
           <input
             type="checkbox"

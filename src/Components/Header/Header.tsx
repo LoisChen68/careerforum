@@ -74,7 +74,7 @@ export default function Header(props: headerProps) {
                 }
               >
                 <ul className={style['avatar-list']}>
-                  {getUser?.user.permissionRole === 'admin' && (
+                  {getUser?.user?.permissionRole === 'admin' && (
                     <li className={style['avatar-item']}>
                       <Link to={`/careerforum/admin/users`}>後台</Link>
                     </li>
