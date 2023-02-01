@@ -38,9 +38,13 @@ export default function UserSetting() {
   const navigate = useNavigate()
   const { modifyHistoryAvatar } = useHistory()
   const [form, setForm] = useState(formData)
+  const [userData, setUserData] = useState(formData)
   const [errorMessage, setErrorMessage] = useState(formData)
   const [disable, setDisable] = useState(false)
+  const [loading, setLoading] = useState(false)
   const [editPassword, setEditPassword] = useState(false)
+  const pwdStrength = passwordStrength(form.password).value
+  const confirmPwdStrength = passwordStrength(form.confirmPassword).value
 
   // 取得使用者資料以代入表單中
   useEffect(() => {
@@ -54,18 +58,66 @@ export default function UserSetting() {
           role: user.role,
           name: user.name,
         })
+        setUserData(user)
       })
       .catch((err) => console.log(err))
   }, [])
 
+  useEffect(() => {
+    //先比對若有頭貼的錯誤訊息或 loading 時，將按鈕 disable
+    if (errorMessage.avatar || loading) {
+      setDisable(true)
+    }
+
+    // 如果沒有頭貼錯誤且也並非 loading 時，接著比對其他資料是否有異動
+    if (!errorMessage.avatar && !loading) {
+      if (
+        form.name === userData.name ||
+        form.avatar === userData.avatar ||
+        form.role === userData.role ||
+        form.oldPassword === form.password ||
+        form.password !== form.confirmPassword ||
+        pwdStrength === 'Too weak' ||
+        pwdStrength === 'Weak' ||
+        confirmPwdStrength === 'Too weak' ||
+        confirmPwdStrength === 'Weak'
+      ) {
+        setDisable(true)
+      }
+
+      if (
+        form.avatar !== userData.avatar ||
+        form.role !== userData.role ||
+        form.name !== userData.name ||
+        form.oldPassword !== form.password &&
+        form.password && form.confirmPassword &&
+        form.password === form.confirmPassword &&
+        pwdStrength !== 'Too weak' &&
+        pwdStrength !== 'Weak' &&
+        confirmPwdStrength !== 'Too weak' &&
+        confirmPwdStrength !== 'Weak'
+      ) {
+        setDisable(false)
+      }
+    }
+
+  }, [form, errorMessage, loading])
+
   // 上傳大頭貼
   function handleAvatarFileChange(e: React.ChangeEvent<HTMLInputElement>) {
     const { files } = e.target
+
     if (files && files.length > 0) {
       const imageURL = window.URL.createObjectURL(files[0])
       setForm({ ...form, avatar: imageURL })
+      if (files[0].size > 2097152) {
+        setErrorMessage({ ...errorMessage, avatar: '圖檔大小不得超過 2 MB' })
+      } else {
+        setErrorMessage({ ...errorMessage, avatar: '' })
+      }
     } else {
       setForm({ ...form, avatar: getUser?.user?.avatar || '' })
+      setErrorMessage({ ...errorMessage, avatar: '' })
     }
   }
 
@@ -87,48 +139,52 @@ export default function UserSetting() {
     if (name === 'password') {
       setForm({ ...form, password: value })
       setErrorMessage(
-        isPasswordValue(errorMessage, value, form.confirmPassword)
+        isPasswordValue(errorMessage, value, form.confirmPassword, form.oldPassword)
       )
     }
     if (name === 'confirmPassword') {
       setForm({ ...form, confirmPassword: value })
       setErrorMessage(
-        isConfirmPasswordValue(errorMessage, value, form.password)
+        isConfirmPasswordValue(errorMessage, value, form.password, form.oldPassword)
       )
     }
 
     if (name === 'oldPassword') {
       setForm({ ...form, oldPassword: value })
       setErrorMessage(
-        isOldPasswordValue(errorMessage, value)
+        isOldPasswordValue(errorMessage, value, form.password)
       )
     }
   }
 
-  // 送出表單
-  function handleSubmit(e: React.FormEvent) {
+  // 送出修改個人資料表單
+  function handleEditProfileSubmit(e: React.FormEvent) {
     e.preventDefault()
     const userId = getUser?.user?.id
     setErrorMessage(isNameValue(errorMessage, form.name))
     setErrorMessage(
-      isPasswordValue(errorMessage, form.password, form.confirmPassword)
+      isPasswordValue(errorMessage, form.password, form.confirmPassword, form.oldPassword)
     )
     setErrorMessage(
-      isConfirmPasswordValue(errorMessage, form.confirmPassword, form.password)
+      isConfirmPasswordValue(errorMessage, form.confirmPassword, form.password, form.oldPassword)
     )
 
     if (
       form.name.length > 20 ||
-      form.name.includes(' ')
+      form.name.includes(' ') ||
+      errorMessage.avatar
     )
       return
 
-    setDisable(true)
     if (
       form.name &&
-      form.name.length <= 20
+      form.name.length <= 20 &&
+      form.avatar !== userData.avatar ||
+      form.role !== userData.role ||
+      form.name !== userData.name
     ) {
       const bodyFormData = new FormData(e.target as HTMLFormElement)
+      setLoading(true)
       userAPI
         .putUserProfile(userId, bodyFormData)
         .then((res) => {
@@ -143,7 +199,7 @@ export default function UserSetting() {
             progress: undefined,
             theme: 'light',
           })
-          setDisable(false)
+          setLoading(false)
           render?.handleRerender(true)
           modifyHistoryAvatar(user.id, user.avatar)
           navigate(`/careerforum/users/${userId}`)
@@ -165,12 +221,11 @@ export default function UserSetting() {
   function handleEditPasswordSubmit(e: React.FormEvent) {
     e.preventDefault()
     const userId = getUser?.user?.id
-    const pwdStrength = passwordStrength(form.password).value
-    const confirmPwdStrength = passwordStrength(form.confirmPassword).value
 
     if (
       form.password.includes(' ') ||
       form.confirmPassword.includes(' ') ||
+      form.oldPassword === form.password ||
       pwdStrength === 'Too weak' ||
       pwdStrength === 'Weak' ||
       confirmPwdStrength === 'Too weak' ||
@@ -184,6 +239,7 @@ export default function UserSetting() {
       form.confirmPassword &&
       form.password === form.confirmPassword
     ) {
+      setLoading(true)
       userAPI
         .putUserSetting(userId, {
           oldPassword: form.oldPassword,
@@ -201,6 +257,7 @@ export default function UserSetting() {
             progress: undefined,
             theme: 'light',
           })
+          setLoading(false)
           navigate(`/careerforum/users/${userId}`)
         })
         .catch(err => {
@@ -216,6 +273,7 @@ export default function UserSetting() {
               progress: undefined,
               theme: 'light',
             })
+            setLoading(false)
           }
         })
     }
@@ -228,18 +286,23 @@ export default function UserSetting() {
           <p className={style['profile-link-text']}>返回個人資料</p>
         </Link>
         {!editPassword && (
-          <form className={style['form']} onSubmit={handleSubmit}>
+          <form className={style['form']} onSubmit={handleEditProfileSubmit}>
             <UserAvatar
               userAvatar={form.avatar}
               avatarStyle={'body-user-avatar'}
             />
-            <input
-              id="avatar"
-              type="file"
-              name="avatar"
-              accept=".jpg,.png"
-              onChange={handleAvatarFileChange}
-            />
+            <div className={style['file-input-container']}>
+              <input
+                id="avatar"
+                type="file"
+                name="avatar"
+                accept=".jpg,.png"
+                onChange={handleAvatarFileChange}
+              />
+              {errorMessage.avatar && (
+                <span className={style['error-message']}>{errorMessage.avatar}</span>
+              )}
+            </div>
             <div>
               <label htmlFor="role">Role</label>
               {form.role === 'TA' && (
@@ -298,6 +361,7 @@ export default function UserSetting() {
                 e
               }}
               disabled={disable}
+              loading={loading}
             >
               <p>送出</p>
             </Button>
@@ -349,6 +413,7 @@ export default function UserSetting() {
               style="button-submit"
               onClick={(e) => { e }}
               disabled={disable}
+              loading={loading}
             >
               <p>送出</p>
             </Button>
