@@ -417,6 +417,7 @@ interface settingData {
   avatar: string
   role: string
   name: string
+  oldPassword: string
   password: string
   confirmPassword: string
 }
@@ -635,6 +636,24 @@ export function isConfirmPasswordValue(
       ...props,
       password: '欄位不得為空',
       confirmPassword: '欄位不得為空',
+    }
+  }
+  return props
+}
+
+export function isOldPasswordValue(
+  props: settingData,
+  oldPassword: string
+) {
+  if (!oldPassword.trim()) {
+    props = {
+      ...props,
+      oldPassword: '欄位不得為空'
+    }
+  } else {
+    props = {
+      ...props,
+      oldPassword: ''
     }
   }
   return props
