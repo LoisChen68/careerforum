@@ -17,14 +17,17 @@
 }
 
 .dot-menu-icon {
+  position: relative;
+
   &:hover::after {
+    padding: 3px 0px;
     position: absolute;
-    top: 20px;
+    top: 100%;
     width: 35px;
+    text-align: center;
     border-radius: 5px;
     background-color: dimgray;
     color: #fff;
-    text-align: center;
     font-size: 0.9375rem;
     content: '選單';
   }

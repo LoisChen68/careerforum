@@ -7,6 +7,7 @@ interface buttonProps {
   type: 'submit' | 'reset' | 'button' | undefined
   onClick: (e: React.MouseEvent) => void
   disabled: boolean
+  loading?: boolean
 }
 
 export default function Button(props: buttonProps) {
@@ -17,7 +18,7 @@ export default function Button(props: buttonProps) {
       onClick={props.onClick}
       disabled={props.disabled}
     >
-      {props.disabled ? (
+      {props.loading ? (
         <>
           <div className={style['loader']}>
             <ButtonLoader />

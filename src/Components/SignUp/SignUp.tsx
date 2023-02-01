@@ -107,6 +107,7 @@ export default function SignUp(props: signUpProps) {
             style="button-submit"
             onClick={props.onSignUpSubmit}
             disabled={props.disabled}
+            loading={props.disabled}
           >
             <p>註冊</p>
           </Button>

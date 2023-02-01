@@ -27,6 +27,7 @@
 }
 
 .submit-icon {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -37,13 +38,16 @@
   }
 
   &:hover::after {
+    padding: 3px 0px;
     position: absolute;
+    left: 0;
+    top: 100%;
+    width: 35px;
     text-align: center;
-    bottom: -10px;
-    width: 30px;
     border-radius: 5px;
     background-color: dimgray;
     color: #fff;
+    font-size: 0.9375rem;
     content: '送出';
   }
 }

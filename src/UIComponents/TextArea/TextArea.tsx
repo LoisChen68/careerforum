@@ -258,6 +258,7 @@ export function TextAreaAsk(props: textAreaProps) {
         }
         onClick={onSubmitClick}
         disabled={submitLoad}
+        loading={submitLoad}
       >
         <p>送出</p>
       </Button>

@@ -59,6 +59,7 @@ export default function Login(props: loginProps) {
               style="button-submit"
               onClick={props.onLoginSubmit}
               disabled={props.disabled}
+              loading={props.disabled}
             >
               <p>登入</p>
             </Button>
