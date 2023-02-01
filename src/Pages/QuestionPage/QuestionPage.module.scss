@@ -67,7 +67,7 @@
   @include func.font-setting(0.75rem, 400, color.$primary-font);
 }
 
-.icon {
+.close-icon {
   display: block;
   height: 20px;
 
@@ -97,6 +97,21 @@
 .edited {
   @include func.font-setting(0.75rem, 400, color.$gray-font);
 }
+
+.dot-menu-icon {
+
+  &:hover::after {
+    position: absolute;
+    width: 35px;
+    border-radius: 5px;
+    background-color: dimgray;
+    color: #fff;
+    text-align: center;
+    font-size: 0.9375rem;
+    content: '選單';
+  }
+}
+
 
 .menu-close-button {
   position: relative;

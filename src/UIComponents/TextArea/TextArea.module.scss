@@ -2,6 +2,7 @@
 @use '../../mixin' as func;
 
 // style for answer's textArea
+
 .textareaAnswer {
   @include func.font-setting(0.9375rem, 400, color.$primary-font);
   padding-top: 5px;
@@ -22,6 +23,29 @@
 
   &::placeholder {
     color: color.$gray-font;
+  }
+
+}
+
+.submit-icon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  &:hover::after {
+    position: absolute;
+    text-align: center;
+    bottom: -10px;
+    width: 30px;
+    border-radius: 5px;
+    background-color: dimgray;
+    color: #fff;
+    content: '送出';
   }
 }
 

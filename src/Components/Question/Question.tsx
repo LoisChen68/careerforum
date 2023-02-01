@@ -117,9 +117,11 @@ export default function Question(props: questionProps) {
         </Link>
         <div>
           <label htmlFor={`dot-icon-question-${props.questionId}`}>
-            <p>
-              <BiDotsVerticalRounded />
-            </p>
+            <div className={style['dot-menu-icon']}>
+              <p>
+                <BiDotsVerticalRounded />
+              </p>
+            </div>
           </label>
           <input
             ref={checkboxRef}

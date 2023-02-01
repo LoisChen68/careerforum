@@ -111,9 +111,11 @@ export default function Answer(props: answerProps) {
           {getUser?.user.id === props.userId && (
             <div className={style['menu-icon']}>
               <label htmlFor={`dot-icon-answer-${props.answerId}`}>
-                <p>
-                  <BiDotsVerticalRounded />
-                </p>
+                <div className={style['dot-menu-icon']}>
+                  <p>
+                    <BiDotsVerticalRounded />
+                  </p>
+                </div>
               </label>
               <input
                 ref={checkboxRef}

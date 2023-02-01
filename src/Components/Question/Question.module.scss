@@ -16,6 +16,20 @@
   word-wrap: break-word;
 }
 
+.dot-menu-icon {
+  &:hover::after {
+    position: absolute;
+    top: 20px;
+    width: 35px;
+    border-radius: 5px;
+    background-color: dimgray;
+    color: #fff;
+    text-align: center;
+    font-size: 0.9375rem;
+    content: '選單';
+  }
+}
+
 .title-container {
   display: flex;
   justify-content: space-between;
@@ -89,7 +103,7 @@
   top: 0px;
   display: none;
 
-  &:checked ~ .menu {
+  &:checked~.menu {
     transition: opacity 0.2s ease-out 0.15s;
     opacity: 1;
     visibility: visible;
