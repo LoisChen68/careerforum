@@ -186,9 +186,19 @@
   display: none;
 }
 
-.answer-count {
-  @include func.font-setting(0.75rem, 400, color.$gray-font);
+.answer-count-container {
+  width: fit-content;
+
+  .answer-count {
+    @include func.font-setting(0.875rem, 600, color.$gray-font);
+    transition: 0.3s ease-out;
+
+    &:hover {
+      @include func.font-setting(0.875rem, 600, color.$primary-color);
+    }
+  }
 }
+
 
 .edited {
   @include func.font-setting(0.75rem, 400, color.$gray-font);

@@ -218,7 +218,7 @@ export default function Question(props: questionProps) {
       </div>
       <div className={style['content']}>{props.question}</div>
       <div className={style['hash-tags']}>{hashTag}</div>
-      <Link to={`/careerforum/${props.questionId}`}>
+      <Link to={`/careerforum/${props.questionId}`} className={style['answer-count-container']}>
         <span
           className={style['answer-count']}
         >{`${props.answerCount} 則回答`}</span>

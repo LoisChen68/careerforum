@@ -5,7 +5,7 @@
 
 .textareaAnswer {
   @include func.font-setting(0.9375rem, 400, color.$primary-font);
-  padding: 5px 0px 0px 6px;
+  padding: 7px 0px 0px 6px;
   height: 40px;
   flex: 1;
   align-self: center;
@@ -14,7 +14,8 @@
   font-family: inherit;
   box-shadow: inset 0px 0px 4px -2px rgb(166, 166, 166);
 
-  &:focus {
+  &:focus,
+  &:hover {
     outline: none;
     border-color: color.$secondary-color;
     box-shadow: inset 0px 0px 4px -2px color.$secondary-color;
@@ -23,7 +24,6 @@
   &::placeholder {
     color: color.$gray-font;
   }
-
 }
 
 .submit-icon {
