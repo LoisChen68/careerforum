@@ -45,6 +45,7 @@ export default function UserSetting() {
   const [editPassword, setEditPassword] = useState(false)
   const pwdStrength = passwordStrength(form.password).value
   const confirmPwdStrength = passwordStrength(form.confirmPassword).value
+  const userId = getUser?.user?.id
 
   // 取得使用者資料以代入表單中
   useEffect(() => {
@@ -160,14 +161,6 @@ export default function UserSetting() {
   // 送出修改個人資料表單
   function handleEditProfileSubmit(e: React.FormEvent) {
     e.preventDefault()
-    const userId = getUser?.user?.id
-    setErrorMessage(isNameValue(errorMessage, form.name))
-    setErrorMessage(
-      isPasswordValue(errorMessage, form.password, form.confirmPassword, form.oldPassword)
-    )
-    setErrorMessage(
-      isConfirmPasswordValue(errorMessage, form.confirmPassword, form.password, form.oldPassword)
-    )
 
     if (
       form.name.length > 20 ||
@@ -220,7 +213,6 @@ export default function UserSetting() {
   // 送出修改密碼表單
   function handleEditPasswordSubmit(e: React.FormEvent) {
     e.preventDefault()
-    const userId = getUser?.user?.id
 
     if (
       form.password.includes(' ') ||
