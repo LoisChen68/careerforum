@@ -1,14 +1,13 @@
-import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useModalStatus } from '../../Contexts/ModalContext'
 import { useGetUser } from '../../Contexts/UserContext'
 import UserAvatar from '../../UIComponents/UserAvatar/UserAvatar'
 import style from './Question.module.scss'
 import { BiDotsVerticalRounded } from 'react-icons/bi'
+import { useRef, useState } from 'react'
 import questionAPI from '../../request/API/questionAPI'
 import Backdrop from '../../UIComponents/Backdrop/Backdrop'
 import { useRender } from '../../Contexts/RenderContext'
-import { useMenuStatus } from '../../Contexts/ToggleMenuCotext'
 import { toast } from 'react-toastify'
 import { dayFormat } from '../../utils/dayFormat'
 import { useHistory } from '../../utils/cookies'
@@ -39,10 +38,10 @@ export default function Question(props: questionProps) {
   const render = useRender()
   const getUser = useGetUser()
   const { removeHistory } = useHistory()
+  const setModalStatus = useModalStatus()
+  const checkboxRef = useRef<HTMLInputElement>(null)
   const [alert, setAlert] = useState(false)
   const [submitLoad, setSubmitLoad] = useState(false)
-  const setModalStatus = useModalStatus()
-  const setMenuStatus = useMenuStatus()
   const questionId = localStorage.getItem('questionId')
   const origin = window.location.origin
 
@@ -105,15 +104,6 @@ export default function Question(props: questionProps) {
     })
   }
 
-  function hadleMenuOnClick(e: React.MouseEvent) {
-    e.stopPropagation()
-    if (`q-${props.questionId}` !== setMenuStatus?.toggleMenu) {
-      setMenuStatus?.handleToggleMenu(`q-${props.questionId}`)
-    } else {
-      setMenuStatus?.handleToggleMenu(null)
-    }
-  }
-
   return (
     <div className={style['question-container']}>
       <div className={style['title-container']}>
@@ -126,23 +116,24 @@ export default function Question(props: questionProps) {
           </h3>
         </Link>
         <div>
-          <div className={style['dot-menu-icon']}
-            onClick={(e) => hadleMenuOnClick(e)
-            }
-          >
-            <p>
-              <BiDotsVerticalRounded />
-            </p>
-          </div>
+          <label htmlFor={`dot-icon-question-${props.questionId}`}>
+            <div className={style['dot-menu-icon']}>
+              <p>
+                <BiDotsVerticalRounded />
+              </p>
+            </div>
+          </label>
           <input
+            ref={checkboxRef}
             id={`dot-icon-question-${props.questionId}`}
             type="checkbox"
             className={style['menu-toggle']}
-            checked={`q-${props.questionId}` === setMenuStatus?.toggleMenu ? true : false}
-            readOnly={true}
           />
           <div
             className={style['menu']}
+            onClick={() =>
+              checkboxRef.current && (checkboxRef.current.checked = false)
+            }
           >
             <ul className={style['menu-list']}>
               {getUser?.user?.id === props.questionUserId && (
