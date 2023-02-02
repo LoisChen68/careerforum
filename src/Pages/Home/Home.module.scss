@@ -27,7 +27,6 @@
   width: 100%;
   background-color: rgba(91, 177, 238, 0.4);
 
-
   .subtitle {
     @include func.font-setting(1rem, 700, style.$primary-color);
   }
@@ -128,6 +127,10 @@
     border-radius: 10px;
     overflow: hidden;
     box-shadow: 3px 5px 8px -3px rgba(90, 89, 89, 0.76);
+  }
+
+  .second {
+    border-radius: 10px;
   }
 
   .footer {

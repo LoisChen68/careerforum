@@ -17,6 +17,7 @@ import 'react-toastify/dist/ReactToastify.css'
 import { useGetUser } from '../../Contexts/UserContext'
 import { useModalStatus } from '../../Contexts/ModalContext'
 import { useRender } from '../../Contexts/RenderContext'
+import { useMenuStatus } from '../../Contexts/ToggleMenuCotext'
 import { passwordStrength } from 'check-password-strength'
 
 const formData = {
@@ -40,6 +41,7 @@ export default function Layout() {
   const getUser = useGetUser()
   const navigate = useNavigate()
   const setModalStatus = useModalStatus()
+  const setMenuStatus = useMenuStatus()
   const [signUpData, setSignUpData] = useState(formData)
   const [loginData, setLoginData] = useState(loginForm)
   const [errorMessage, setErrorMessage] = useState(formData)
@@ -314,7 +316,7 @@ export default function Layout() {
   }
 
   return (
-    <div>
+    <div onClick={() => setMenuStatus?.handleToggleMenu(null)}>
       <Header
         onLoginClick={onLoginClick}
         onSignUpClick={onSignUpClick}
