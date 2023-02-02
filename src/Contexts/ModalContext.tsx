@@ -31,7 +31,7 @@ export default function ModalContextProvider({
 
   const modalContextData: modalContextData = {
     handleSetModal,
-    modalStatus: modalStatus,
+    modalStatus,
   }
 
   return (
