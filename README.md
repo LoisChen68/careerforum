@@ -4,7 +4,7 @@
 <h3>人生沒有明確的答案，<br/>
 但你可以透過問答探尋你的職涯方向</h3>
 <br/>
-<h3><a href="https://careerforum-git-main-loischen68.vercel.app/careerforum" target="_blank">前往我們的職涯論壇</a></h3>
+<h3><a href="https://careerforum-loischen68.vercel.app/" target="_blank">前往我們的職涯論壇</a></h3>
 <table>
 <label>範例帳號</label>
   <tr>
