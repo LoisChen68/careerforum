@@ -117,9 +117,11 @@ export default function Question(props: questionProps) {
         </Link>
         <div>
           <label htmlFor={`dot-icon-question-${props.questionId}`}>
-            <p>
-              <BiDotsVerticalRounded />
-            </p>
+            <div className={style['dot-menu-icon']}>
+              <p>
+                <BiDotsVerticalRounded />
+              </p>
+            </div>
           </label>
           <input
             ref={checkboxRef}
@@ -216,7 +218,7 @@ export default function Question(props: questionProps) {
       </div>
       <div className={style['content']}>{props.question}</div>
       <div className={style['hash-tags']}>{hashTag}</div>
-      <Link to={`/careerforum/${props.questionId}`}>
+      <Link to={`/careerforum/${props.questionId}`} className={style['answer-count-container']}>
         <span
           className={style['answer-count']}
         >{`${props.answerCount} 則回答`}</span>

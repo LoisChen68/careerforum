@@ -1,3 +1,17 @@
+@use '../../mixin' as func;
+
+.name-input {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.name-length-number {
+  position: absolute;
+  right: 0;
+  @include func.font-setting(0.9375rem, 400, rgb(158, 158, 158));
+}
+
 .footer {
   display: flex;
   justify-content: space-between;

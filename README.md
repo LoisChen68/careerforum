@@ -9,7 +9,7 @@
 <label>範例帳號</label>
   <tr>
     <th>email</th>
-    <td>user@career.forum</td>
+    <td>user@careerForum.com</td>
   </tr>
   <tr>
     <th>password</th>

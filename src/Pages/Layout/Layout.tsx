@@ -28,7 +28,7 @@ const formData = {
 }
 
 const localEmail = localStorage.getItem('email') || ''
-const emailRule = /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/
+const emailRule = /^[a-zA-Z0-9_.-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/
 
 const loginForm = {
   email: localEmail,
@@ -257,7 +257,8 @@ export default function Layout() {
         e.target.name,
         e.target.value,
         signUpData.password,
-        signUpData.confirmPassword
+        signUpData.confirmPassword,
+        emailRule
       )
     )
   }

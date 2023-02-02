@@ -1,46 +1,49 @@
+import Slider from 'react-slick'
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 import style from './Home.module.scss'
 import askDesktop from '../../previewImage/askDesktop.png'
 import forumHomeDesktop from '../../previewImage/forumHomeDesktop.png'
 import cover from '../../previewImage/cover.png'
-import { useEffect, useState } from 'react'
 import { AiFillGithub } from 'react-icons/ai'
 
 const banner = [askDesktop, forumHomeDesktop]
 
 export default function Home() {
-  const [currentBanner, setCurrentBanner] = useState(0)
-
-  function handleDotClick(index: number) {
-    setCurrentBanner(index)
-  }
-
-  const dots = []
-  for (let i = 0;i < banner.length;i++) {
-    const dotClass = `${style['dot']} ${i === currentBanner ? style['active'] : ''
-      }`
-    dots.push(
-      <li key={i}>
-        <div className={dotClass} onClick={() => handleDotClick(i)} />
-      </li>
+  const settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 5000,
+    appendDots: (dots: JSX.Element) => (
+      <div
+        style={{
+          height: "40px",
+          // backgroundColor: "#ffffff5a",
+          position: "absolute",
+          bottom: "0",
+        }}
+      >
+        <ul>{dots}</ul>
+      </div >
     )
   }
-
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      setCurrentBanner((prevIndex) => (prevIndex + 1) % banner.length)
-    }, 5000)
-    return () => clearInterval(intervalId)
-  }, [banner])
 
   return (
     <>
       <div className={style['wrapper']}>
         <div className={style['container']}>
           <section className={style['main']}>
-            <div className={style['banner-container']}>
-              <img alt="banner" src={banner[currentBanner]} />
-              <ul className={style['dot-group']}>{dots}</ul>
-            </div>
+            <Slider {...settings}>
+              {banner.map((item, index) => (
+                <div className={style['banner-container']} key={index}>
+                  <img src={item} alt="banner" />
+                </div>
+              ))}
+            </Slider>
           </section>
           <section className={style['second']}>
             <p>使用職涯論壇的三個理由</p>
@@ -86,67 +89,68 @@ export default function Home() {
           <section>
             <img src={cover}></img>
           </section>
-          <footer className={style['footer']}>
-            <div className={style['info-group']}>
-              <p>關於開發團隊</p>
-              <div className={style['dev-group']}>
-                <div>
-                  <p>前端</p>
-                  <p>
-                    <a
-                      rel="noreferrer"
-                      href="https://github.com/LoisChen68"
-                      target="_blank"
-                    >
-                      Lois
-                    </a>
-                  </p>
-                  <p>
-                    <a
-                      rel="noreferrer"
-                      href="https://github.com/Gino-Hsu"
-                      target="_blank"
-                    >
-                      Gino
-                    </a>
-                  </p>
-                </div>
-                <div>
-                  <p>後端</p>
-                  <p>
-                    <a
-                      rel="noreferrer"
-                      href="https://github.com/AdrieneTZ"
-                      target="_blank"
-                    >
-                      Adriene
-                    </a>
-                  </p>
-                  <p>
-                    <a
-                      rel="noreferrer"
-                      href="https://github.com/seanlin1125"
-                      target="_blank"
-                    >
-                      Sean
-                    </a>
-                  </p>
-                </div>
+        </div>
+
+        <footer className={style['footer']}>
+          <div className={style['info-group']}>
+            <p>關於開發團隊</p>
+            <div className={style['dev-group']}>
+              <div>
+                <p>前端</p>
+                <p>
+                  <a
+                    rel="noreferrer"
+                    href="https://github.com/LoisChen68"
+                    target="_blank"
+                  >
+                    Lois
+                  </a>
+                </p>
+                <p>
+                  <a
+                    rel="noreferrer"
+                    href="https://github.com/Gino-Hsu"
+                    target="_blank"
+                  >
+                    Gino
+                  </a>
+                </p>
+              </div>
+              <div>
+                <p>後端</p>
+                <p>
+                  <a
+                    rel="noreferrer"
+                    href="https://github.com/AdrieneTZ"
+                    target="_blank"
+                  >
+                    Adriene
+                  </a>
+                </p>
+                <p>
+                  <a
+                    rel="noreferrer"
+                    href="https://github.com/seanlin1125"
+                    target="_blank"
+                  >
+                    Sean
+                  </a>
+                </p>
               </div>
             </div>
-            <p className={style['github']}>
-              <AiFillGithub />
-              <a
-                rel="noreferrer"
-                href="https://github.com/LoisChen68/careerforum"
-                target="_blank"
-              >
-                Github
-              </a>
-            </p>
-            <p>Career Forum &copy; 2023</p>
-          </footer>
-        </div>
+          </div>
+          <p className={style['github']}>
+            <AiFillGithub />
+            <a
+              rel="noreferrer"
+              href="https://github.com/LoisChen68/careerforum"
+              target="_blank"
+            >
+              Github
+            </a>
+          </p>
+          <p>Career Forum &copy; 2023</p>
+        </footer>
       </div>
     </>
   )

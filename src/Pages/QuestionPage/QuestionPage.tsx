@@ -233,9 +233,11 @@ export default function QuestionPage() {
                     </div>
                     <div className={style['menu-close-button']}>
                       <label htmlFor={'dot-icon'}>
-                        <p>
-                          <BiDotsVerticalRounded />
-                        </p>
+                        <div className={style['dot-menu-icon']}>
+                          <p>
+                            <BiDotsVerticalRounded />
+                          </p>
+                        </div>
                       </label>
                       <input
                         ref={checkboxRef}
@@ -279,7 +281,7 @@ export default function QuestionPage() {
                           onClick={close}
                           disabled={false}
                         >
-                          <p className={style['icon']} role="close">
+                          <p className={style['close-icon']} role="close">
                             <HiOutlineX />
                           </p>
                         </Button>

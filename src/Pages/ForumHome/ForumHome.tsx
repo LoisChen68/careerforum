@@ -19,7 +19,7 @@ import ButtonLoader from '../../UIComponents/ButtonLoader/ButtonLoader'
 import { useModalStatus } from '../../Contexts/ModalContext'
 import { useRender } from '../../Contexts/RenderContext'
 import QuestionPage from '../QuestionPage/QuestionPage'
-import { useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 
 export default function ForumHome() {
   const param = useParams()
@@ -255,16 +255,21 @@ function DiscussionThread() {
               />
               <div className={style['hr']} />
               {question.Answers[0] ? (
-                <Answer
-                  userId={question.Answers[0]?.User.id}
-                  userName={question.Answers[0]?.User.name}
-                  userRole={question.Answers[0]?.User.role}
-                  userAvatar={question.Answers[0]?.User.avatar}
-                  answerCreateDate={question.Answers[0]?.createdAt}
-                  answerUpdateDate={question.Answers[0]?.updatedAt}
-                  answerId={question.Answers[0]?.id}
-                  answer={question.Answers[0]?.content}
-                />
+                <>
+                  <Answer
+                    userId={question.Answers[0]?.User.id}
+                    userName={question.Answers[0]?.User.name}
+                    userRole={question.Answers[0]?.User.role}
+                    userAvatar={question.Answers[0]?.User.avatar}
+                    answerCreateDate={question.Answers[0]?.createdAt}
+                    answerUpdateDate={question.Answers[0]?.updatedAt}
+                    answerId={question.Answers[0]?.id}
+                    answer={question.Answers[0]?.content}
+                  />
+                  <Link to={`/careerForum/${question.id}`} className={style['look-answers-container']}>
+                    <span className={style['look-answers']}>查看更多回答</span>
+                  </Link>
+                </>
               ) : (
                 <p>目前還沒有人回答</p>
               )}
