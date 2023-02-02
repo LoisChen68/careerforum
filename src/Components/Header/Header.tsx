@@ -1,6 +1,6 @@
-import { useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { useGetUser } from '../../Contexts/UserContext'
+import { useMenuStatus } from '../../Contexts/ToggleMenuCotext'
 import Button from '../../UIComponents/Button/Button'
 import UserAvatar from '../../UIComponents/UserAvatar/UserAvatar'
 import style from './Header.module.scss'
@@ -15,7 +15,16 @@ interface headerProps {
 
 export default function Header(props: headerProps) {
   const getUser = useGetUser()
-  const checkboxRef = useRef<HTMLInputElement>(null)
+  const setMenuStatus = useMenuStatus()
+
+  function hadleMenuOnClick(e: React.MouseEvent) {
+    e.stopPropagation()
+    if (setMenuStatus?.toggleMenu !== 'headerMenu') {
+      setMenuStatus?.handleToggleMenu('headerMenu')
+    } else {
+      setMenuStatus?.handleToggleMenu(null)
+    }
+  }
 
   return (
     <header className={style['header']}>
@@ -55,23 +64,21 @@ export default function Header(props: headerProps) {
           )}
           {props.authPass && (
             <div className={style['avatar-container']}>
-              <label htmlFor="avatar">
+              <div onClick={(e) => hadleMenuOnClick(e)}>
                 <UserAvatar
                   userAvatar={props.avatar}
                   avatarStyle={'header-user-avatar'}
                 />
-              </label>
+              </div>
               <input
-                ref={checkboxRef}
                 id="avatar"
                 type="checkbox"
                 className={style['menu-toggle']}
+                checked={setMenuStatus?.toggleMenu === 'headerMenu' ? true : false}
+                readOnly={true}
               />
               <div
                 className={style['avatar-menu']}
-                onClick={() =>
-                  checkboxRef.current && (checkboxRef.current.checked = false)
-                }
               >
                 <ul className={style['avatar-list']}>
                   {getUser?.user?.permissionRole === 'admin' && (
