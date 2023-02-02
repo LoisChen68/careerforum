@@ -22,7 +22,6 @@ export default function Home() {
       <div
         style={{
           height: "40px",
-          // backgroundColor: "#ffffff5a",
           position: "absolute",
           bottom: "0",
         }}
