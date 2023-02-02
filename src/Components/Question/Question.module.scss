@@ -16,6 +16,23 @@
   word-wrap: break-word;
 }
 
+.dot-menu-icon {
+  position: relative;
+
+  &:hover::after {
+    padding: 3px 0px;
+    position: absolute;
+    top: 100%;
+    width: 35px;
+    text-align: center;
+    border-radius: 5px;
+    background-color: dimgray;
+    color: #fff;
+    font-size: 0.9375rem;
+    content: '選單';
+  }
+}
+
 .title-container {
   display: flex;
   justify-content: space-between;
@@ -89,7 +106,7 @@
   top: 0px;
   display: none;
 
-  &:checked ~ .menu {
+  &:checked~.menu {
     transition: opacity 0.2s ease-out 0.15s;
     opacity: 1;
     visibility: visible;
@@ -172,9 +189,19 @@
   display: none;
 }
 
-.answer-count {
-  @include func.font-setting(0.75rem, 400, color.$gray-font);
+.answer-count-container {
+  width: fit-content;
+
+  .answer-count {
+    @include func.font-setting(0.875rem, 600, color.$gray-font);
+    transition: 0.3s ease-out;
+
+    &:hover {
+      @include func.font-setting(0.875rem, 600, color.$primary-color);
+    }
+  }
 }
+
 
 .edited {
   @include func.font-setting(0.75rem, 400, color.$gray-font);

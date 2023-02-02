@@ -7,6 +7,7 @@ import { useModalStatus } from '../../Contexts/ModalContext'
 import { toast } from 'react-toastify'
 import answerAPI from '../../request/API/answerAPI'
 import { useHistory } from '../../utils/cookies'
+import { IoIosPaperPlane } from 'react-icons/io'
 
 interface textAreaProps {
   title?: string
@@ -105,7 +106,9 @@ export function TextAreaAnswer(props: textAreaProps) {
           onClick={onSubmitClick}
           disabled={false}
         >
-          <p>送出</p>
+          <div className={style['submit-icon']}>
+            <p><IoIosPaperPlane /></p>
+          </div>
         </Button>
       )}
     </>
@@ -248,13 +251,14 @@ export function TextAreaAsk(props: textAreaProps) {
         type="button"
         style={
           title &&
-          content &&
-          (title !== props.title || content !== props.content)
+            content &&
+            (title !== props.title || content !== props.content)
             ? 'button-ask-submit'
             : 'button-ask-submit-disable'
         }
         onClick={onSubmitClick}
         disabled={submitLoad}
+        loading={submitLoad}
       >
         <p>送出</p>
       </Button>

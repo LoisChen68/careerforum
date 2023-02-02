@@ -40,6 +40,17 @@
   background-color: color.$primary-color;
 }
 
+.look-answers {
+  @include func.font-setting(0.875rem, 600, color.$gray-font);
+  margin-left: 50px;
+  transition: 0.3s ease-out;
+
+
+  &:hover {
+    @include func.font-setting(0.875rem, 600, color.$primary-color);
+  }
+}
+
 .answer-form {
   margin-top: 13px;
   display: flex;
@@ -168,10 +179,15 @@
 
     .toAsk {
       display: block;
-      padding: 5px 15px;
+      padding: 10px 15px;
       width: 90%;
-      background-color: rgba(231, 231, 231, 0.766);
+      background-color: rgb(240, 242, 245);
       border-radius: 16px;
+      transition: 0.3s ease-out;
+
+      &:hover {
+        background-color: rgba(231, 231, 231, 30);
+      }
     }
   }
 

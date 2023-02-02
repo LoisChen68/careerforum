@@ -13,6 +13,7 @@ import {
   isConfirmPasswordValue,
   isNameValue,
   isPasswordValue,
+  isOldPasswordValue
 } from '../../utils/valid'
 import { passwordStrength } from 'check-password-strength'
 import { useHistory } from '../../utils/cookies'
@@ -21,6 +22,7 @@ const formData = {
   avatar: '',
   role: '',
   name: '',
+  oldPassword: '',
   password: '',
   confirmPassword: '',
 }
@@ -36,8 +38,14 @@ export default function UserSetting() {
   const navigate = useNavigate()
   const { modifyHistoryAvatar } = useHistory()
   const [form, setForm] = useState(formData)
+  const [userData, setUserData] = useState(formData)
   const [errorMessage, setErrorMessage] = useState(formData)
   const [disable, setDisable] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [editPassword, setEditPassword] = useState(false)
+  const pwdStrength = passwordStrength(form.password).value
+  const confirmPwdStrength = passwordStrength(form.confirmPassword).value
+  const userId = getUser?.user?.id
 
   // 取得使用者資料以代入表單中
   useEffect(() => {
@@ -51,18 +59,66 @@ export default function UserSetting() {
           role: user.role,
           name: user.name,
         })
+        setUserData(user)
       })
       .catch((err) => console.log(err))
   }, [])
 
+  useEffect(() => {
+    //先比對若有頭貼的錯誤訊息或 loading 時，將按鈕 disable
+    if (errorMessage.avatar || loading) {
+      setDisable(true)
+    }
+
+    // 如果沒有頭貼錯誤且也並非 loading 時，接著比對其他資料是否有異動
+    if (!errorMessage.avatar && !loading) {
+      if (
+        form.name === userData.name ||
+        form.avatar === userData.avatar ||
+        form.role === userData.role ||
+        form.oldPassword === form.password ||
+        form.password !== form.confirmPassword ||
+        pwdStrength === 'Too weak' ||
+        pwdStrength === 'Weak' ||
+        confirmPwdStrength === 'Too weak' ||
+        confirmPwdStrength === 'Weak'
+      ) {
+        setDisable(true)
+      }
+
+      if (
+        form.avatar !== userData.avatar ||
+        form.role !== userData.role ||
+        form.name !== userData.name ||
+        form.oldPassword !== form.password &&
+        form.password && form.confirmPassword &&
+        form.password === form.confirmPassword &&
+        pwdStrength !== 'Too weak' &&
+        pwdStrength !== 'Weak' &&
+        confirmPwdStrength !== 'Too weak' &&
+        confirmPwdStrength !== 'Weak'
+      ) {
+        setDisable(false)
+      }
+    }
+
+  }, [form, errorMessage, loading])
+
   // 上傳大頭貼
   function handleAvatarFileChange(e: React.ChangeEvent<HTMLInputElement>) {
     const { files } = e.target
+
     if (files && files.length > 0) {
       const imageURL = window.URL.createObjectURL(files[0])
       setForm({ ...form, avatar: imageURL })
+      if (files[0].size > 2097152) {
+        setErrorMessage({ ...errorMessage, avatar: '圖檔大小不得超過 2 MB' })
+      } else {
+        setErrorMessage({ ...errorMessage, avatar: '' })
+      }
     } else {
       setForm({ ...form, avatar: getUser?.user?.avatar || '' })
+      setErrorMessage({ ...errorMessage, avatar: '' })
     }
   }
 
@@ -84,54 +140,46 @@ export default function UserSetting() {
     if (name === 'password') {
       setForm({ ...form, password: value })
       setErrorMessage(
-        isPasswordValue(errorMessage, value, form.confirmPassword)
+        isPasswordValue(errorMessage, value, form.confirmPassword, form.oldPassword)
       )
     }
     if (name === 'confirmPassword') {
       setForm({ ...form, confirmPassword: value })
       setErrorMessage(
-        isConfirmPasswordValue(errorMessage, value, form.password)
+        isConfirmPasswordValue(errorMessage, value, form.password, form.oldPassword)
+      )
+    }
+
+    if (name === 'oldPassword') {
+      setForm({ ...form, oldPassword: value })
+      setErrorMessage(
+        isOldPasswordValue(errorMessage, value, form.password)
       )
     }
   }
 
-  // 送出表單
-  function handleSubmit(e: React.FormEvent) {
+  // 送出修改個人資料表單
+  function handleEditProfileSubmit(e: React.FormEvent) {
     e.preventDefault()
-    const userId = getUser?.user?.id
-    const pwdStrength = passwordStrength(form.password).value
-    const confirmPwdStrength = passwordStrength(form.confirmPassword).value
-    setErrorMessage(isNameValue(errorMessage, form.name))
-    setErrorMessage(
-      isPasswordValue(errorMessage, form.password, form.confirmPassword)
-    )
-    setErrorMessage(
-      isConfirmPasswordValue(errorMessage, form.confirmPassword, form.password)
-    )
 
     if (
       form.name.length > 20 ||
       form.name.includes(' ') ||
-      form.password.includes(' ') ||
-      form.confirmPassword.includes(' ') ||
-      pwdStrength === 'Too weak' ||
-      pwdStrength === 'Weak' ||
-      confirmPwdStrength === 'Too weak' ||
-      confirmPwdStrength === 'Weak'
+      errorMessage.avatar
     )
       return
 
-    setDisable(true)
     if (
       form.name &&
       form.name.length <= 20 &&
-      form.password &&
-      form.confirmPassword &&
-      form.password === form.confirmPassword
+      form.avatar !== userData.avatar ||
+      form.role !== userData.role ||
+      form.name !== userData.name
     ) {
       const bodyFormData = new FormData(e.target as HTMLFormElement)
+      setLoading(true)
       userAPI
-        .putUser(userId, bodyFormData)
+        .putUserProfile(userId, bodyFormData)
         .then((res) => {
           const user = res.data.user
           toast.success('成功修改個人資料', {
@@ -144,7 +192,7 @@ export default function UserSetting() {
             progress: undefined,
             theme: 'light',
           })
-          setDisable(false)
+          setLoading(false)
           render?.handleRerender(true)
           modifyHistoryAvatar(user.id, user.avatar)
           navigate(`/careerforum/users/${userId}`)
@@ -153,110 +201,216 @@ export default function UserSetting() {
     }
   }
 
+  // 點擊修改密碼或修改個人資料
+  function handleEditPasswordClick() {
+    if (editPassword) {
+      setEditPassword(false)
+    } else {
+      setEditPassword(true)
+    }
+  }
+
+  // 送出修改密碼表單
+  function handleEditPasswordSubmit(e: React.FormEvent) {
+    e.preventDefault()
+
+    if (
+      form.password.includes(' ') ||
+      form.confirmPassword.includes(' ') ||
+      form.oldPassword === form.password ||
+      pwdStrength === 'Too weak' ||
+      pwdStrength === 'Weak' ||
+      confirmPwdStrength === 'Too weak' ||
+      confirmPwdStrength === 'Weak'
+    )
+      return
+
+    if (
+      form.oldPassword &&
+      form.password &&
+      form.confirmPassword &&
+      form.password === form.confirmPassword
+    ) {
+      setLoading(true)
+      userAPI
+        .putUserSetting(userId, {
+          oldPassword: form.oldPassword,
+          password: form.password,
+          confirmPassword: form.confirmPassword
+        })
+        .then(() => {
+          toast.success('成功修改密碼', {
+            position: 'top-right',
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: false,
+            draggable: true,
+            progress: undefined,
+            theme: 'light',
+          })
+          setLoading(false)
+          navigate(`/careerforum/users/${userId}`)
+        })
+        .catch(err => {
+          const errStatus = err.response.status
+          if (errStatus === 401) {
+            toast.error('原始密碼錯誤', {
+              position: 'top-right',
+              autoClose: 3000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: false,
+              draggable: true,
+              progress: undefined,
+              theme: 'light',
+            })
+            setLoading(false)
+          }
+        })
+    }
+  }
+
   return (
     <div className={`${style['wrapper']} ${style['scrollbar']}`}>
       <div className={style['container']}>
-        <form className={style['form']} onSubmit={handleSubmit}>
-          <Link to={`/careerForum/users/${getUser?.user?.id}`}>
-            <p>返回個人資料</p>
-          </Link>
-          <UserAvatar
-            userAvatar={form.avatar}
-            avatarStyle={'body-user-avatar'}
-          />
-          <input
-            id="avatar"
-            type="file"
-            name="avatar"
-            accept=".jpg,.png"
-            onChange={handleAvatarFileChange}
-          />
-          <div>
-            <label htmlFor="role">Role</label>
-            {form.role === 'TA' && (
-              <Selector
-                htmlFor="role"
-                label="Role"
-                id="role"
-                name="role"
-                value={[{ value: 'TA', name: '助教', disable: false }]}
-                selectedValue={'TA'}
-                errorMessage={errorMessage.role}
-                required={true}
-                onChange={handleRoleChange}
+        <Link to={`/careerForum/users/${getUser?.user?.id}`}>
+          <p className={style['profile-link-text']}>返回個人資料</p>
+        </Link>
+        {!editPassword && (
+          <form className={style['form']} onSubmit={handleEditProfileSubmit}>
+            <UserAvatar
+              userAvatar={form.avatar}
+              avatarStyle={'body-user-avatar'}
+            />
+            <div className={style['file-input-container']}>
+              <input
+                id="avatar"
+                type="file"
+                name="avatar"
+                accept=".jpg,.png"
+                onChange={handleAvatarFileChange}
               />
-            )}
-            {form.role !== 'TA' && (
-              <Selector
-                htmlFor="role"
-                label="Role"
-                id="role"
-                name="role"
-                value={options}
-                selectedValue={form.role}
-                errorMessage={errorMessage.role}
+              {errorMessage.avatar && (
+                <span className={style['error-message']}>{errorMessage.avatar}</span>
+              )}
+            </div>
+            <div>
+              <label htmlFor="role">Role</label>
+              {form.role === 'TA' && (
+                <Selector
+                  htmlFor="role"
+                  label="Role"
+                  id="role"
+                  name="role"
+                  value={[{ value: 'TA', name: '助教', disable: false }]}
+                  selectedValue={'TA'}
+                  errorMessage={errorMessage.role}
+                  required={true}
+                  onChange={handleRoleChange}
+                />
+              )}
+              {form.role !== 'TA' && (
+                <Selector
+                  htmlFor="role"
+                  label="Role"
+                  id="role"
+                  name="role"
+                  value={options}
+                  selectedValue={form.role}
+                  errorMessage={errorMessage.role}
+                  required={true}
+                  onChange={handleRoleChange}
+                />
+              )}
+            </div>
+            <div className={style['user-email']}>
+              <label>Email</label>
+              <p>{getUser?.user?.email}</p>
+            </div>
+            <div className={style['name-input']}>
+              <Input
+                htmlFor="name"
+                label="Name"
+                id="name"
+                name="name"
+                type="text"
+                placeholder=" "
+                value={form.name}
+                maxLength={20}
                 required={true}
-                onChange={handleRoleChange}
+                errorMessage={errorMessage.name}
+                onChange={handleInputChange}
               />
-            )}
-          </div>
-          <div className={style['user-email']}>
-            <label>Email</label>
-            <p>{getUser?.user?.email}</p>
-          </div>
-          <div>
+              <span className={style['name-length-number']}>
+                ({form.name.length}/20)
+              </span>
+            </div>
+            <Button
+              type="submit"
+              style="button-submit"
+              onClick={(e) => {
+                e
+              }}
+              disabled={disable}
+              loading={loading}
+            >
+              <p>送出</p>
+            </Button>
+            <span onClick={handleEditPasswordClick} className={style['edit-password']}>修改密碼</span>
+          </form>
+        )}
+
+        {editPassword && (
+          <form className={style['form']} onSubmit={handleEditPasswordSubmit}>
+            <span onClick={handleEditPasswordClick} className={style['edit-password']}>修改個人資料</span>
             <Input
-              htmlFor="name"
-              label="Name"
-              id="name"
-              name="name"
-              type="text"
+              htmlFor="oldPassword"
+              label="Old Password"
+              id="oldPassword"
+              name="oldPassword"
+              type="password"
               placeholder=" "
-              value={form.name}
-              maxLength={20}
+              value={form.oldPassword}
               required={true}
-              errorMessage={errorMessage.name}
+              errorMessage={errorMessage.oldPassword}
               onChange={handleInputChange}
             />
-            <span className={style['name-length-number']}>
-              {form.name.length}/20
-            </span>
-          </div>
-          <Input
-            htmlFor="password"
-            label="Password"
-            id="password"
-            name="password"
-            type="password"
-            placeholder=" "
-            value={form.password}
-            required={true}
-            errorMessage={errorMessage.password}
-            onChange={handleInputChange}
-          />
-          <Input
-            htmlFor="confirmPassword"
-            label="Confirm Password"
-            id="confirmPassword"
-            name="confirmPassword"
-            type="password"
-            placeholder=" "
-            required={true}
-            value={form.confirmPassword}
-            errorMessage={errorMessage.confirmPassword}
-            onChange={handleInputChange}
-          />
-          <Button
-            type="submit"
-            style="button-submit"
-            onClick={(e) => {
-              e
-            }}
-            disabled={disable}
-          >
-            <p>送出</p>
-          </Button>
-        </form>
+            <Input
+              htmlFor="password"
+              label="Password"
+              id="password"
+              name="password"
+              type="password"
+              placeholder=" "
+              value={form.password}
+              required={true}
+              errorMessage={errorMessage.password}
+              onChange={handleInputChange}
+            />
+            <Input
+              htmlFor="confirmPassword"
+              label="Confirm Password"
+              id="confirmPassword"
+              name="confirmPassword"
+              type="password"
+              placeholder=" "
+              required={true}
+              value={form.confirmPassword}
+              errorMessage={errorMessage.confirmPassword}
+              onChange={handleInputChange}
+            />
+            <Button
+              type="submit"
+              style="button-submit"
+              onClick={(e) => { e }}
+              disabled={disable}
+              loading={loading}
+            >
+              <p>送出</p>
+            </Button>
+          </form>
+        )}
       </div>
     </div>
   )

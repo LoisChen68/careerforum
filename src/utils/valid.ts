@@ -181,19 +181,34 @@ export function signUpValueValid(
   inputName: string,
   value: string,
   password: string,
-  confirmPassword: string
+  confirmPassword: string,
+  emailRule: RegExp
 ) {
   const pwdStrength = passwordStrength(value).value
 
+  // 驗證 Email 格式是否合法
+  if (inputName === 'email' && !emailRule.test(value)) {
+    props = { ...props, ['email']: 'Email 格式不合法' }
+  } else {
+    props = { ...props, ['email']: '' }
+  }
+
+  // 驗證欄位是否為空值
   if (!value.trim()) {
     props = {
       ...props,
       [inputName]: '欄位不得為空',
     }
-  } else {
-    props = { ...props, [inputName]: '' }
   }
 
+  if (inputName !== 'email' && value.trim()) {
+    props = {
+      ...props,
+      [inputName]: ''
+    }
+  }
+
+  // 輸入 name 欄位時
   if (inputName === 'name' && value.trim().length > 20) {
     props = { ...props, ['name']: 'Name 長度不得超過20字' }
   }
@@ -402,6 +417,7 @@ interface settingData {
   avatar: string
   role: string
   name: string
+  oldPassword: string
   password: string
   confirmPassword: string
 }
@@ -425,7 +441,8 @@ export function isNameValue(props: settingData, value: string) {
 export function isPasswordValue(
   props: settingData,
   passwordValue: string,
-  confirmPassword: string
+  confirmPassword: string,
+  oldPassword: string
 ) {
   const pwdStrength = passwordStrength(passwordValue).value
 
@@ -494,6 +511,7 @@ export function isPasswordValue(
       if (
         pwdStrength !== 'Weak' &&
         pwdStrength !== 'Too weak' &&
+        passwordValue !== oldPassword &&
         !passwordValue.includes(' ')
       ) {
         props = {
@@ -503,6 +521,20 @@ export function isPasswordValue(
         }
       }
     }
+
+    if (passwordValue === oldPassword) {
+      props = {
+        ...props,
+        password: '密碼與原始密碼不得相同',
+        oldPassword: '密碼與原始密碼不得相同'
+      }
+    } else {
+      props = {
+        ...props,
+        oldPassword: ''
+      }
+    }
+
 
     // 確認密碼為空值
     if (!confirmPassword) {
@@ -527,7 +559,8 @@ export function isPasswordValue(
 export function isConfirmPasswordValue(
   props: settingData,
   confirmPasswordValue: string,
-  password: string
+  password: string,
+  oldPassword: string
 ) {
   const confirmPasswordStrength = passwordStrength(confirmPasswordValue).value
   //若確認密碼欄有值時
@@ -595,7 +628,8 @@ export function isConfirmPasswordValue(
       if (
         confirmPasswordStrength !== 'Weak' &&
         confirmPasswordStrength !== 'Too weak' &&
-        !confirmPasswordValue.includes(' ')
+        !confirmPasswordValue.includes(' ') &&
+        password !== oldPassword
       ) {
         props = {
           ...props,
@@ -603,6 +637,13 @@ export function isConfirmPasswordValue(
           confirmPassword: '',
         }
       }
+      if (password === oldPassword) {
+        props = {
+          ...props,
+          password: '密碼不得與原始密碼相同',
+        }
+      }
+
     }
 
     // 若密碼為空值
@@ -620,6 +661,36 @@ export function isConfirmPasswordValue(
       ...props,
       password: '欄位不得為空',
       confirmPassword: '欄位不得為空',
+    }
+  }
+  return props
+}
+
+export function isOldPasswordValue(
+  props: settingData,
+  oldPassword: string,
+  password: string
+) {
+  if (oldPassword) {
+    if (oldPassword === password) {
+      props = {
+        ...props,
+        password: '密碼不得與原始密碼相同',
+        oldPassword: '密碼不得與原始密碼相同'
+      }
+    } else {
+      props = {
+        ...props,
+        password: '',
+        oldPassword: ''
+      }
+    }
+
+    if (!oldPassword.trim()) {
+      props = {
+        ...props,
+        oldPassword: '欄位不得為空'
+      }
     }
   }
   return props
