@@ -11,11 +11,6 @@
   white-space: pre-wrap;
 }
 
-.question-title {
-  @include func.font-setting(1rem, 700, color.$primary-font);
-  word-wrap: break-word;
-}
-
 .dot-menu-icon {
   position: relative;
 
@@ -36,6 +31,17 @@
 .title-container {
   display: flex;
   justify-content: space-between;
+  width:100%;
+
+  a {
+    display: block;
+    width: 95%;
+
+    .question-title {
+      @include func.font-setting(1rem, 700, color.$primary-font);
+      word-wrap: break-word;
+    }
+  }
 
   p {
     cursor: pointer;
@@ -182,7 +188,20 @@
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 3;
   overflow: hidden;
-  color: black;
+  word-wrap: break-word;
+  color: color.$primary-font;
+  &-open {
+    word-wrap: break-word;
+    color: color.$primary-font;
+  }
+}
+
+.content-status {
+  @include func.font-setting(0.75rem, 300, color.$gray-font);
+  margin-top: -8px;
+  display: flex;
+  justify-content: flex-end;
+  cursor: pointer;
 }
 
 .hash-tags {

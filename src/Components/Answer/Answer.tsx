@@ -1,9 +1,9 @@
+import { useEffect, useState, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import UserAvatar from '../../UIComponents/UserAvatar/UserAvatar'
 import style from './Answer.module.scss'
 import { dayFormat } from '../../utils/dayFormat'
 import { BiDotsVerticalRounded } from 'react-icons/bi'
-import { useEffect, useState } from 'react'
 import { useGetUser } from '../../Contexts/UserContext'
 import { useModalStatus } from '../../Contexts/ModalContext'
 import { useMenuStatus } from '../../Contexts/ToggleMenuCotext'
@@ -27,12 +27,14 @@ interface answerProps {
 }
 
 export default function Answer(props: answerProps) {
-  const render = useRender()
-  const getUser = useGetUser()
   const [alert, setAlert] = useState(false)
   const [submitLoad, setSubmitLoad] = useState(false)
+  const [contentStatus, setContentStatus] = useState('')
+  const render = useRender()
+  const getUser = useGetUser()
   const setModalStatus = useModalStatus()
   const setMenuStatus = useMenuStatus()
+  const contentRef = useRef<HTMLParagraphElement>(null)
   const answerId = Number(localStorage.getItem('answerId'))
 
   function handleEditClick(id: number) {
@@ -79,6 +81,28 @@ export default function Answer(props: answerProps) {
       setMenuStatus?.handleToggleMenu(null)
     }
   }
+
+  // 判斷 content 的 scroolHeight(螢幕上的內容高度)與 clientHeight(內容的可是高度)，當 scroolHeight > clientHeight 設定 state "close" 用來顯示 <p>顯示更多</p>
+  function handleContnetHeight() {
+    const scrollHeight = contentRef.current ? contentRef.current.scrollHeight : 0
+    const clientHeight = contentRef.current ? contentRef.current.clientHeight : 0
+
+    if (scrollHeight > clientHeight) {
+      setContentStatus('close')
+    } else {
+      setContentStatus('')
+    }
+  }
+
+  useEffect(() => {
+    // 掛載 'resize' 監聽事件，當瀏覽器大小更改時執行 handleContnetHeight 函式
+    window.addEventListener('resize', handleContnetHeight)
+    handleContnetHeight() // 立即執行，非瀏覽器大小改變才執行
+
+    return (() => {
+      window.removeEventListener('resize', handleContnetHeight)
+    })
+  }, [])
 
   return (
     <div className={style['answer-container']}>
@@ -160,7 +184,23 @@ export default function Answer(props: answerProps) {
             </div>
           )}
         </div>
-        <p className={style['content']}>{props.answer}</p>
+        <p
+          ref={contentRef}
+          className={contentStatus === 'open' ? style['content-open'] : style['content']}>
+          {props.answer}
+        </p>
+        {contentStatus === 'close' &&
+          <p
+            className={style['content-status']}
+            onClick={() => setContentStatus('open')}>
+            顯示更多
+          </p>}
+        {contentStatus === 'open' &&
+          <p
+            className={style['content-status']}
+            onClick={() => setContentStatus('close')}>
+            顯示更少
+          </p>}
       </div>
       <EditAnswer />
       {alert && (
