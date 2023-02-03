@@ -122,8 +122,8 @@
 
 .menu-toggle:checked ~ .menu {
   transition: opacity 0.2s ease-out 0.15s;
-   opacity: 1;
-   visibility: visible;
+  opacity: 1;
+  visibility: visible;
 }
 
 .menu-list {
@@ -201,7 +201,6 @@
     }
   }
 }
-
 
 .edited {
   @include func.font-setting(0.75rem, 400, color.$gray-font);

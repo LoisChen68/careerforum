@@ -12,5 +12,5 @@ export default {
   },
   putUserSetting(id: number | undefined, data: object) {
     return api.put(`/users/${id}/setting`, data)
-  }
+  },
 }

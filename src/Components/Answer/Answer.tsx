@@ -120,8 +120,9 @@ export default function Answer(props: answerProps) {
           </div>
           {getUser?.user.id === props.userId && (
             <div className={style['menu-icon']}>
-              <div className={style['dot-menu-icon']} onClick={(e) => hadleMenuOnClick(e)
-              }
+              <div
+                className={style['dot-menu-icon']}
+                onClick={(e) => hadleMenuOnClick(e)}
               >
                 <p>
                   <BiDotsVerticalRounded />
@@ -131,12 +132,14 @@ export default function Answer(props: answerProps) {
                 id={`dot-icon-answer-${props.answerId}`}
                 type="checkbox"
                 className={style['menu-toggle']}
-                checked={`a-${props.answerId}` === setMenuStatus?.toggleMenu ? true : false}
+                checked={
+                  `a-${props.answerId}` === setMenuStatus?.toggleMenu
+                    ? true
+                    : false
+                }
                 readOnly={true}
               />
-              <div
-                className={style['menu']}
-              >
+              <div className={style['menu']}>
                 <ul className={style['menu-list']}>
                   {getUser?.user?.id === props.userId && (
                     <>
@@ -262,10 +265,16 @@ function EditAnswer() {
                 <div className={style['alert-container']}>
                   <h3>{'確定要離開嗎？ 編輯內容將不被保存'}</h3>
                   <div className={style['buttons']}>
-                    <button className={style['btn-cancel']} onClick={handleOnCancel}>
+                    <button
+                      className={style['btn-cancel']}
+                      onClick={handleOnCancel}
+                    >
                       取消
                     </button>
-                    <button className={style['btn-sure']} onClick={handleOnSure}>
+                    <button
+                      className={style['btn-sure']}
+                      onClick={handleOnSure}
+                    >
                       確定
                     </button>
                   </div>

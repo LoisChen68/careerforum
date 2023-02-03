@@ -74,12 +74,12 @@ export default function Header(props: headerProps) {
                 id="avatar"
                 type="checkbox"
                 className={style['menu-toggle']}
-                checked={setMenuStatus?.toggleMenu === 'headerMenu' ? true : false}
+                checked={
+                  setMenuStatus?.toggleMenu === 'headerMenu' ? true : false
+                }
                 readOnly={true}
               />
-              <div
-                className={style['avatar-menu']}
-              >
+              <div className={style['avatar-menu']}>
                 <ul className={style['avatar-list']}>
                   {getUser?.user?.permissionRole === 'admin' && (
                     <li className={style['avatar-item']}>

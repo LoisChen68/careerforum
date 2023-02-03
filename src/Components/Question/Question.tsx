@@ -126,9 +126,9 @@ export default function Question(props: questionProps) {
           </h3>
         </Link>
         <div>
-          <div className={style['dot-menu-icon']}
-            onClick={(e) => hadleMenuOnClick(e)
-            }
+          <div
+            className={style['dot-menu-icon']}
+            onClick={(e) => hadleMenuOnClick(e)}
           >
             <p>
               <BiDotsVerticalRounded />
@@ -138,12 +138,14 @@ export default function Question(props: questionProps) {
             id={`dot-icon-question-${props.questionId}`}
             type="checkbox"
             className={style['menu-toggle']}
-            checked={`q-${props.questionId}` === setMenuStatus?.toggleMenu ? true : false}
+            checked={
+              `q-${props.questionId}` === setMenuStatus?.toggleMenu
+                ? true
+                : false
+            }
             readOnly={true}
           />
-          <div
-            className={style['menu']}
-          >
+          <div className={style['menu']}>
             <ul className={style['menu-list']}>
               {getUser?.user?.id === props.questionUserId && (
                 <>
@@ -227,7 +229,10 @@ export default function Question(props: questionProps) {
       </div>
       <div className={style['content']}>{props.question}</div>
       <div className={style['hash-tags']}>{hashTag}</div>
-      <Link to={`/careerforum/${props.questionId}`} className={style['answer-count-container']}>
+      <Link
+        to={`/careerforum/${props.questionId}`}
+        className={style['answer-count-container']}
+      >
         <span
           className={style['answer-count']}
         >{`${props.answerCount} 則回答`}</span>

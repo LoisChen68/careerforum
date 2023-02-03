@@ -107,7 +107,9 @@ export function TextAreaAnswer(props: textAreaProps) {
           disabled={false}
         >
           <div className={style['submit-icon']}>
-            <p><IoIosPaperPlane /></p>
+            <p>
+              <IoIosPaperPlane />
+            </p>
           </div>
         </Button>
       )}
@@ -251,8 +253,8 @@ export function TextAreaAsk(props: textAreaProps) {
         type="button"
         style={
           title &&
-            content &&
-            (title !== props.title || content !== props.content)
+          content &&
+          (title !== props.title || content !== props.content)
             ? 'button-ask-submit'
             : 'button-ask-submit-disable'
         }

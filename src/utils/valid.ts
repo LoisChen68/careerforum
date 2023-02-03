@@ -204,7 +204,7 @@ export function signUpValueValid(
   if (inputName !== 'email' && value.trim()) {
     props = {
       ...props,
-      [inputName]: ''
+      [inputName]: '',
     }
   }
 
@@ -526,15 +526,14 @@ export function isPasswordValue(
       props = {
         ...props,
         password: '密碼與原始密碼不得相同',
-        oldPassword: '密碼與原始密碼不得相同'
+        oldPassword: '密碼與原始密碼不得相同',
       }
     } else {
       props = {
         ...props,
-        oldPassword: ''
+        oldPassword: '',
       }
     }
-
 
     // 確認密碼為空值
     if (!confirmPassword) {
@@ -643,7 +642,6 @@ export function isConfirmPasswordValue(
           password: '密碼不得與原始密碼相同',
         }
       }
-
     }
 
     // 若密碼為空值
@@ -676,20 +674,20 @@ export function isOldPasswordValue(
       props = {
         ...props,
         password: '密碼不得與原始密碼相同',
-        oldPassword: '密碼不得與原始密碼相同'
+        oldPassword: '密碼不得與原始密碼相同',
       }
     } else {
       props = {
         ...props,
         password: '',
-        oldPassword: ''
+        oldPassword: '',
       }
     }
 
     if (!oldPassword.trim()) {
       props = {
         ...props,
-        oldPassword: '欄位不得為空'
+        oldPassword: '欄位不得為空',
       }
     }
   }

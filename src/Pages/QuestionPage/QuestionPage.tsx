@@ -242,9 +242,10 @@ export default function QuestionPage() {
                       </div>
                     </div>
                     <div className={style['menu-close-button']}>
-                      <div className={style['dot-menu-icon']}
-                        onClick={(e) => hadleMenuOnClick(e)
-                        }>
+                      <div
+                        className={style['dot-menu-icon']}
+                        onClick={(e) => hadleMenuOnClick(e)}
+                      >
                         <p>
                           <BiDotsVerticalRounded />
                         </p>
@@ -253,12 +254,14 @@ export default function QuestionPage() {
                         id={'dot-icon'}
                         type="checkbox"
                         className={style['menu-toggle']}
-                        checked={`qp-${question.id}` === setMenuStatus?.toggleMenu ? true : false}
+                        checked={
+                          `qp-${question.id}` === setMenuStatus?.toggleMenu
+                            ? true
+                            : false
+                        }
                         readOnly={true}
                       />
-                      <div
-                        className={style['menu']}
-                      >
+                      <div className={style['menu']}>
                         <ul className={style['menu-list']}>
                           {getUser?.user?.id === question.User.id && (
                             <>

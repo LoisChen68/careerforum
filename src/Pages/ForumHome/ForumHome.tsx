@@ -124,10 +124,16 @@ export default function ForumHome() {
                 <div className={style['alert-container']}>
                   <h3>{'確定要離開嗎？ 編輯內容將不被保存'}</h3>
                   <div className={style['buttons']}>
-                    <button className={style['btn-cancel']} onClick={handleOnCancel}>
+                    <button
+                      className={style['btn-cancel']}
+                      onClick={handleOnCancel}
+                    >
                       取消
                     </button>
-                    <button className={style['btn-sure']} onClick={handleOnSure}>
+                    <button
+                      className={style['btn-sure']}
+                      onClick={handleOnSure}
+                    >
                       確定
                     </button>
                   </div>
@@ -266,7 +272,10 @@ function DiscussionThread() {
                     answerId={question.Answers[0]?.id}
                     answer={question.Answers[0]?.content}
                   />
-                  <Link to={`/careerForum/${question.id}`} className={style['look-answers-container']}>
+                  <Link
+                    to={`/careerForum/${question.id}`}
+                    className={style['look-answers-container']}
+                  >
                     <span className={style['look-answers']}>查看更多回答</span>
                   </Link>
                 </>
@@ -393,10 +402,16 @@ function EditQuestion() {
                 <div className={style['alert-container']}>
                   <h3>{'確定要離開嗎？ 編輯內容將不被保存'}</h3>
                   <div className={style['buttons']}>
-                    <button className={style['btn-cancel']} onClick={handleOnCancel}>
+                    <button
+                      className={style['btn-cancel']}
+                      onClick={handleOnCancel}
+                    >
                       取消
                     </button>
-                    <button className={style['btn-sure']} onClick={handleOnSure}>
+                    <button
+                      className={style['btn-sure']}
+                      onClick={handleOnSure}
+                    >
                       確定
                     </button>
                   </div>
