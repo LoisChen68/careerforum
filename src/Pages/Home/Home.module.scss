@@ -30,13 +30,11 @@
   .subtitle {
     @include func.font-setting(1rem, 700, style.$primary-color);
   }
-
 }
 
 .card-title {
   @include func.font-setting(1rem, 700, style.$primary-color);
 }
-
 
 .card-group {
   margin: 20px 0px;
@@ -115,7 +113,7 @@
   .container {
     max-width: 1000px;
   }
-  
+
   .main {
     background-color: rgba(215, 241, 253, 0);
   }

@@ -13,7 +13,7 @@ import {
   isConfirmPasswordValue,
   isNameValue,
   isPasswordValue,
-  isOldPasswordValue
+  isOldPasswordValue,
 } from '../../utils/valid'
 import { passwordStrength } from 'check-password-strength'
 import { useHistory } from '../../utils/cookies'
@@ -90,18 +90,18 @@ export default function UserSetting() {
         form.avatar !== userData.avatar ||
         form.role !== userData.role ||
         form.name !== userData.name ||
-        form.oldPassword !== form.password &&
-        form.password && form.confirmPassword &&
-        form.password === form.confirmPassword &&
-        pwdStrength !== 'Too weak' &&
-        pwdStrength !== 'Weak' &&
-        confirmPwdStrength !== 'Too weak' &&
-        confirmPwdStrength !== 'Weak'
+        (form.oldPassword !== form.password &&
+          form.password &&
+          form.confirmPassword &&
+          form.password === form.confirmPassword &&
+          pwdStrength !== 'Too weak' &&
+          pwdStrength !== 'Weak' &&
+          confirmPwdStrength !== 'Too weak' &&
+          confirmPwdStrength !== 'Weak')
       ) {
         setDisable(false)
       }
     }
-
   }, [form, errorMessage, loading])
 
   // 上傳大頭貼
@@ -140,21 +140,29 @@ export default function UserSetting() {
     if (name === 'password') {
       setForm({ ...form, password: value })
       setErrorMessage(
-        isPasswordValue(errorMessage, value, form.confirmPassword, form.oldPassword)
+        isPasswordValue(
+          errorMessage,
+          value,
+          form.confirmPassword,
+          form.oldPassword
+        )
       )
     }
     if (name === 'confirmPassword') {
       setForm({ ...form, confirmPassword: value })
       setErrorMessage(
-        isConfirmPasswordValue(errorMessage, value, form.password, form.oldPassword)
+        isConfirmPasswordValue(
+          errorMessage,
+          value,
+          form.password,
+          form.oldPassword
+        )
       )
     }
 
     if (name === 'oldPassword') {
       setForm({ ...form, oldPassword: value })
-      setErrorMessage(
-        isOldPasswordValue(errorMessage, value, form.password)
-      )
+      setErrorMessage(isOldPasswordValue(errorMessage, value, form.password))
     }
   }
 
@@ -162,17 +170,13 @@ export default function UserSetting() {
   function handleEditProfileSubmit(e: React.FormEvent) {
     e.preventDefault()
 
-    if (
-      form.name.length > 20 ||
-      form.name.includes(' ') ||
-      errorMessage.avatar
-    )
+    if (form.name.length > 20 || form.name.includes(' ') || errorMessage.avatar)
       return
 
     if (
-      form.name &&
-      form.name.length <= 20 &&
-      form.avatar !== userData.avatar ||
+      (form.name &&
+        form.name.length <= 20 &&
+        form.avatar !== userData.avatar) ||
       form.role !== userData.role ||
       form.name !== userData.name
     ) {
@@ -236,7 +240,7 @@ export default function UserSetting() {
         .putUserSetting(userId, {
           oldPassword: form.oldPassword,
           password: form.password,
-          confirmPassword: form.confirmPassword
+          confirmPassword: form.confirmPassword,
         })
         .then(() => {
           toast.success('成功修改密碼', {
@@ -252,7 +256,7 @@ export default function UserSetting() {
           setLoading(false)
           navigate(`/careerforum/users/${userId}`)
         })
-        .catch(err => {
+        .catch((err) => {
           const errStatus = err.response.status
           if (errStatus === 401) {
             toast.error('原始密碼錯誤', {
@@ -292,7 +296,9 @@ export default function UserSetting() {
                 onChange={handleAvatarFileChange}
               />
               {errorMessage.avatar && (
-                <span className={style['error-message']}>{errorMessage.avatar}</span>
+                <span className={style['error-message']}>
+                  {errorMessage.avatar}
+                </span>
               )}
             </div>
             <div>
@@ -357,13 +363,23 @@ export default function UserSetting() {
             >
               <p>送出</p>
             </Button>
-            <span onClick={handleEditPasswordClick} className={style['edit-password']}>修改密碼</span>
+            <span
+              onClick={handleEditPasswordClick}
+              className={style['edit-password']}
+            >
+              修改密碼
+            </span>
           </form>
         )}
 
         {editPassword && (
           <form className={style['form']} onSubmit={handleEditPasswordSubmit}>
-            <span onClick={handleEditPasswordClick} className={style['edit-password']}>修改個人資料</span>
+            <span
+              onClick={handleEditPasswordClick}
+              className={style['edit-password']}
+            >
+              修改個人資料
+            </span>
             <Input
               htmlFor="oldPassword"
               label="Old Password"
@@ -403,7 +419,9 @@ export default function UserSetting() {
             <Button
               type="submit"
               style="button-submit"
-              onClick={(e) => { e }}
+              onClick={(e) => {
+                e
+              }}
               disabled={disable}
               loading={loading}
             >
