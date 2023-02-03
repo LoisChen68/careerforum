@@ -45,7 +45,6 @@
   margin-left: 50px;
   transition: 0.3s ease-out;
 
-
   &:hover {
     @include func.font-setting(0.875rem, 600, color.$primary-color);
   }

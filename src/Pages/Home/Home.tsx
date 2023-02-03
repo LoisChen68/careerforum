@@ -1,6 +1,6 @@
 import Slider from 'react-slick'
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
+import 'slick-carousel/slick/slick.css'
+import 'slick-carousel/slick/slick-theme.css'
 import style from './Home.module.scss'
 import askDesktop from '../../previewImage/askDesktop.png'
 import forumHomeDesktop from '../../previewImage/forumHomeDesktop.png'
@@ -21,14 +21,14 @@ export default function Home() {
     appendDots: (dots: JSX.Element) => (
       <div
         style={{
-          height: "40px",
-          position: "absolute",
-          bottom: "0",
+          height: '40px',
+          position: 'absolute',
+          bottom: '0',
         }}
       >
         <ul>{dots}</ul>
-      </div >
-    )
+      </div>
+    ),
   }
 
   return (
@@ -47,7 +47,9 @@ export default function Home() {
           <section className={style['second']}>
             <p>使用職涯論壇的三個理由</p>
             <p className={style['subtitle']}>人生沒有明確的答案，</p>
-            <p className={style['subtitle']}>但你可以透過問答探尋你的職涯方向</p>
+            <p className={style['subtitle']}>
+              但你可以透過問答探尋你的職涯方向
+            </p>
             <ul className={style['card-group']}>
               <div className={style['card']}>
                 <li className={style['card-title']}>互助</li>

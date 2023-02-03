@@ -3,7 +3,7 @@ import axios, { AxiosRequestConfig } from 'axios'
 const baseURL = process.env.REACT_APP_BASE_URL
 
 export const api = axios.create({
-  baseURL
+  baseURL,
 })
 
 // 發 req 前預先會做的事情

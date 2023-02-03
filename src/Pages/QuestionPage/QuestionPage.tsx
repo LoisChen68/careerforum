@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import Answer from '../../Components/Answer/Answer'
 import UserAvatar from '../../UIComponents/UserAvatar/UserAvatar'
 import style from './QuestionPage.module.scss'
@@ -6,6 +6,7 @@ import questionAPI from '../../request/API/questionAPI'
 import { useParams } from 'react-router'
 import { QuestionModal } from '../../UIComponents/Modal/Modal'
 import { useModalStatus } from '../../Contexts/ModalContext'
+import { useMenuStatus } from '../../Contexts/ToggleMenuCotext'
 import Button from '../../UIComponents/Button/Button'
 import { HiOutlineX } from 'react-icons/hi'
 import { Link } from 'react-router-dom'
@@ -56,8 +57,8 @@ export default function QuestionPage() {
   const render = useRender()
   const getUser = useGetUser()
   const setModalStatus = useModalStatus()
+  const setMenuStatus = useMenuStatus()
   const { removeHistory } = useHistory()
-  const checkboxRef = useRef<HTMLInputElement>(null)
   const [page, setPage] = useState(2)
   const [limit, setLimit] = useState(10)
   const [loading, setLoading] = useState(true)
@@ -175,6 +176,15 @@ export default function QuestionPage() {
     })
   }
 
+  function hadleMenuOnClick(e: React.MouseEvent) {
+    e.stopPropagation()
+    if (`qp-${question.id}` !== setMenuStatus?.toggleMenu) {
+      setMenuStatus?.handleToggleMenu(`qp-${question.id}`)
+    } else {
+      setMenuStatus?.handleToggleMenu(null)
+    }
+  }
+
   return (
     <>
       <QuestionModal
@@ -232,26 +242,26 @@ export default function QuestionPage() {
                       </div>
                     </div>
                     <div className={style['menu-close-button']}>
-                      <label htmlFor={'dot-icon'}>
-                        <div className={style['dot-menu-icon']}>
-                          <p>
-                            <BiDotsVerticalRounded />
-                          </p>
-                        </div>
-                      </label>
+                      <div
+                        className={style['dot-menu-icon']}
+                        onClick={(e) => hadleMenuOnClick(e)}
+                      >
+                        <p>
+                          <BiDotsVerticalRounded />
+                        </p>
+                      </div>
                       <input
-                        ref={checkboxRef}
                         id={'dot-icon'}
                         type="checkbox"
                         className={style['menu-toggle']}
-                      />
-                      <div
-                        className={style['menu']}
-                        onClick={() =>
-                          checkboxRef.current &&
-                          (checkboxRef.current.checked = false)
+                        checked={
+                          `qp-${question.id}` === setMenuStatus?.toggleMenu
+                            ? true
+                            : false
                         }
-                      >
+                        readOnly={true}
+                      />
+                      <div className={style['menu']}>
                         <ul className={style['menu-list']}>
                           {getUser?.user?.id === question.User.id && (
                             <>

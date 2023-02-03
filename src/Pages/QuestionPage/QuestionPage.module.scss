@@ -99,7 +99,6 @@
 }
 
 .dot-menu-icon {
-
   &:hover::after {
     position: absolute;
     width: 35px;
@@ -111,7 +110,6 @@
     content: '選單';
   }
 }
-
 
 .menu-close-button {
   position: relative;
@@ -185,7 +183,7 @@
   position: absolute;
   display: none;
 
-  &:checked~.menu {
+  &:checked ~ .menu {
     transition: opacity 0.2s ease-out 0.15s;
     opacity: 1;
     visibility: visible;
@@ -266,7 +264,6 @@
 }
 
 @media screen and (min-width: 570px) {
-
   .discussion-thread {
     padding-bottom: 5px;
     position: relative;
@@ -288,5 +285,4 @@
       width: 95%;
     }
   }
-
 }

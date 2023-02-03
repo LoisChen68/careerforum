@@ -7,7 +7,9 @@ interface menuContextData {
 
 const ToggleMenuContext = createContext<menuContextData | undefined>(undefined)
 
-export default function ToggleMenuContextProvider({ children }: {
+export default function ToggleMenuContextProvider({
+  children,
+}: {
   children: React.ReactNode
 }) {
   const [toggleMenu, setToggleMenu] = useState<string | null>(null)
