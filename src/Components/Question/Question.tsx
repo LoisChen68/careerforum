@@ -118,8 +118,12 @@ export default function Question(props: questionProps) {
 
   // 判斷 content 的 scroolHeight(螢幕上的內容高度)與 clientHeight(內容的可是高度)，當 scroolHeight > clientHeight 設定 state "close" 用來顯示 <p>顯示更多</p>
   function handleContnetHeight() {
-    const scrollHeight = contentRef.current ? contentRef.current.scrollHeight : 0
-    const clientHeight = contentRef.current ? contentRef.current.clientHeight : 0
+    const scrollHeight = contentRef.current
+      ? contentRef.current.scrollHeight
+      : 0
+    const clientHeight = contentRef.current
+      ? contentRef.current.clientHeight
+      : 0
 
     if (scrollHeight > clientHeight) {
       setContentStatus('close')
@@ -133,9 +137,9 @@ export default function Question(props: questionProps) {
     window.addEventListener('resize', handleContnetHeight)
     handleContnetHeight() // 立即執行，非瀏覽器大小改變才執行
 
-    return (() => {
+    return () => {
       window.removeEventListener('resize', handleContnetHeight)
-    })
+    }
   }, [])
 
   return (
@@ -253,21 +257,28 @@ export default function Question(props: questionProps) {
       </div>
       <div
         ref={contentRef}
-        className={contentStatus === 'open' ? style['content-open'] : style['content']}>
+        className={
+          contentStatus === 'open' ? style['content-open'] : style['content']
+        }
+      >
         {props.question}
       </div>
-      {contentStatus === 'close' &&
+      {contentStatus === 'close' && (
         <p
           className={style['content-status']}
-          onClick={() => setContentStatus('open')}>
+          onClick={() => setContentStatus('open')}
+        >
           顯示更多
-        </p>}
-      {contentStatus === 'open' &&
+        </p>
+      )}
+      {contentStatus === 'open' && (
         <p
           className={style['content-status']}
-          onClick={() => setContentStatus('close')}>
+          onClick={() => setContentStatus('close')}
+        >
           顯示更少
-        </p>}
+        </p>
+      )}
       <div className={style['hash-tags']}>{hashTag}</div>
       <Link
         to={`/careerforum/${props.questionId}`}
